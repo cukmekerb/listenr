@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height" />
     <script>
-        var user = {};
+        var user;
         var shows = [];
         var showingthing = false;
         var exp = { expires: 100000 };
@@ -45,32 +45,35 @@
             if (Cookies.get("user") != null) {
                 user = JSON.parse(Cookies.get("user"));
             }
-            if (user.subscribed.length > 0) {
-                var ephtml;
-                for (var i = 0; i < user.subscribed.length; i++) {
-                    ephtml = document.getElementById("show-$$i%%").outerHTML;
-                    ephtml = ephtml.replace(/\$\$i\%\%/gi, i);
-                    ephtml = ephtml.replace(/\$\$\%\%TOTITLE\%\%/gi, user.subscribed[i].title);
-                    if (user.subscribed[i].desc.length > 250) {
-                        ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(String(user.subscribed[i].desc).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
+            if (user != null && user != {}) {
+                if (user.subscribed.length > 0) {
+                    var ephtml;
+                    for (var i = 0; i < user.subscribed.length; i++) {
+                        ephtml = document.getElementById("show-$$i%%").outerHTML;
+                        ephtml = ephtml.replace(/\$\$i\%\%/gi, i);
+                        ephtml = ephtml.replace(/\$\$\%\%TOTITLE\%\%/gi, user.subscribed[i].title);
+                        if (user.subscribed[i].desc.length > 250) {
+                            ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(String(user.subscribed[i].desc).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
+                        }
+                        else {
+                            ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(user.subscribed[i].desc));
+                        }
+                        ephtml = ephtml.replace(/\$\$PDI\%\%/gi, user.subscribed[i].img);
+                        ephtml = ephtml.replace(/\$\$showurl\%\%/gi, "view.html?AetBh69feedbH=" + window.btoa(user.subscribed[i].url));
+                        document.getElementById("op").innerHTML += ephtml;
+                        shows.push({
+                            title: user.subscribed[i].title,
+                            desc: user.subscribed[i].desc
+                        });
                     }
-                    else {
-                        ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(user.subscribed[i].desc));
-                    }
-                    ephtml = ephtml.replace(/\$\$PDI\%\%/gi, user.subscribed[i].img);
-                    ephtml = ephtml.replace(/\$\$showurl\%\%/gi, "view.html?AetBh69feedbH=" + window.btoa(user.subscribed[i].url));
-                    document.getElementById("op").innerHTML += ephtml;
-                    shows.push({
-                        title: user.subscribed[i].title,
-                        desc: user.subscribed[i].desc
-                    });
+                    document.getElementById("show-$$i%%").style.display = "none";
                 }
-                document.getElementById("show-$$i%%").style.display = "none";
+                else {
+                    document.getElementById("op").innerHTML = "<p class='centererror'>Your're not subscribed to any shows. You can add one by searching</p>";
+                }
             }
             else {
                 document.getElementById("op").innerHTML = "<p class='centererror'>Your're not subscribed to any shows. You can add one by searching</p>";
-                console.log("aadk")
-
             }
             document.getElementById("op").classList.remove("hidden");
         }
