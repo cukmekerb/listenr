@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Search - listenr</title>
+    <!--metatags-->
+    <link rel="manifest" href="manifest.json">
+    <link rel="shortcut icon" href="icon-192.png">
+    <meta charset="UTF-8">
+    <meta name="description" content="The simplest podcatcher of them all">
+    <meta name="image" content="icon-512.png">
+    <meta itemprop="name" content="Listenr">
+    <meta itemprop="description" content="The simplest podcatcher of them all">
+    <meta itemprop="image" content="icon-512.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Listenr">
+    <meta name="twitter:description" content="The simplest podcatcher of them all">
+    <meta name="twitter:image:src" content="icon-512.png">
+    <meta name="og:title" content="Listenr">
+    <meta name="og:description" content="The simplest podcatcher of them all">
+    <meta name="og:image" content="icon-512.png">
+    <meta name="og:url" content="https://listenr.gq/">
+    <meta name="og:site_name" content="Listenr">
+    <meta name="og:locale" content="en_US">
+    <meta name="og:type" content="website">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" rel="preload">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--no more metatags-->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="view.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height" />
+    <script>
+        var shows = [];
+        var user = {};
+        var adstring = `<div class="episode show"><iframe data-aa="1428976" src="https://acceptable.a-ads.com/1428976?size=Adaptive&background_color=2c2c2c&text_color=b9b9b9&title_color=b9b9b9&link_color=b9b9b9" scrolling="no" style="border:0px; padding:0; width:100%; height:100%; overflow:hidden" allowtransparency="true"></iframe></div>`;
+        var showingthing = false;
+        function htmltotext(html) {
+            document.getElementById("texttester").innerHTML = html;
+            var b = document.getElementById("texttester").innerText || document.getElementById("texttester").textContent;
+            return b;
+        }
+        function init() {
+            if (Cookies.get("user") != null) {
+                user = JSON.parse(Cookies.get("user"));
+            }
+            checksearch();
+        }
+        function showmore(i) {
+            showingthing = true;
+            document.getElementById("desc_" + i).innerHTML = shows[i].desc + "<br><br><i class='shortlong' onclick='showless(" + i + ")'>less</i>";
+            document.getElementById("title_" + i).innerHTML = episodes[i].title;
+            setTimeout(() => { showingthing = false }, 10);
+        }
+        function showless(i) {
+            showingthing = true;
+            document.getElementById("desc_" + i).innerHTML = htmltotext(shows[i].desc.replace(/<br>/gi, "\n").slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>";
+            setTimeout(() => { showingthing = false }, 10);
+        }
+        function checksearch() {
+            if (String(window.location).includes("?AetBh69SERCH99bH=") && String(window.location).split("?AetBh69SERCH99bH=")[1] != "") {
+                var search = String(window.location).split("?AetBh69SERCH99bH=")[1];
+                document.getElementById("AetBh69SERCH99bH").value = decodeURIComponent(search.replace(/\+/gi, "%20"));
+                document.title = decodeURIComponent(search.replace(/\+/gi, "%20")) + " - Search listenr";
+                fetch("https://script.google.com/macros/s/AKfycby45awRekYOvIpe6ZFN_C5llswyiDGMnCwEoD9Dje_hQ1AqTnQ/exec?q=" + search)
+                    .then(a => a.json())
+                    .then(result => {
+                        var ephtml;
+                        if (result.rows.length > 0) {
+                            for (var i = 0; i < result.rows.length; i++) {
+                                if (result.rows[i][0] != null && result.rows[i][0] != "") {
+                                    ephtml = document.getElementById("show-$$i%%").outerHTML;
+                                    ephtml = ephtml.replace(/\$\$i\%\%/gi, i);
+                                    ephtml = ephtml.replace(/\$\$\%\%TOTITLE\%\%/gi, result.rows[i][0]);
+                                    if (result.rows[i][1].length > 250) {
+                                        ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(String(result.rows[i][1]).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
+                                    }
+                                    else {
+                                        ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(result.rows[i][1]));
+                                    }
+                                    ephtml = ephtml.replace(/\$\$PDI\%\%/gi, result.rows[i][2]);
+                                    ephtml = ephtml.replace(/\$\$showurl\%\%/gi, "view.html?AetBh69feedbH=" + window.btoa(result.rows[i][3]));
+                                    if((i == 1 || i/3 == Math.round(i/3)) && !user.haspremium){
+                                        ephtml += adstring;
+                                    }
+                                    document.getElementById("op").innerHTML += ephtml;
+                                    shows.push({
+                                        title: result.rows[i][0],
+                                        desc: result.rows[i][1]
+                                    });
+                                }
+                            }
+                            document.getElementById("show-$$i%%").outerHTML = "";
+                        }
+                        else {
+                            document.getElementById("op").innerHTML = "<p class='centererror'>no shows found :(</p>"
+                        }
+                        document.getElementById("op").classList.remove("hidden")
+                    });
+            }
+        }
+
+        function csearch(data) {
+            if (data.keyCode == 13) {
+                window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH").value;
+            }
+        }
+
+        function checkrss(data) {
+            if (data.keyCode == 13) {
+                window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl").value);
+            }
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <div id="navbar">
+        <span id="logopan" onclick="window.location='index.html'">
+            <img src="listenr-logo.png" height="70"
+                style="display: inline-block; vertical-align: middle; margin-top: -15px;">
+        </span>
+        <span class="navigation" onclick="window.location='yours.html'">Your Podcasts</span> <span class="navigation"
+            onclick="window.location='view.html'">View Show</span> <input name="AetBh69SERCH99bH" id="AetBh69SERCH99bH"
+            placeholder="Search for a podcast..." onkeypress="csearch(event)" autocomplete="off" type="text">
+        <span id="hidinput"><i style="margin-right: 5px;">or</i> <input placeholder="Add by RSS..."
+                onkeypress="checkrss(event)" autocomplete="off" type="url" id="rssurl"></span>
+    </div>
+    <div id="nav-space"></div>
+    <div id="op" class="hidden">
+        <div class="episode show" onclick="if(!showingthing){window.location='$$showurl%%'}" id="show-$$i%%">
+            <img src="$$PDI%%" class="showim">
+
+            <h1 class="episode_title" style="display: inline;" id="title_$$i%%"> $$%%TOTITLE%%</h1><br>
+            <div id="desc_$$i%%">$$%%DESK%%</div>
+        </div>
+    </div>
+
+    <div id="texttester" style="display: none; visibility: hidden;"></div>
+</body>
+
+</html>

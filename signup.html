@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Sign up - listenr</title>
+    <!--metatags-->
+    <link rel="manifest" href="manifest.json">
+    <link rel="shortcut icon" href="icon-192.png">
+    <meta charset="UTF-8">
+    <meta name="description" content="The simplest podcatcher of them all">
+    <meta name="image" content="icon-512.png">
+    <meta itemprop="name" content="Listenr">
+    <meta itemprop="description" content="The simplest podcatcher of them all">
+    <meta itemprop="image" content="icon-512.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Listenr">
+    <meta name="twitter:description" content="The simplest podcatcher of them all">
+    <meta name="twitter:image:src" content="icon-512.png">
+    <meta name="og:title" content="Listenr">
+    <meta name="og:description" content="The simplest podcatcher of them all">
+    <meta name="og:image" content="icon-512.png">
+    <meta name="og:url" content="https://listenr.gq/">
+    <meta name="og:site_name" content="Listenr">
+    <meta name="og:locale" content="en_US">
+    <meta name="og:type" content="website">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" rel="preload">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height" />
+    <!--no more metatags-->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="signup.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
+    <script>
+        var user = {};
+        var exp = { expires: 100000 };
+        function init() {
+            if (Cookies.get("user") != null) {
+                user = JSON.parse(Cookies.get("user"));
+            }
+            else {
+                user = {
+                    subscribed: []
+                };
+                Cookies.set("user", JSON.stringify(user), exp);
+            }
+            AOS.init();
+        }
+        function signup() {
+            document.getElementById("yesornop").style.display = "none";
+            fetch('https://script.google.com/macros/s/AKfycbxRe9W-bu5i79Y4ZA9S3B2jLYhf-kx4spLw5Ep1wDmG5FeIraoO/exec?q=' + document.getElementById("patron-name").value)
+                .then(a => a.json())
+                .then(result => {
+                    if (result.isSubbed) {
+                        user.patreonun = document.getElementById("patron-name").value;
+                        user.haspremium = true;
+                        user.premiumexpires = Date.now() + (24 * 60 * 60 * 1000);
+                        savecookies();
+                        document.getElementById("yesornop").style.display = "block";
+                        document.getElementById("notsubbed").style.display = "none";
+                        document.getElementById("subbed").style.display = "inline";
+                    }
+                    else {
+                        document.getElementById("patron-name").classList.add("nonono");
+                        document.getElementById("yesornop").style.display = "block";
+                        document.getElementById("notsubbed").style.display = "inline";
+                        document.getElementById("subbed").style.display = "none";
+                        setTimeout(() => {
+                            document.getElementById("patron-name").classList.remove("nonono");
+                        }, 500)
+                    }
+                });
+
+        }
+        document.addEventListener('aos:in:image-1', () => {
+            document.getElementById("ads").src = "ads.png";
+            setTimeout(() => {
+                document.getElementById("ads").outerHTML = "<div id='ads'></div>";
+            }, 5050);
+        });
+        document.addEventListener('aos:in:refreshanims', () => {
+            document.getElementById("ads").outerHTML = "<img src=\"ads-still.png\" id=\"ads\">";
+        });
+        function savecookies() {
+            Cookies.set("user", JSON.stringify(user), exp);
+        }
+        function checkkeypress(data) {
+            if (data.keyCode == 13) {
+                signup();
+            }
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <img src="ads.png" style="display: none;">
+    <h1 id="signup" data-aos-id="refreshanims" data-aos="none">Sign up for <img src="listenr-logo.png"
+            style="display: inline-block; margin-top: -10px; vertical-align: middle;" alt="listenr"> Premium</h1>
+    <a href="#why">
+        <i class="fas fa-chevron-down" id="down-signup"></i>
+    </a>
+    <section id="why">
+        <!--explain why signing up is good. make sure they know this only gets rid of VISUAL ads.-->
+        <div class="why-segment">
+            <div class="why-explainer" data-aos-id="image-1" data-aos="none" style="overflow: auto; padding-right: 20px;">
+                <img src="ads-still.png" id="ads">
+                <h1>Remove visual ads.</h1>
+                <p>Signing up for listenr premium will remove all visual advertisements, allowing for a more focused
+                    experience.
+                    <br><br><span class="patreonp" onclick="window.location='#form'">Sign up for $1 per month <i
+                            class="fas fa-arrow-right patreonarrow"></i></span>
+                </p>
+            </div>
+        </div>
+    </section>
+    <section id="form">
+        <h1 id="itseasy">Signing up is easy</h1><br>
+        <div class="explainer" data-aos="flip-left" data-aos-duration="600" data-aos-delay="100">
+            <h1>Step 1:</h1>
+            <p>Sign up for Patreon using the button below. You may sign up for any teir.</p>
+            <a href="https://patreon.com/cukmekerb" target="_blank">
+                <div class="become-patron"><i class="fab fa-patreon"></i> Become a patron
+                </div>
+            </a>
+            <br>
+        </div>
+        <br><br><br><br><br>
+        <div class="explainer" data-aos="flip-left" data-aos-duration="600" data-aos-delay="200"
+            data-aos-id="refreshanims">
+            <h1>Step 2:</h1>
+            <p>Enter your name excactly as it appears on your Patreon profile</p>
+            <input placeholder="Your name" id="patron-name" onkeypress="checkkeypress(event)">
+            <br>
+            <div class="become-patron" onclick="signup()">Sign up!</div>
+            <p style="display: none; margin-bottom: 0;" id="yesornop"><span id="subbed" style="display: none;"><i
+                        class="far fa-check-circle"></i> Your're Subscribed!</span><br><span id="notsubbed"
+                    style="display: none;"><i class="far fa-times-circle"></i>Username not found</span></p>
+            <br>
+        </div>
+        <br><br><br><br><br>
+    </section>
+</body>
+
+</html>

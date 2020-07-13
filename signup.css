@@ -1,0 +1,242 @@
+html {
+    scroll-behavior: smooth;
+    background-color: rgb(44, 44, 44);
+    color: white;
+    height: 100%;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    scrollbar-width: none;
+    overflow: -moz-scrollbars-none !important;
+}
+
+@media (min-width: 950px) {
+    #signup {
+        text-align: center;
+        margin-top: 10%;
+        width: 100%;
+        font-family: sans-serif;
+        font-size: 80px;
+    }
+    .explainer {
+        margin-left: auto;
+        margin-right: auto;
+        width: 40%;
+        border-radius: 10px;
+        color: black;
+        background: white;
+        font-family: sans-serif;
+    }
+    #signup>img {
+        height: 150px;
+    }
+    #down-signup {
+        font-size: 60px;
+        width: 100%;
+        text-align: center;
+        padding-top: 20%;
+        color: white;
+        padding-bottom: 10%;
+        animation: hover 1s alternate infinite ease-in-out, fadein 4s;
+    }
+    #ads {
+        width: 800px;
+        height: 365.333px;
+        float: left;
+    }
+}
+
+.openbutton {
+    width: 200px;
+    height: 50px;
+    background: rgb(10, 77, 153);
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 4px;
+    font-family: sans-serif;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: 0.6s;
+}
+.openbutton:hover{
+    box-shadow: rgb(15, 15, 15) 4px 8px 10px;
+}
+@media (max-width: 949px) {
+    #signup {
+        text-align: center;
+        margin-top: 10%;
+        width: 100%;
+        font-family: sans-serif;
+        font-size: 60px;
+    }
+    .explainer {
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        border-radius: 10px;
+        color: black;
+        background: white;
+        font-family: sans-serif;
+    }
+    #signup>img {
+        height: 130px;
+    }
+    #ads {
+        width: 400px;
+        height: 182px;
+        float: left;
+    }
+    #down-signup {
+        font-size: 60px;
+        width: 100%;
+        text-align: center;
+        padding-top: 20%;
+        color: white;
+        padding-bottom: 50%;
+        animation: hover 1s alternate infinite ease-in-out, fadein 4s;
+    }
+}
+
+.explainer>h1 {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+h1 {
+    font-family: sans-serif;
+}
+
+.explainer>p {
+    text-align: center;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.become-patron {
+    background: #e85b46;
+    color: white;
+    text-decoration: none;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.nonono {
+    animation: nonono 0.35s ease-in-out;
+}
+
+#subbed {
+    color: rgb(0, 165, 0);
+    text-align: center;
+}
+
+#notsubbed {
+    color: rgb(255, 0, 0);
+    text-align: center;
+}
+
+#why {
+    background-color: rgb(62, 62, 62);
+    width: 100%;
+    font-family: sans-serif;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+#patron-name {
+    width: 70%;
+    display: block;
+    margin: 0 auto;
+    border-radius: 5px;
+    border: 2px solid rgb(187, 183, 183);
+    padding: 5px;
+    font-family: sans-serif;
+    color: rgb(43, 43, 43);
+}
+
+#itseasy {
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 40px;
+    margin-top: 500px;
+}
+
+.patreonp {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.patreonp:hover>.patreonarrow {
+    opacity: 1;
+    animation: driftarrow 1s alternate infinite ease-in-out;
+}
+
+.patreonarrow {
+    opacity: 0;
+    transition: 0.3s;
+}
+
+@keyframes driftarrow {
+    0% {
+        transform: translateX(30%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes hover {
+    0% {
+        transform: translateY(-1%);
+    }
+    100% {
+        transform: translateY(1%);
+    }
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes nonono {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(5px);
+    }
+    50% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}

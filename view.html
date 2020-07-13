@@ -1,0 +1,467 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>listenr</title>
+    <!--metatags-->
+    <link rel="manifest" href="manifest.json">
+    <link rel="shortcut icon" href="icon-192.png">
+    <meta charset="UTF-8">
+    <meta name="description" content="The simplest podcatcher of them all">
+    <meta name="image" content="icon-512.png">
+    <meta itemprop="name" content="Listenr">
+    <meta itemprop="description" content="The simplest podcatcher of them all">
+    <meta itemprop="image" content="icon-512.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Listenr">
+    <meta name="twitter:description" content="The simplest podcatcher of them all">
+    <meta name="twitter:image:src" content="icon-512.png">
+    <meta name="og:title" content="Listenr">
+    <meta name="og:description" content="The simplest podcatcher of them all">
+    <meta name="og:image" content="icon-512.png">
+    <meta name="og:url" content="https://listenr.gq/">
+    <meta name="og:site_name" content="Listenr">
+    <meta name="og:locale" content="en_US">
+    <meta name="og:type" content="website">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" rel="preload">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--no more metatags-->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="view.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/keymaster/1.6.1/keymaster.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height" />
+    <script>
+        var user = {
+            subscribed: []
+        };
+        var exp = { expires: 100000 };
+        var castdesk;
+        var episodes = [];
+        var whathasbeenloaded;
+        let root = document.documentElement;
+        var defaultephtml;
+        var playingep;
+        var lasttime;
+        var intervalaler = false;
+        function generatead() {
+            if (Math.floor((Math.random() * 10) + 1) >= 3) {
+                return `<div class="episode show"><iframe data-aa="1428976" src="https://acceptable.a-ads.com/1428976?size=Adaptive&background_color=2c2c2c&text_color=b9b9b9&title_color=b9b9b9&link_color=b9b9b9" scrolling="no" style="border:0px; padding:0; width:100%; height:100px; overflow:hidden" allowtransparency="true"></iframe></div>`;
+            }
+            if (Date.now() - user.hasSeenBarSoon > 3 * 24 * 60 * 60 * 1000) {
+                showsubad();
+                user.hasSeenBarSoon = Date.now();
+                savecookies();
+            }
+            else if (user.hasSeenBarSoon == null) {
+                showsubad();
+                user.hasSeenBarSoon = Date.now();
+                savecookies();
+            }
+            return `<div class="episode show" style="height:100px; text-align:center;" onclick="window.open('signup.html');"><br>Tired of these ads? Subscribe to listenr premium.</div>`;
+        }
+        key("space", () => { toggleplaypause(); });
+        key("right", () => { playingep.currentTime += 15; });
+        key("left", () => { playingep.currentTime -= 15; });
+        String.prototype.toHHMMSS = function () {
+            var sec_num = parseInt(this, 10);
+            var hours = Math.floor(sec_num / 3600);
+            var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+            var seconds = sec_num - (hours * 3600) - (minutes * 60);
+            if (hours < 10) { hours = "0" + hours; }
+            if (minutes < 10) { minutes = "0" + minutes; }
+            if (seconds < 10) { seconds = "0" + seconds; }
+            if (Number(hours) < 1) {
+                return minutes + ':' + seconds;
+            }
+            return hours + ':' + minutes + ':' + seconds;
+        }
+        function htmltotext(html) {
+            document.getElementById("texttester").innerHTML = html;
+            var b = document.getElementById("texttester").innerText || document.getElementById("texttester").textContent;
+            return b;
+        }
+        function scrollelement(id, target, seconds, rate) {
+            if (document.getElementById(id).scrollTop - target > 1) {
+                var frames = seconds * rate;
+                var diff = (document.getElementById(id).scrollTop - target) / frames;
+                for (var i = 0; i < frames; i++) {
+                    setTimeout(function () {
+                        document.getElementById(id).scrollTop -= diff;
+                    }, i * 1000 / rate);
+                }
+            }
+        }
+        function init() {
+            if (Cookies.get("user") != null) {
+                user = JSON.parse(Cookies.get("user"));
+            }
+            else {
+                user = {
+                    subscribed: []
+                };
+                Cookies.set("user", JSON.stringify(user), exp);
+            }
+            var feedurl = String(window.location).split("?AetBh69feedbH=")[1];
+            if (String(window.location).includes("?AetBh69feedbH=") && feedurl.length != 0 && feedurl != null && validurl(window.atob(feedurl))) {
+                feedurl = window.atob(feedurl);
+                getfeed(feedurl);
+                document.getElementById("subbutton").setAttribute("onclick", "subscribe('" + feedurl + "')");
+                if (user.subscribed.indexOf(user.subscribed.find(a => a.url == feedurl)) > -1) {
+                    document.getElementById("subbutton").innerHTML = "Subscribed   <i class='fas fa-check'></i>";
+                    document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"));
+                    document.getElementById("subbutton").classList.replace("subscribe-u", "subscribe-s");
+                }
+                user.lastvisited = feedurl;
+                savecookies();
+            }
+            else if (user.lastvisited != null && user.lastvisited.length != 0) {
+                feedurl = user.lastvisited;
+                getfeed(feedurl);
+                document.getElementById("subbutton").setAttribute("onclick", "subscribe('" + feedurl + "')");
+                if (user.subscribed.indexOf(user.subscribed.find(a => a.url == feedurl)) > -1) {
+                    document.getElementById("subbutton").innerHTML = "Subscribed   <i class='fas fa-check'></i>";
+                    document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"));
+                    document.getElementById("subbutton").classList.replace("subscribe-u", "subscribe-s");
+                }
+            }
+            else {
+                window.location = "yours.html";
+            }
+            if (user.haspremium && user.premiumexpires <= Date.now()) {
+                setTimeout(() => {
+                    fetch("https://script.google.com/macros/s/AKfycbxRe9W-bu5i79Y4ZA9S3B2jLYhf-kx4spLw5Ep1wDmG5FeIraoO/exec?q=" + user.patreonun)
+                        .then(a => a.json())
+                        .then(result => {
+                            if (result.isSubbed) {
+                                user.premiumexpires = Date.now() + (24 * 60 * 60 * 1000);
+                                savecookies();
+                            }
+                            else {
+                                user.haspremium = false;
+                                savecookies();
+                            }
+                        });
+                }, 2000)
+            }
+        }
+        function getfeed(link) {
+            fetch("https://rsstojson.com/v1/api/?rss_url=" + link)
+                .then(a => a.json())
+                .then(feed => {
+                    whathasbeenloaded = feed;
+                    document.getElementById("title").innerHTML = feed.rss.channel[0].title;
+                    document.title = feed.rss.channel[0].title + " - listenr";
+                    defaultephtml = document.getElementsByClassName("episode")[0].outerHTML;
+                    if (feed.rss.channel[0].image != null) {
+                        document.getElementById("image").src = feed.rss.channel[0].image[0].url[0];
+                    }
+                    else {
+                        document.getElementById("image").src = feed.rss.channel[0]['itunes:image'][0]['$']['href'];
+                    }
+                    if (user.subscribed.find(a => a.url == link) != null) {
+                        if (user.subscribed.find(a => a.url == link).image != document.getElementById("image").src) {
+                            user.subscribed[user.subscribed.findIndex(a => a.url == link)].image = document.getElementById("image").src;
+                            savecookies();
+                        }
+                        if (user.subscribed.find(a => a.url == link).desc != feed.rss.channel[0].description) {
+                            user.subscribed[user.subscribed.findIndex(a => a.url == link)].desc = feed.rss.channel[0].description;
+                            savecookies();
+                        }
+                    }
+                    if (feed.rss.channel[0]["itunes:author"] != null) {
+                        document.getElementById("author_name").innerHTML = feed.rss.channel[0]["itunes:author"][0];
+                    }
+                    document.getElementById("description").innerHTML = htmltotext(String(feed.rss.channel[0].description[0]).slice(0, 300));
+                    castdesk = feed.rss.channel[0].description[0];
+                    if (String(document.getElementById("description").innerHTML).length < castdesk.length) {
+                        document.getElementById("description").innerHTML += "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
+                    }
+                    var episodehtml;
+                    for (var i = 0; i < 10 && i < feed.rss.channel[0].item.length; i++) {
+                        episodehtml = String(document.getElementsByClassName("episode")[0].outerHTML).replace(/\$\$\i\%\%/gi, i);
+                        if (String(feed.rss.channel[0].item[i].title).length > 30) {
+                            episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title).slice(0, 31) + "...");
+                        }
+                        else {
+                            episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title));
+                        }
+                        episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.rss.channel[0].item[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
+                        episodehtml = episodehtml.replace(/<br>/gi, "\n");
+                        if ((i == 1 || i / 3 == Math.round(i / 3)) && !user.haspremium) {
+                            episodehtml += generatead();
+                        }
+                        document.getElementById("episodes").innerHTML += "<br>" + episodehtml;
+                        episodes.push({ title: feed.rss.channel[0].item[i].title, desc: String(feed.rss.channel[0].item[i].description).replace(/\n/gi, "<br>"), url: feed.rss.channel[0].item[i].enclosure[0]['$'].url, pubdate: feed.rss.channel[0].item[i].pubDate[0] });
+                        if (i >= 9) {
+                            document.getElementById("episodes").innerHTML += "<div id='loadmore' onclick='loadmore()'>Load more</div>";
+
+                        }
+                        if (i >= feed.rss.channel[0].item.length - 1) {
+                            document.getElementById("episodes").innerHTML += "<br><i style='text-align:center; margin-left:auto; margin-right:auto;'>No more episodes to load.</i>";
+                        }
+                    }
+                    document.getElementsByClassName("episode")[0].outerHTML = "";
+                    document.getElementById("episodes").classList.remove("hidden");
+                    return feed;
+                })
+                .then(feed => {
+                    fetch("https://script.google.com/macros/s/AKfycby45awRekYOvIpe6ZFN_C5llswyiDGMnCwEoD9Dje_hQ1AqTnQ/exec?url=" + encodeURIComponent(link))
+                        .then(a => a.json())
+                        .then(result => {
+                            if (result.rows[0] == null) {
+                                fetch("https://script.google.com/macros/s/AKfycbyT6aaorLO5aBeRl1YQH44kAlmtfTGvrQqrYcZXrQigbbosJalz/exec?name=" + encodeURIComponent(feed.rss.channel[0].title) + "&description=" + encodeURIComponent(feed.rss.channel[0].description[0]) + "&image=" + encodeURIComponent(document.getElementById("image").src) + "&url=" + encodeURIComponent(link))
+                            }
+                        });
+                });
+        }
+        function loadmore() {
+
+            var feed = whathasbeenloaded;
+            var b = episodes.length;
+            document.getElementById("loadmore").outerHTML = "";
+            for (var i = b; i < 10 + b && i < feed.rss.channel[0].item.length; i++) {
+                episodehtml = String(defaultephtml).replace(/\$\$\i\%\%/gi, i);
+                if (String(feed.rss.channel[0].item[i].title).length > 30) {
+                    episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title).slice(0, 31) + "...");
+                }
+                else {
+                    episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title));
+                }
+                episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.rss.channel[0].item[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
+                episodehtml = episodehtml.replace(/<br>/gi, "\n");
+                if (i / 3 == Math.round(i / 3) && !user.haspremium) {
+                    episodehtml += generatead();
+                }
+                document.getElementById("episodes").innerHTML += "<br>" + episodehtml;
+                episodes.push({ title: feed.rss.channel[0].item[i].title, desc: String(feed.rss.channel[0].item[i].description).replace(/\n/gi, "<br>"), url: feed.rss.channel[0].item[i].enclosure[0]['$'].url, pubdate: feed.rss.channel[0].item[i].pubDate[0] });
+                if (i >= b + 9) {
+                    document.getElementById("episodes").innerHTML += "<div id='loadmore' onclick='loadmore()'>Load more</div>";
+                }
+                if (i >= feed.rss.channel[0].item.length - 1) {
+                    document.getElementById("episodes").innerHTML += "<br><i style='text-align:center; margin-left:auto; margin-right:auto;'>No more episodes to load.</i>";
+                }
+            }
+
+        }
+        function savecookies() {
+            Cookies.set("user", JSON.stringify(user), exp);
+        }
+        function longpoddesk() {
+            document.getElementById("description").innerHTML = castdesk + "<br><i onclick='shortpoddesk()' class='shortlong'>less</i>";
+            root.style.setProperty("--short-height", "590px");
+        }
+        function shortpoddesk() {
+            setTimeout(function () {
+                htmltotext(document.getElementById("description").innerHTML = castdesk.slice(0, 300)) + "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
+            }, 100)
+            root.style.setProperty("--short-height", "400px");
+            scrollelement("desc_scroll", 0, 0.5, 60);
+        }
+        function showplay(i) {
+            document.getElementById("playbutton-" + i).classList.add("showing");
+        }
+        function hideplay(i) {
+            document.getElementById("playbutton-" + i).classList.remove("showing");
+        }
+        function playepisode(i) {
+            if (playingep != null) {
+                playingep.pause();
+            }
+            document.getElementById("nowplaying").innerHTML = episodes[i].title[0] + " - " + document.getElementById("title").innerHTML;
+            var textsize = testwidth(document.getElementById("nowplaying").innerHTML, "14px", "bold");
+            var clipwidth = document.getElementById("nowplayingcont").clientWidth * 0.7;
+            root.style.setProperty("--title-pos", (Math.abs(Math.round((document.getElementById("nowplayingcont").clientWidth - textsize) - clipwidth)) - (Math.abs(Math.round((document.getElementById("nowplayingcont").clientWidth - textsize) - clipwidth)) / 2) + 2) + "px");
+            playingep = new Audio(episodes[i].url);
+            playingep.preload = "auto";
+            playingep.play();
+            updateplayer();
+            document.getElementById("player").classList.replace("hidingplayer", "nonhidingplayer");
+            document.getElementById("play_pause").classList.replace("fa-play-circle", "fa-pause-circle");
+        }
+        function updateplayer() {
+            if (!intervalaler) {
+
+                lasttime = playingep.currentTime;
+                var endedtime = 0;
+                setInterval(() => {
+                    if (playingep.currentTime - lasttime < 0.15) {
+                        document.getElementById("player_move").value = (playingep.currentTime / playingep.duration) * 100;
+                        var d = "linear-gradient(90deg, rgb(84, 255, 78) " + document.getElementById("player_move").value + "%, rgba(182,182,182,1) " + document.getElementById("player_move").value + "%, rgba(182,182,182,1) 100%)";
+                        root.style.setProperty("--slider-val", d);
+                        if (playingep.ended && endedtime > 2) {
+                            document.getElementById("player").classList.replace("nonhidingplayer", "hidingplayer");
+                            playingep = null;
+                        }
+                        else if (playingep.ended) {
+                            endedtime += 0.1;
+                            document.getElementById("play_pause").classList.replace("fa-pause-circle", "fa-play-circle");
+                        }
+                        else {
+                            endedtime = 0;
+                        }
+                    }
+                    lasttime = playingep.currentTime;
+                    document.getElementById("timeleft").innerHTML = String(playingep.currentTime).toHHMMSS();
+                    document.getElementById("minustime").innerHTML = "-" + String(playingep.duration - playingep.currentTime).toHHMMSS();
+                }, 100)
+            }
+        }
+        function showmore(i) {
+            document.getElementById("desc_" + i).innerHTML = episodes[i].desc + "<br><br><i>Published " + episodes[i].pubdate + "</i><br><br><i class='shortlong' onclick='showless(" + i + ")'>less</i>";
+            document.getElementById("title_" + i).innerHTML = episodes[i].title;
+        }
+        function showless(i) {
+
+            document.getElementById("desc_" + i).innerHTML = htmltotext(episodes[i].desc.replace(/<br>/gi, "\n").slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>";
+
+            if (String(episodes[i].title).length < 30) {
+                document.getElementById("title_" + i).innerHTML = episodes[i].title;
+            }
+            else {
+                document.getElementById("title_" + i).innerHTML = episodes[i].title.slice(0, 30) + "...";
+            }
+        }
+        function subscribe(url) {
+            user.subscribed.splice(0, 0, {
+                url: url,
+                desc: castdesk,
+                title: String(document.title).replace("- listenr", ""),
+                img: document.getElementById("image").src
+            });
+            setTimeout(function () {
+                document.getElementById("subbutton").classList.replace("subscribe-u", "subscribe-s");
+            }, 20)
+            document.getElementById("subbutton").innerHTML = "Subscribed   <i class='fas fa-check'></i>";
+            savecookies();
+            document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"))
+        }
+        function unsubscribe(url) {
+            if (user.subscribed.find(a => a.url == url) != null) {
+                user.subscribed.splice(user.subscribed.indexOf(user.subscribed.find(a => a.url == url)), 1);
+            }
+            setTimeout(function () {
+                document.getElementById("subbutton").innerHTML = "Subscribe";
+            }, 50);
+            savecookies();
+            document.getElementById("subbutton").classList.replace("subscribe-s", "subscribe-u");
+            document.getElementById("subbutton").setAttribute("onclick", document.getElementById("subbutton").getAttribute("onclick").replace("un", ""))
+        }
+        function playermove() {
+            var d = "linear-gradient(90deg, rgb(84, 255, 78) " + document.getElementById("player_move").value + "%, rgba(182,182,182,1) " + document.getElementById("player_move").value + "%, rgba(182,182,182,1) 100%)";
+            root.style.setProperty("--slider-val", d);
+            if (document.getElementById("player_move").value / 100 * playingep.duration != playingep.currentTime) {
+                playingep.currentTime = document.getElementById("player_move").value / 100 * playingep.duration;
+            }
+        }
+        function toggleplaypause() {
+            if (playingep.src != null) {
+                if (playingep.paused) {
+                    document.getElementById("play_pause").classList.replace("fa-play-circle", "fa-pause-circle");
+                    playingep.play()
+                }
+                else {
+                    document.getElementById("play_pause").classList.replace("fa-pause-circle", "fa-play-circle");
+                    playingep.pause();
+                }
+            }
+        }
+        function testwidth(text, size, weight) {
+            document.getElementById("widthtester").innerHTML = text;
+            document.getElementById("widthtester").style.fontSize = size;
+            document.getElementById("widthtester").style.fontWeight = weight;
+            return document.getElementById("widthtester").clientWidth;
+        }
+        function showsubad() {
+            document.getElementById("patreon-bar").classList.remove("hidden");
+        }
+        function hidesubad() {
+            document.getElementById("patreon-bar").classList.add("hidden")
+        }
+        function checksearch(data) {
+            if (data.keyCode == 13) {
+                window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH").value;
+            }
+        }
+        function checkrss(data) {
+            if (data.keyCode == 13) {
+                window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl").value);
+            }
+        }
+        function validurl(str) {
+            var pattern = new RegExp('^(https?:\\/\\/)?' +
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
+                '((\\d{1,3}\\.){3}\\d{1,3}))' +
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
+                '(\\?[;&a-z\\d%_.~+=-]*)?' +
+                '(\\#[-a-z\\d_]*)?$', 'i');
+            return !!pattern.test(str);
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <div id="patreon-bar" class="hidden"><span id="patreonh1">Tired of ads? </span><span id="patreonp"
+            onclick="window.location='signup.html'">Sign up for $1 per month <i class="fas fa-arrow-right"
+                id="patreonarrow"></i></span><i class="fas fa-times" id="patreonx" onclick="hidesubad()"></i></div>
+    <div id="navbar">
+        <span id="logopan" onclick="window.location='index.html'">
+            <img src="listenr-logo.png" height="70"
+                style="display: inline-block; vertical-align: middle; margin-top: -15px;">
+        </span>
+        <span class="navigation" onclick="window.location='yours.html'">Your Podcasts</span> <span class="navigation"
+            style="font-weight: 700; font-size: 19px; color: white;">View Show</span> <input name="AetBh69SERCH99bH"
+            id="AetBh69SERCH99bH" placeholder="Search for a podcast..." onkeypress="checksearch(event)"
+            autocomplete="off" type="text">
+        <span id="hidinput"><i style="margin-right: 5px;">or</i> <input placeholder="Add by RSS..."
+                onkeypress="checkrss(event)" autocomplete="off" type="url" id="rssurl"></span>
+    </div>
+    <div id="nav-space"></div>
+    <div id="noscrolly">
+        <table id="maintable">
+            <tr>
+                <td id="s600ptd">
+                    <div id="output">
+
+                        <img id="image"><span id="titlespan">
+                            <div class="scrollable" id="desc_scroll">
+                                <h1 id="title"></h1>
+                                <span id="author_name"></span>
+                                <p id="description"></p>
+                                <div class="subscribe-u" id="subbutton">Subscribe</div>
+                            </div>
+                        </span>
+                    </div>
+
+                </td>
+                <td class="bigtd" id="episode_td">
+                    <div id="episodes" class="scrollable hidden">
+                        <div class="episode">
+                            <i class="fas fa-play-circle smallplaybutton" id="playbutton-$$i%%"
+                                onclick="playepisode('$$i%%')"></i>
+                            <h1 class="episode_title" style="display: inline;" id="title_$$i%%"> $$%%TOTITLE%%</h1>
+                            <div id="desc_$$i%%">$$%%DESK%%</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="player" class="hidingplayer">
+        <div id="progress_container"><span id="timeleft">00:00</span><input type="range" min="0" max="100" value="0"
+                class="slider" id="player_move" oninput="playermove()"><span id="minustime">-00:00</span></div>
+        <div id="player_controls">
+            <i class="fas fa-undo mediabutton" id="back15" onclick="playingep.currentTime-=15"></i> <i
+                class="fas fa-play-circle mediabutton" id="play_pause" onclick="toggleplaypause()"></i> <i
+                class="fas fa-redo mediabutton" id="for15" onclick="playingep.currentTime+=15"></i>
+        </div>
+        <div id="nowplayingcont">
+            <p id="nowplaying">A show</p>
+        </div>
+    </div>
+    <div id="widthtester"></div>
+    <div id="texttester" style="display: none; visibility: hidden;"></div>
+</body>
+
+</html>

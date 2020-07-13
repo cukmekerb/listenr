@@ -1,0 +1,22 @@
+{
+    "short_name":"Listenr",
+    "name":"Listenr",
+    "icons":[
+        {
+            "src":"icon-192.png",
+            "type":"image/png",
+            "sizes":"192x192"
+        },
+        {
+            "src":"icon-512.png",
+            "type":"image/png",
+            "sizes":"512x512"
+        }
+    ],
+    "start_url":"/yours.html",
+    "background_color":"#2c2c2c",
+    "orientation": "portrait",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#b9b9b9"
+}
