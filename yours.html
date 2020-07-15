@@ -69,7 +69,7 @@
                     document.getElementById("show-$$i%%").style.display = "none";
                 }
                 else {
-                    document.getElementById("op").innerHTML = "<p class='centererror'>Your're not subscribed to any shows. You can add one by searching</p>";
+                    document.getElementById("op").innerHTML = `<p class='centererror'>Your're not subscribed to any shows. You can add one by <input name="AetBh69SERCH99bH2" id="AetBh69SERCH99bH2"  placeholder="Searching" onkeypress="csearch2(event)" autocomplete="off" type="text" style='margin-left: 10px;'></p>`;
                 }
             }
             else {
@@ -80,6 +80,11 @@
         function csearch(data) {
             if (data.keyCode == 13) {
                 window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH").value;
+            }
+        }
+        function csearch2(data) {
+            if (data.keyCode == 13) {
+                window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH2").value;
             }
         }
         function showmore(i) {
@@ -178,7 +183,7 @@
         </div>
     </div>
     <div id="texttester" style="display: none; visibility: hidden;"></div>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"></script> 
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"></script>
 </body>
 
 </html>

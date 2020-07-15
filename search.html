@@ -81,7 +81,7 @@
                                     }
                                     ephtml = ephtml.replace(/\$\$PDI\%\%/gi, result.rows[i][2]);
                                     ephtml = ephtml.replace(/\$\$showurl\%\%/gi, "view.html?AetBh69feedbH=" + window.btoa(result.rows[i][3]));
-                                    if((i == 1 || i/3 == Math.round(i/3)) && !user.haspremium){
+                                    if ((i == 1 || i / 3 == Math.round(i / 3)) && !user.haspremium) {
                                         ephtml += adstring;
                                     }
                                     document.getElementById("op").innerHTML += ephtml;
@@ -94,9 +94,13 @@
                             document.getElementById("show-$$i%%").outerHTML = "";
                         }
                         else {
-                            document.getElementById("op").innerHTML = "<p class='centererror'>no shows found :(</p>"
+                            document.getElementById("op").innerHTML = `<p class='centererror'>no shows found :( Try <input placeholder="Addding by RSS..."
+                onkeypress="checkrss2(event)" autocomplete="off" type="url" id="rssurl2" style='margin-left: 10px'></p>`;
                         }
-                        document.getElementById("op").classList.remove("hidden")
+                        document.getElementById("op").classList.remove("hidden");
+                        document.getElementById("loading").classList.add("hidden");
+                        document.getElementById("loading").style.display = "none";
+
                     });
             }
         }
@@ -110,6 +114,11 @@
         function checkrss(data) {
             if (data.keyCode == 13) {
                 window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl").value);
+            }
+        }
+        function checkrss2(data) {
+            if (data.keyCode == 13) {
+                window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl2").value);
             }
         }
     </script>
@@ -128,6 +137,7 @@
                 onkeypress="checkrss(event)" autocomplete="off" type="url" id="rssurl"></span>
     </div>
     <div id="nav-space"></div>
+    <p class="centererror" id="loading">Loading...</p>
     <div id="op" class="hidden">
         <div class="episode show" onclick="if(!showingthing){window.location='$$showurl%%'}" id="show-$$i%%">
             <img src="$$PDI%%" class="showim">
@@ -138,7 +148,7 @@
     </div>
 
     <div id="texttester" style="display: none; visibility: hidden;"></div>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"></script> 
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"></script>
 </body>
 
 </html>
