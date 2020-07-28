@@ -254,7 +254,7 @@
         }
         function shortpoddesk() {
             setTimeout(function () {
-                htmltotext(document.getElementById("description").innerHTML = castdesk.slice(0, 300)) + "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
+                document.getElementById("description").innerHTML = htmltotext(castdesk.slice(0, 300)) + "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
             }, 100)
             root.style.setProperty("--short-height", "400px");
             scrollelement("desc_scroll", 0, 0.5, 60);
