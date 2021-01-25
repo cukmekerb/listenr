@@ -31,12 +31,15 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:300&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/keymaster/1.6.1/keymaster.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
-    <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, height=device-height, target-densitydpi=device-dpi" />
     <script>
         var user = {
             subscribed: []
         };
-        var exp = { expires: 100000 };
+        var exp = {
+            expires: 100000
+        };
         var castdesk;
         var episodes = [];
         var whathasbeenloaded;
@@ -45,6 +48,7 @@
         var playingep;
         var lasttime;
         var intervalaler = false;
+
         function generatead() {
             if (Math.floor((Math.random() * 10) + 1) >= 3) {
                 return `<div class="episode show"><iframe data-aa="1479777" src="//acceptable.a-ads.com/1479777?size=Adaptive&background_color=2c2c2c&text_color=b9b9b9&title_color=b9b9b9&link_color=b9b9b9" scrolling="no" style="border:0px; padding:0; width:100%; height:100px; overflow:hidden" allowtransparency="true"></iframe></div>`;
@@ -53,35 +57,48 @@
                 showsubad();
                 user.hasSeenBarSoon = Date.now();
                 savecookies();
-            }
-            else if (user.hasSeenBarSoon == null) {
+            } else if (user.hasSeenBarSoon == null) {
                 showsubad();
                 user.hasSeenBarSoon = Date.now();
                 savecookies();
             }
             return `<div class="episode show" style="height:100px; text-align:center;" onclick="window.open('signup.html');"><br>Tired of these ads? Subscribe to listenr premium.</div>`;
         }
-        key("space", () => { toggleplaypause(); });
-        key("right", () => { playingep.currentTime += 15; });
-        key("left", () => { playingep.currentTime -= 15; });
+        key("space", () => {
+            toggleplaypause();
+        });
+        key("right", () => {
+            playingep.currentTime += 15;
+        });
+        key("left", () => {
+            playingep.currentTime -= 15;
+        });
         String.prototype.toHHMMSS = function () {
             var sec_num = parseInt(this, 10);
             var hours = Math.floor(sec_num / 3600);
             var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
             var seconds = sec_num - (hours * 3600) - (minutes * 60);
-            if (hours < 10) { hours = "0" + hours; }
-            if (minutes < 10) { minutes = "0" + minutes; }
-            if (seconds < 10) { seconds = "0" + seconds; }
+            if (hours < 10) {
+                hours = "0" + hours;
+            }
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
             if (Number(hours) < 1) {
                 return minutes + ':' + seconds;
             }
             return hours + ':' + minutes + ':' + seconds;
         }
+
         function htmltotext(html) {
             document.getElementById("texttester").innerHTML = html;
             var b = document.getElementById("texttester").innerText || document.getElementById("texttester").textContent;
             return b;
         }
+
         function scrollelement(id, target, seconds, rate) {
             if (document.getElementById(id).scrollTop - target > 1) {
                 var frames = seconds * rate;
@@ -93,11 +110,11 @@
                 }
             }
         }
+
         function init() {
             if (Cookies.get("user") != null) {
                 user = JSON.parse(Cookies.get("user"));
-            }
-            else {
+            } else {
                 user = {
                     subscribed: []
                 };
@@ -115,8 +132,7 @@
                 }
                 user.lastvisited = feedurl;
                 savecookies();
-            }
-            else if (user.lastvisited != null && user.lastvisited.length != 0) {
+            } else if (user.lastvisited != null && user.lastvisited.length != 0) {
                 feedurl = user.lastvisited;
                 getfeed(feedurl);
                 document.getElementById("subbutton").setAttribute("onclick", "subscribe('" + feedurl + "')");
@@ -125,8 +141,7 @@
                     document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"));
                     document.getElementById("subbutton").classList.replace("subscribe-u", "subscribe-s");
                 }
-            }
-            else {
+            } else {
                 window.location = "yours.html";
             }
             if (user.haspremium && user.premiumexpires <= Date.now()) {
@@ -137,8 +152,7 @@
                             if (result.isSubbed) {
                                 user.premiumexpires = Date.now() + (24 * 60 * 60 * 1000);
                                 savecookies();
-                            }
-                            else {
+                            } else {
                                 user.haspremium = false;
                                 savecookies();
                             }
@@ -146,6 +160,7 @@
                 }, 2000)
             }
         }
+
         function getfeed(link) {
             fetch("https://rsstojson.com/v1/api/?rss_url=" + link)
                 .then(a => a.json())
@@ -156,8 +171,7 @@
                     defaultephtml = document.getElementsByClassName("episode")[0].outerHTML;
                     if (feed.rss.channel[0].image != null) {
                         document.getElementById("image").src = feed.rss.channel[0].image[0].url[0];
-                    }
-                    else {
+                    } else {
                         document.getElementById("image").src = feed.rss.channel[0]['itunes:image'][0]['$']['href'];
                     }
                     if (user.subscribed.find(a => a.url == link) != null) {
@@ -183,8 +197,7 @@
                         episodehtml = String(document.getElementsByClassName("episode")[0].outerHTML).replace(/\$\$\i\%\%/gi, i);
                         if (String(feed.rss.channel[0].item[i].title).length > 30) {
                             episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title).slice(0, 31) + "...");
-                        }
-                        else {
+                        } else {
                             episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title));
                         }
                         episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.rss.channel[0].item[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
@@ -193,7 +206,12 @@
                             episodehtml += generatead();
                         }
                         document.getElementById("episodes").innerHTML += "<br>" + episodehtml;
-                        episodes.push({ title: feed.rss.channel[0].item[i].title, desc: String(feed.rss.channel[0].item[i].description).replace(/\n/gi, "<br>"), url: feed.rss.channel[0].item[i].enclosure[0]['$'].url, pubdate: feed.rss.channel[0].item[i].pubDate[0] });
+                        episodes.push({
+                            title: feed.rss.channel[0].item[i].title,
+                            desc: String(feed.rss.channel[0].item[i].description).replace(/\n/gi, "<br>"),
+                            url: feed.rss.channel[0].item[i].enclosure[0]['$'].url,
+                            pubdate: feed.rss.channel[0].item[i].pubDate[0]
+                        });
                         if (i >= 9) {
                             document.getElementById("episodes").innerHTML += "<div id='loadmore' onclick='loadmore()'>Load more</div>";
 
@@ -216,6 +234,7 @@
                         });
                 });
         }
+
         function loadmore() {
 
             var feed = whathasbeenloaded;
@@ -225,8 +244,7 @@
                 episodehtml = String(defaultephtml).replace(/\$\$\i\%\%/gi, i);
                 if (String(feed.rss.channel[0].item[i].title).length > 30) {
                     episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title).slice(0, 31) + "...");
-                }
-                else {
+                } else {
                     episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title));
                 }
                 episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.rss.channel[0].item[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
@@ -235,7 +253,12 @@
                     episodehtml += generatead();
                 }
                 document.getElementById("episodes").innerHTML += "<br>" + episodehtml;
-                episodes.push({ title: feed.rss.channel[0].item[i].title, desc: String(feed.rss.channel[0].item[i].description).replace(/\n/gi, "<br>"), url: feed.rss.channel[0].item[i].enclosure[0]['$'].url, pubdate: feed.rss.channel[0].item[i].pubDate[0] });
+                episodes.push({
+                    title: feed.rss.channel[0].item[i].title,
+                    desc: String(feed.rss.channel[0].item[i].description).replace(/\n/gi, "<br>"),
+                    url: feed.rss.channel[0].item[i].enclosure[0]['$'].url,
+                    pubdate: feed.rss.channel[0].item[i].pubDate[0]
+                });
                 if (i >= b + 9) {
                     document.getElementById("episodes").innerHTML += "<div id='loadmore' onclick='loadmore()'>Load more</div>";
                 }
@@ -245,13 +268,16 @@
             }
 
         }
+
         function savecookies() {
             Cookies.set("user", JSON.stringify(user), exp);
         }
+
         function longpoddesk() {
             document.getElementById("description").innerHTML = castdesk + "<br><i onclick='shortpoddesk()' class='shortlong'>less</i>";
             root.style.setProperty("--short-height", "590px");
         }
+
         function shortpoddesk() {
             setTimeout(function () {
                 document.getElementById("description").innerHTML = htmltotext(castdesk.slice(0, 300)) + "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
@@ -259,12 +285,15 @@
             root.style.setProperty("--short-height", "400px");
             scrollelement("desc_scroll", 0, 0.5, 60);
         }
+
         function showplay(i) {
             document.getElementById("playbutton-" + i).classList.add("showing");
         }
+
         function hideplay(i) {
             document.getElementById("playbutton-" + i).classList.remove("showing");
         }
+
         function playepisode(i) {
             if (playingep != null) {
                 playingep.pause();
@@ -280,6 +309,7 @@
             document.getElementById("player").classList.replace("hidingplayer", "nonhidingplayer");
             document.getElementById("play_pause").classList.replace("fa-play-circle", "fa-pause-circle");
         }
+
         function updateplayer() {
             if (!intervalaler) {
 
@@ -293,12 +323,10 @@
                         if (playingep.ended && endedtime > 2) {
                             document.getElementById("player").classList.replace("nonhidingplayer", "hidingplayer");
                             playingep = null;
-                        }
-                        else if (playingep.ended) {
+                        } else if (playingep.ended) {
                             endedtime += 0.1;
                             document.getElementById("play_pause").classList.replace("fa-pause-circle", "fa-play-circle");
-                        }
-                        else {
+                        } else {
                             endedtime = 0;
                         }
                     }
@@ -308,21 +336,23 @@
                 }, 100)
             }
         }
+
         function showmore(i) {
             document.getElementById("desc_" + i).innerHTML = episodes[i].desc + "<br><br><i>Published " + episodes[i].pubdate + "</i><br><br><i class='shortlong' onclick='showless(" + i + ")'>less</i>";
             document.getElementById("title_" + i).innerHTML = episodes[i].title;
         }
+
         function showless(i) {
 
             document.getElementById("desc_" + i).innerHTML = htmltotext(episodes[i].desc.replace(/<br>/gi, "\n").slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>";
 
             if (String(episodes[i].title).length < 30) {
                 document.getElementById("title_" + i).innerHTML = episodes[i].title;
-            }
-            else {
+            } else {
                 document.getElementById("title_" + i).innerHTML = episodes[i].title.slice(0, 30) + "...";
             }
         }
+
         function subscribe(url) {
             user.subscribed.splice(0, 0, {
                 url: url,
@@ -337,6 +367,7 @@
             savecookies();
             document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"))
         }
+
         function unsubscribe(url) {
             if (user.subscribed.find(a => a.url == url) != null) {
                 user.subscribed.splice(user.subscribed.indexOf(user.subscribed.find(a => a.url == url)), 1);
@@ -348,6 +379,7 @@
             document.getElementById("subbutton").classList.replace("subscribe-s", "subscribe-u");
             document.getElementById("subbutton").setAttribute("onclick", document.getElementById("subbutton").getAttribute("onclick").replace("un", ""))
         }
+
         function playermove() {
             var d = "linear-gradient(90deg, rgb(84, 255, 78) " + document.getElementById("player_move").value + "%, rgba(182,182,182,1) " + document.getElementById("player_move").value + "%, rgba(182,182,182,1) 100%)";
             root.style.setProperty("--slider-val", d);
@@ -355,40 +387,56 @@
                 playingep.currentTime = document.getElementById("player_move").value / 100 * playingep.duration;
             }
         }
+
         function toggleplaypause() {
             if (playingep.src != null) {
                 if (playingep.paused) {
                     document.getElementById("play_pause").classList.replace("fa-play-circle", "fa-pause-circle");
                     playingep.play()
-                }
-                else {
+                } else {
                     document.getElementById("play_pause").classList.replace("fa-pause-circle", "fa-play-circle");
                     playingep.pause();
                 }
             }
         }
+
         function testwidth(text, size, weight) {
             document.getElementById("widthtester").innerHTML = text;
             document.getElementById("widthtester").style.fontSize = size;
             document.getElementById("widthtester").style.fontWeight = weight;
             return document.getElementById("widthtester").clientWidth;
         }
+
         function showsubad() {
             document.getElementById("patreon-bar").classList.remove("hidden");
         }
+
         function hidesubad() {
             document.getElementById("patreon-bar").classList.add("hidden")
         }
+
         function checksearch(data) {
             if (data.keyCode == 13) {
-                window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH").value;
+                if (document.getElementById("mobilenav").display == "none") {
+                    window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH").value;
+                }
+                else {
+                    window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bHm").value;
+                }
             }
         }
+
         function checkrss(data) {
             if (data.keyCode == 13) {
-                window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl").value);
+                if (document.getElementById("mobilenav").display == "none") {
+                    window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl").value);
+                }
+                else {
+                    window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurlm").value);
+                }
             }
         }
+
         function validurl(str) {
             var pattern = new RegExp('^(https?:\\/\\/)?' +
                 '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
@@ -397,6 +445,12 @@
                 '(\\?[;&a-z\\d%_.~+=-]*)?' +
                 '(\\#[-a-z\\d_]*)?$', 'i');
             return !!pattern.test(str);
+        }
+        function hidemnav() {
+            document.getElementById("mobileside").classList.add("leftside")
+        }
+        function showmnav() {
+            document.getElementById("mobileside").classList.remove("leftside")
         }
     </script>
 </head>
@@ -417,6 +471,25 @@
         <span id="hidinput"><i style="margin-right: 5px;">or</i> <input placeholder="Add by RSS..."
                 onkeypress="checkrss(event)" autocomplete="off" type="url" id="rssurl"></span>
     </div>
+    <div id="mobilenav">
+        <div class="burger" onclick="showmnav()"></div>
+
+        <span id="logopan" onclick="window.location='index.html'">
+            <img src="listenr-logo.png" height="60"
+                style="display: inline-block; vertical-align: middle; margin-top: -20px;">
+    </div>
+    <div id="mobileside" class="leftside">
+        <div class="burgerx" onclick="hidemnav()"><i class="fas fa-times"></i></div>
+        <img src="listenr-logo.png" height="60"
+            style="display: inline-block; vertical-align: middle; margin-top: -20px;">
+        <br><br>
+        <span class="navigation" onclick="window.location='yours.html'">Your Podcasts</span>
+        <span class="navigation" style="font-weight: 700; font-size: 19px; color: white;">View Show</span>
+        <input name="AetBh69SERCH99bH" id="AetBh69SERCH99bHm" placeholder="Search for a podcast..."
+            onkeypress="checksearch(event)" autocomplete="off" type="text">
+        <input placeholder="Add by RSS..." onkeypress="checkrss(event)" autocomplete="off" type="url" id="rssurlm">
+    </div>
+
     <div id="nav-space"></div>
     <div id="noscrolly">
         <table id="maintable">
@@ -462,7 +535,7 @@
     </div>
     <div id="widthtester"></div>
     <div id="texttester" style="display: none; visibility: hidden;"></div>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"></script> 
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"></script>
 </body>
 
 </html>

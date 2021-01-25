@@ -62,6 +62,7 @@
             if (String(window.location).includes("?AetBh69SERCH99bH=") && String(window.location).split("?AetBh69SERCH99bH=")[1] != "") {
                 var search = String(window.location).split("?AetBh69SERCH99bH=")[1];
                 document.getElementById("AetBh69SERCH99bH").value = decodeURIComponent(search.replace(/\+/gi, "%20"));
+                document.getElementById("AetBh69SERCH99bHm").value = document.getElementById("AetBh69SERCH99bH").value
                 document.title = decodeURIComponent(search.replace(/\+/gi, "%20")) + " - Search listenr";
                 fetch("https://script.google.com/macros/s/AKfycby45awRekYOvIpe6ZFN_C5llswyiDGMnCwEoD9Dje_hQ1AqTnQ/exec?q=" + search)
                     .then(a => a.json())
@@ -107,19 +108,35 @@
 
         function csearch(data) {
             if (data.keyCode == 13) {
-                window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH").value;
+                if (document.getElementById("mobilenav").display == "none") {
+                    window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH").value;
+                }
+                else {
+                    window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bHm").value;
+                }
             }
         }
 
         function checkrss(data) {
             if (data.keyCode == 13) {
-                window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl").value);
+                if (document.getElementById("mobilenav").display == "none") {
+                    window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl").value);
+                }
+                else {
+                    window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurlm").value);
+                }
             }
         }
         function checkrss2(data) {
             if (data.keyCode == 13) {
                 window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl2").value);
             }
+        }
+        function hidemnav() {
+            document.getElementById("mobileside").classList.add("leftside")
+        }
+        function showmnav() {
+            document.getElementById("mobileside").classList.remove("leftside")
         }
     </script>
 </head>
@@ -136,6 +153,25 @@
         <span id="hidinput"><i style="margin-right: 5px;">or</i> <input placeholder="Add by RSS..."
                 onkeypress="checkrss(event)" autocomplete="off" type="url" id="rssurl"></span>
     </div>
+    <div id="mobilenav">
+        <div class="burger" onclick="showmnav()"></div>
+
+        <span id="logopan" onclick="window.location='index.html'">
+            <img src="listenr-logo.png" height="60"
+                style="display: inline-block; vertical-align: middle; margin-top: -20px;">
+    </div>
+    <div id="mobileside" class="leftside">
+        <div class="burgerx" onclick="hidemnav()"><i class="fas fa-times"></i></div>
+        <img src="listenr-logo.png" height="60"
+            style="display: inline-block; vertical-align: middle; margin-top: -20px;">
+        <br><br>
+        <span class="navigation" onclick="window.location='yours.html'">Your Podcasts</span>
+        <span class="navigation" onclick="window.location='view.html'">View Show</span>
+        <input name="AetBh69SERCH99bH" id="AetBh69SERCH99bHm" placeholder="Search for a podcast..."
+            onkeypress="csearch(event)" autocomplete="off" type="text">
+        <input placeholder="Add by RSS..." onkeypress="checkrss(event)" autocomplete="off" type="url" id="rssurlm">
+    </div>
+
     <div id="nav-space"></div>
     <p class="centererror" id="loading">Loading...</p>
     <div id="op" class="hidden">
