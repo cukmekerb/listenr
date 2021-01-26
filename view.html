@@ -110,7 +110,13 @@
                 }
             }
         }
-
+        function makedescsize(){
+            var deskslice = 300;
+            if (document.documentElement.clientWidth <= 1000) {
+                deskslice = -41523 / 400000000 * document.documentElement.clientWidth * document.documentElement.clientWidth + 3082188903 / 5000000000 * document.documentElement.clientWidth - 1495339502341 / 10000000000
+            }
+            return deskslice;
+        }
         function init() {
             if (Cookies.get("user") != null) {
                 user = JSON.parse(Cookies.get("user"));
@@ -162,6 +168,7 @@
         }
 
         function getfeed(link) {
+            
             fetch("https://rsstojson.com/v1/api/?rss_url=" + link)
                 .then(a => a.json())
                 .then(feed => {
@@ -187,11 +194,15 @@
                     if (feed.rss.channel[0]["itunes:author"] != null) {
                         document.getElementById("author_name").innerHTML = feed.rss.channel[0]["itunes:author"][0];
                     }
-                    document.getElementById("description").innerHTML = htmltotext(String(feed.rss.channel[0].description[0]).slice(0, 300));
+                    document.getElementById("description").innerHTML = htmltotext(String(feed.rss.channel[0].description[0]).slice(0, makedescsize()));
                     castdesk = feed.rss.channel[0].description[0];
                     if (String(document.getElementById("description").innerHTML).length < castdesk.length) {
                         document.getElementById("description").innerHTML += "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
                     }
+                    setTimeout(() => {
+                        adjustheight();
+                    }, 200)
+                    window.onresize = adjustheight;
                     var episodehtml;
                     for (var i = 0; i < 10 && i < feed.rss.channel[0].item.length; i++) {
                         episodehtml = String(document.getElementsByClassName("episode")[0].outerHTML).replace(/\$\$\i\%\%/gi, i);
@@ -275,15 +286,17 @@
 
         function longpoddesk() {
             document.getElementById("description").innerHTML = castdesk + "<br><i onclick='shortpoddesk()' class='shortlong'>less</i>";
-            root.style.setProperty("--short-height", "590px");
+            setTimeout(() => {
+                adjustheight();
+            }, 200)
         }
 
         function shortpoddesk() {
-            setTimeout(function () {
-                document.getElementById("description").innerHTML = htmltotext(castdesk.slice(0, 300)) + "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
-            }, 100)
-            root.style.setProperty("--short-height", "400px");
+            document.getElementById("description").innerHTML = htmltotext(castdesk.slice(0, makedescsize())) + "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
             scrollelement("desc_scroll", 0, 0.5, 60);
+            setTimeout(() => {
+                adjustheight();
+            }, 200)
         }
 
         function showplay(i) {
@@ -452,6 +465,9 @@
         function showmnav() {
             document.getElementById("mobileside").classList.remove("leftside")
         }
+        function adjustheight() {
+            root.style.setProperty("--div-height", (document.getElementById("titlespan").clientHeight + 10) + "px")
+        }
     </script>
 </head>
 
@@ -505,6 +521,7 @@
                                 <div class="subscribe-u" id="subbutton">Subscribe</div>
                             </div>
                         </span>
+                        <br style="clear: both;" />
                     </div>
 
                 </td>

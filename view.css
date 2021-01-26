@@ -1,7 +1,7 @@
 :root {
-    --short-height: 400px;
     --slider-val: linear-gradient(90deg, rgb(84, 255, 78) 0%, rgb(185, 185, 185) 0%, rgb(182, 182, 182) 100%);
     --title-pos: 10%;
+    --div-height: 600px;
 }
 
 html {
@@ -154,6 +154,9 @@ input:focus {
 }
 
 @media (min-width: 950px) {
+    #loadmore {
+        width: 400px;
+    }
     #mobilenav, #mobileside {
         display: none;
     }
@@ -197,7 +200,7 @@ input:focus {
         height: 100% !important;
     }
     #output {
-        height: var(--short-height);
+        height: var(--div-height);
         overflow-y: hidden;
         transition: 0.4s;
     }
@@ -206,7 +209,7 @@ input:focus {
         width: 100%;
     }
     #desc_scroll {
-        height: var(--short-height);
+        height: var(--div-height);
     }
     #episode_td {
         position: absolute;
@@ -264,7 +267,20 @@ input:focus {
 }
 
 @media (max-width: 949px) {
-    .smallplaybutton{
+    #loadmore{
+        width: 80%;
+    }
+    html {
+        /* STUPID HACK ALERT */
+        /* WEEOOWEEOOWEEEOOO */
+        zoom: 90%;
+    }
+    #title, #description, #author_name {
+        word-wrap: break-word;
+        display: block;
+        width: 50%;
+    }
+    .smallplaybutton {
         color: white !important;
     }
     #mobileside {
@@ -280,7 +296,7 @@ input:focus {
         background-color: rgb(31, 30, 30);
         opacity: 1;
     }
-    .leftside{
+    .leftside {
         opacity: 0;
         margin-left: -80%;
     }
@@ -311,16 +327,15 @@ input:focus {
         white-space: nowrap;
     }
     #episode_td {
-        margin-top: 5%;
+        margin-top: var(--mobile-desc-height);
     }
     #navbar {
         display: none;
     }
     #output {
         transition: 0.4s;
-        display: block;
-        box-sizing: border-box;
-        min-height: 300px;
+        box-sizing:content-box;
+        height: var(--div-height);
     }
     #maintable {
         margin-left: auto;
@@ -335,8 +350,8 @@ input:focus {
     }
     #s600ptd {
         width: 100%;
-        padding-bottom: 40px;
         margin-left: 0;
+        height: auto;
     }
     #description {
         margin-right: 10%;
@@ -363,13 +378,13 @@ input:focus {
             margin-right: 15px;
         }
         #episodes, .episode {
-            width: 75%;
+            width: 87.4%;
         }
         #output, #s600ptd {
             width: 90%;
         }
         #episode_td {
-            width: 30%;
+            width: 100%;
             margin-left: auto;
             margin-right: auto;
             left: 0;
@@ -405,7 +420,6 @@ input:focus {
     border-radius: 50px;
     font-family: sans-serif;
     font-size: 50px;
-    width: 400px;
     transition: 0.1s;
     user-select: none;
 }
