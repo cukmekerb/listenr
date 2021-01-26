@@ -177,7 +177,7 @@
                     document.title = feed.rss.channel[0].title + " - listenr";
                     defaultephtml = document.getElementsByClassName("episode")[0].outerHTML;
                     if (feed.rss.channel[0].image != null) {
-                        document.getElementById("image").src = feed.rss.channel[0].image[0].url[0];
+                        document.getElementById("image").src = feed.rss.channel[0].image[feed.rss.channel[0].image.length-1].url[0];
                     } else {
                         document.getElementById("image").src = feed.rss.channel[0]['itunes:image'][0]['$']['href'];
                     }
@@ -321,8 +321,8 @@
             updateplayer();
             document.getElementById("player").classList.replace("hidingplayer", "nonhidingplayer");
             epplayed();
-           playingep.onpause = eppaused;
-           playingep.onplay = epplayed;
+            playingep.onpause = eppaused;
+            playingep.onplay = epplayed;
         }
 
         function updateplayer() {

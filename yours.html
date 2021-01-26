@@ -49,6 +49,9 @@
                 if (user.subscribed.length > 0) {
                     var ephtml;
                     for (var i = 0; i < user.subscribed.length; i++) {
+                        if(typeof user.subscribed[i].desc != "string"){
+                            user.subscribed[i].desc = user.subscribed[i].desc[0]
+                        }
                         ephtml = document.getElementById("show-$$i%%").outerHTML;
                         ephtml = ephtml.replace(/\$\$i\%\%/gi, i);
                         ephtml = ephtml.replace(/\$\$\%\%TOTITLE\%\%/gi, user.subscribed[i].title);
@@ -100,7 +103,7 @@
         }
         function showless(i) {
             showingthing = true;
-            document.getElementById("desc_" + i).innerHTML = htmltotext(shows[i].desc.replace(/<br>/gi, "\n").slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>";
+            document.getElementById("desc_" + i).innerHTML = htmltotext(shows[i].desc[0].replace(/<br>/gi, "\n").slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>";
             setTimeout(() => { showingthing = false }, 10);
         }
         function checkrss(data) {
@@ -141,7 +144,7 @@
             else {
                 var y = a.clientY;
                 var ita;
-                for (var i = 0; i < shows.length; i++) {
+                for (i in shows) {
                     if (y >= document.getElementById("show-" + i).getBoundingClientRect().y && y <= document.getElementById("show-" + (i + 1)).getBoundingClientRect().y) {
                         ita = i;
                         break;
