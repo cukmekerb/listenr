@@ -110,7 +110,7 @@
                 }
             }
         }
-        function makedescsize(){
+        function makedescsize() {
             var deskslice = 300;
             if (document.documentElement.clientWidth <= 1000) {
                 deskslice = -41523 / 400000000 * document.documentElement.clientWidth * document.documentElement.clientWidth + 3082188903 / 5000000000 * document.documentElement.clientWidth - 1495339502341 / 10000000000
@@ -168,7 +168,7 @@
         }
 
         function getfeed(link) {
-            
+
             fetch("https://rsstojson.com/v1/api/?rss_url=" + link)
                 .then(a => a.json())
                 .then(feed => {
@@ -320,7 +320,9 @@
             playingep.play();
             updateplayer();
             document.getElementById("player").classList.replace("hidingplayer", "nonhidingplayer");
-            document.getElementById("play_pause").classList.replace("fa-play-circle", "fa-pause-circle");
+            epplayed();
+           playingep.onpause = eppaused;
+           playingep.onplay = epplayed;
         }
 
         function updateplayer() {
@@ -404,13 +406,19 @@
         function toggleplaypause() {
             if (playingep.src != null) {
                 if (playingep.paused) {
-                    document.getElementById("play_pause").classList.replace("fa-play-circle", "fa-pause-circle");
+                    epplayed();
                     playingep.play()
                 } else {
-                    document.getElementById("play_pause").classList.replace("fa-pause-circle", "fa-play-circle");
+                    eppaused();
                     playingep.pause();
                 }
             }
+        }
+        function eppaused() {
+            document.getElementById("play_pause").classList.replace("fa-pause-circle", "fa-play-circle");
+        }
+        function epplayed() {
+            document.getElementById("play_pause").classList.replace("fa-play-circle", "fa-pause-circle");
         }
 
         function testwidth(text, size, weight) {
