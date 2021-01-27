@@ -178,14 +178,10 @@
                     defaultephtml = document.getElementsByClassName("episode")[0].outerHTML;
                     document.getElementById("image").src = feed.image;
                     if (user.subscribed.find(a => a.url == link) != null) {
-                        if (user.subscribed.find(a => a.url == link).image != document.getElementById("image").src) {
-                            user.subscribed[user.subscribed.findIndex(a => a.url == link)].image = document.getElementById("image").src;
-                            savecookies();
-                        }
-                        if (user.subscribed.find(a => a.url == link).desc != feed.description) {
-                            user.subscribed[user.subscribed.findIndex(a => a.url == link)].desc = feed.description;
-                            savecookies();
-                        }
+                        user.subscribed[user.subscribed.findIndex(a => a.url == link)].image = document.getElementById("image").src;    
+                        console.log("updating image")
+                        user.subscribed[user.subscribed.findIndex(a => a.url == link)].desc = feed.description;
+                        savecookies();
                     }
                     if (feed.items[0].itunes_author != null) {
                         document.getElementById("author_name").innerHTML = feed.items[0].itunes_author;
@@ -349,7 +345,7 @@
         }
 
         function showmore(i) {
-            document.getElementById("desc_" + i).innerHTML = episodes[i].desc + "<br><br><i>Published " + episodes[i].pubdate + "</i><br><br><i class='shortlong' onclick='showless(" + i + ")'>less</i>";
+            document.getElementById("desc_" + i).innerHTML = episodes[i].desc + "<br><br><i>Published " + episodes[i].pubdate + "</i><br><br><i class='shortlong' onclick='showless(" + i + ")'>less</i><br>";
             document.getElementById("title_" + i).innerHTML = episodes[i].title;
         }
 

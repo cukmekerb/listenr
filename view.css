@@ -58,7 +58,9 @@ td {
     text-decoration: underline;
     cursor: pointer;
 }
-
+.episode > div{
+    padding-bottom: 10px;
+}
 .bigtd {
     width: calc(98% - 600px);
 }
@@ -80,6 +82,7 @@ td {
     font-weight: bold;
     font-size: 30px !important;
     top: 5px;
+    cursor: pointer;
 }
 
 #nav-space {
@@ -200,7 +203,6 @@ input:focus {
         height: 100% !important;
     }
     #output {
-        height: var(--div-height);
         overflow-y: hidden;
         transition: 0.4s;
     }
@@ -209,7 +211,7 @@ input:focus {
         width: 100%;
     }
     #desc_scroll {
-        height: var(--div-height);
+        height: cacl(var(--div-height) + 20px);
     }
     #episode_td {
         position: absolute;
