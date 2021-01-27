@@ -169,33 +169,29 @@
 
         function getfeed(link) {
 
-            fetch("https://rsstojson.com/v1/api/?rss_url=" + link)
+            fetch("https://rss-to-json-convert.herokuapp.com/" + encodeURIComponent(link))
                 .then(a => a.json())
                 .then(feed => {
                     whathasbeenloaded = feed;
-                    document.getElementById("title").innerHTML = feed.rss.channel[0].title;
-                    document.title = feed.rss.channel[0].title + " - listenr";
+                    document.getElementById("title").innerHTML = feed.title;
+                    document.title = feed.title + " - listenr";
                     defaultephtml = document.getElementsByClassName("episode")[0].outerHTML;
-                    if (feed.rss.channel[0].image != null) {
-                        document.getElementById("image").src = feed.rss.channel[0].image[feed.rss.channel[0].image.length-1].url[0];
-                    } else {
-                        document.getElementById("image").src = feed.rss.channel[0]['itunes:image'][0]['$']['href'];
-                    }
+                    document.getElementById("image").src = feed.image;
                     if (user.subscribed.find(a => a.url == link) != null) {
                         if (user.subscribed.find(a => a.url == link).image != document.getElementById("image").src) {
                             user.subscribed[user.subscribed.findIndex(a => a.url == link)].image = document.getElementById("image").src;
                             savecookies();
                         }
-                        if (user.subscribed.find(a => a.url == link).desc != feed.rss.channel[0].description) {
-                            user.subscribed[user.subscribed.findIndex(a => a.url == link)].desc = feed.rss.channel[0].description;
+                        if (user.subscribed.find(a => a.url == link).desc != feed.description) {
+                            user.subscribed[user.subscribed.findIndex(a => a.url == link)].desc = feed.description;
                             savecookies();
                         }
                     }
-                    if (feed.rss.channel[0]["itunes:author"] != null) {
-                        document.getElementById("author_name").innerHTML = feed.rss.channel[0]["itunes:author"][0];
+                    if (feed.items[0].itunes_author != null) {
+                        document.getElementById("author_name").innerHTML = feed.items[0].itunes_author;
                     }
-                    document.getElementById("description").innerHTML = htmltotext(String(feed.rss.channel[0].description[0]).slice(0, makedescsize()));
-                    castdesk = feed.rss.channel[0].description[0];
+                    document.getElementById("description").innerHTML = htmltotext(String(feed.description).slice(0, makedescsize()));
+                    castdesk = feed.description;
                     if (String(document.getElementById("description").innerHTML).length < castdesk.length) {
                         document.getElementById("description").innerHTML += "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
                     }
@@ -204,30 +200,30 @@
                     }, 200)
                     window.onresize = adjustheight;
                     var episodehtml;
-                    for (var i = 0; i < 10 && i < feed.rss.channel[0].item.length; i++) {
+                    for (var i = 0; i < 10 && i < feed.items.length; i++) {
                         episodehtml = String(document.getElementsByClassName("episode")[0].outerHTML).replace(/\$\$\i\%\%/gi, i);
-                        if (String(feed.rss.channel[0].item[i].title).length > 30) {
-                            episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title).slice(0, 31) + "...");
+                        if (String(feed.items[i].title).length > 30) {
+                            episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.items[i].title).slice(0, 31) + "...");
                         } else {
-                            episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title));
+                            episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.items[i].title));
                         }
-                        episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.rss.channel[0].item[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
+                        episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.items[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
                         episodehtml = episodehtml.replace(/<br>/gi, "\n");
                         if ((i == 1 || i / 3 == Math.round(i / 3)) && !user.haspremium) {
                             episodehtml += generatead();
                         }
                         document.getElementById("episodes").innerHTML += "<br>" + episodehtml;
                         episodes.push({
-                            title: feed.rss.channel[0].item[i].title,
-                            desc: String(feed.rss.channel[0].item[i].description).replace(/\n/gi, "<br>"),
-                            url: feed.rss.channel[0].item[i].enclosure[0]['$'].url,
-                            pubdate: feed.rss.channel[0].item[i].pubDate[0]
+                            title: feed.items[i].title,
+                            desc: String(feed.items[i].description).replace(/\n/gi, "<br>"),
+                            url: feed.items[i].enclosures[0].url,
+                            pubdate: new Date(feed.items[i].published).toLocaleString()
                         });
                         if (i >= 9) {
                             document.getElementById("episodes").innerHTML += "<div id='loadmore' onclick='loadmore()'>Load more</div>";
 
                         }
-                        if (i >= feed.rss.channel[0].item.length - 1) {
+                        if (i >= feed.items.length - 1) {
                             document.getElementById("episodes").innerHTML += "<br><i style='text-align:center; margin-left:auto; margin-right:auto;'>No more episodes to load.</i>";
                         }
                     }
@@ -240,7 +236,7 @@
                         .then(a => a.json())
                         .then(result => {
                             if (result.rows[0] == null) {
-                                fetch("https://script.google.com/macros/s/AKfycbyT6aaorLO5aBeRl1YQH44kAlmtfTGvrQqrYcZXrQigbbosJalz/exec?name=" + encodeURIComponent(feed.rss.channel[0].title) + "&description=" + encodeURIComponent(feed.rss.channel[0].description[0]) + "&image=" + encodeURIComponent(document.getElementById("image").src) + "&url=" + encodeURIComponent(link))
+                                fetch("https://script.google.com/macros/s/AKfycbyT6aaorLO5aBeRl1YQH44kAlmtfTGvrQqrYcZXrQigbbosJalz/exec?name=" + encodeURIComponent(feed.title) + "&description=" + encodeURIComponent(feed.description) + "&image=" + encodeURIComponent(document.getElementById("image").src) + "&url=" + encodeURIComponent(link))
                             }
                         });
                 });
@@ -251,29 +247,29 @@
             var feed = whathasbeenloaded;
             var b = episodes.length;
             document.getElementById("loadmore").outerHTML = "";
-            for (var i = b; i < 10 + b && i < feed.rss.channel[0].item.length; i++) {
+            for (var i = b; i < 10 + b && i < feed.items.length; i++) {
                 episodehtml = String(defaultephtml).replace(/\$\$\i\%\%/gi, i);
-                if (String(feed.rss.channel[0].item[i].title).length > 30) {
-                    episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title).slice(0, 31) + "...");
+                if (String(feed.items[i].title).length > 30) {
+                    episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.items[i].title).slice(0, 31) + "...");
                 } else {
-                    episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.rss.channel[0].item[i].title));
+                    episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.items[i].title));
                 }
-                episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.rss.channel[0].item[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
+                episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.items[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
                 episodehtml = episodehtml.replace(/<br>/gi, "\n");
                 if (i / 3 == Math.round(i / 3) && !user.haspremium) {
                     episodehtml += generatead();
                 }
                 document.getElementById("episodes").innerHTML += "<br>" + episodehtml;
                 episodes.push({
-                    title: feed.rss.channel[0].item[i].title,
-                    desc: String(feed.rss.channel[0].item[i].description).replace(/\n/gi, "<br>"),
-                    url: feed.rss.channel[0].item[i].enclosure[0]['$'].url,
-                    pubdate: feed.rss.channel[0].item[i].pubDate[0]
+                    title: feed.items[i].title,
+                    desc: String(feed.items[i].description).replace(/\n/gi, "<br>"),
+                    url: feed.items[i].enclosures[0].url,
+                    pubdate: new Date(feed.items[i].published).toLocaleString()
                 });
                 if (i >= b + 9) {
                     document.getElementById("episodes").innerHTML += "<div id='loadmore' onclick='loadmore()'>Load more</div>";
                 }
-                if (i >= feed.rss.channel[0].item.length - 1) {
+                if (i >= feed.items.length - 1) {
                     document.getElementById("episodes").innerHTML += "<br><i style='text-align:center; margin-left:auto; margin-right:auto;'>No more episodes to load.</i>";
                 }
             }
@@ -311,7 +307,7 @@
             if (playingep != null) {
                 playingep.pause();
             }
-            document.getElementById("nowplaying").innerHTML = episodes[i].title[0] + " - " + document.getElementById("title").innerHTML;
+            document.getElementById("nowplaying").innerHTML = episodes[i].title + " - " + document.getElementById("title").innerHTML;
             var textsize = testwidth(document.getElementById("nowplaying").innerHTML, "14px", "bold");
             var clipwidth = document.getElementById("nowplayingcont").clientWidth * 0.7;
             root.style.setProperty("--title-pos", (Math.abs(Math.round((document.getElementById("nowplayingcont").clientWidth - textsize) - clipwidth)) - (Math.abs(Math.round((document.getElementById("nowplayingcont").clientWidth - textsize) - clipwidth)) / 2) + 2) + "px");
