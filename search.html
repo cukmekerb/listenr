@@ -45,6 +45,11 @@
             if (Cookies.get("user") != null) {
                 user = JSON.parse(Cookies.get("user"));
             }
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                    .register("cache.js")
+                    .then(function () { console.log("service worker registered"); });
+            }
             checksearch();
         }
         function showmore(i) {
@@ -109,8 +114,14 @@
         function csearch(data) {
             if (data.keyCode == 13) {
                 console.log("aaa")
-                window.location = "search.html?AetBh69SERCH99bH=" + (document.getElementById("AetBh69SERCH99bHm").value || document.getElementById("AetBh69SERCH99bH").value);
+                window.location = "search.html?AetBh69SERCH99bH=" +  document.getElementById("AetBh69SERCH99bH").value;
 
+            }
+        }
+        function csearchm(data){
+            if (data.keyCode == 13) {
+                console.log("aaa")
+                window.location = "search.html?AetBh69SERCH99bH=" +  document.getElementById("AetBh69SERCH99bHm").value;
             }
         }
 
@@ -165,7 +176,7 @@
         <span class="navigation" onclick="window.location='yours.html'">Your Podcasts</span>
         <span class="navigation" onclick="window.location='view.html'">View Show</span>
         <input name="AetBh69SERCH99bH" id="AetBh69SERCH99bHm" placeholder="Search for a podcast..."
-            onkeypress="csearch(event)" autocomplete="off" type="text">
+            onkeypress="csearchm(event)" autocomplete="off" type="text">
         <input placeholder="Add by RSS..." onkeypress="checkrss(event)" autocomplete="off" type="url" id="rssurlm">
     </div>
 

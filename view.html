@@ -126,11 +126,11 @@
                 };
                 Cookies.set("user", JSON.stringify(user), exp);
             }
-            /*if ("serviceWorker" in navigator) {
+            if ("serviceWorker" in navigator) {
                 navigator.serviceWorker
                     .register("cache.js")
                     .then(function () { console.log("service worker registered"); });
-            }*/
+            }
             var feedurl = String(window.location).split("?AetBh69feedbH=")[1];
             if (String(window.location).includes("?AetBh69feedbH=") && feedurl.length != 0 && feedurl != null && validurl(window.atob(feedurl))) {
                 feedurl = window.atob(feedurl);

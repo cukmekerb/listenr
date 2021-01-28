@@ -45,6 +45,11 @@
             if (Cookies.get("user") != null) {
                 user = JSON.parse(Cookies.get("user"));
             }
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                    .register("cache.js")
+                    .then(function () { console.log("service worker registered"); });
+            }
             if (user != null && user != {}) {
                 if (user.subscribed.length > 0) {
                     var ephtml;
