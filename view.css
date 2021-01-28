@@ -203,7 +203,7 @@ input:focus {
         height: 100% !important;
     }
     #output {
-        overflow-y: hidden;
+        height: var(--div-height) !important;
         transition: 0.4s;
     }
     #nowplayingcont {
@@ -337,7 +337,7 @@ input:focus {
     #output {
         transition: 0.4s;
         box-sizing:content-box;
-        height: var(--div-height);
+        height: var(--div-height) !important;
     }
     #maintable {
         margin-left: auto;
