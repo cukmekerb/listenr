@@ -251,7 +251,7 @@ input:focus {
 .burger {
     width: 42px;
     height: 42px;
-    background: url(https://oatmeal.gq/sprites/burger.png);
+    background: url(burger.png);
     background-size: 33px, 150% 150%;
     display: inline-block;
     background-position: center, center;

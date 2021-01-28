@@ -126,6 +126,11 @@
                 };
                 Cookies.set("user", JSON.stringify(user), exp);
             }
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                    .register("cache.js")
+                    .then(function () { console.log("service worker registered"); });
+            }
             var feedurl = String(window.location).split("?AetBh69feedbH=")[1];
             if (String(window.location).includes("?AetBh69feedbH=") && feedurl.length != 0 && feedurl != null && validurl(window.atob(feedurl))) {
                 feedurl = window.atob(feedurl);
@@ -142,6 +147,7 @@
                 feedurl = user.lastvisited;
                 getfeed(feedurl);
                 document.getElementById("subbutton").setAttribute("onclick", "subscribe('" + feedurl + "')");
+                adjustheight();
                 if (user.subscribed.indexOf(user.subscribed.find(a => a.url == feedurl)) > -1) {
                     document.getElementById("subbutton").innerHTML = "Subscribed   <i class='fas fa-check'></i>";
                     document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"));
@@ -168,7 +174,6 @@
         }
 
         function getfeed(link) {
-
             fetch("https://rss-to-json-convert.herokuapp.com/" + encodeURIComponent(link))
                 .then(a => a.json())
                 .then(feed => {
@@ -178,7 +183,7 @@
                     defaultephtml = document.getElementsByClassName("episode")[0].outerHTML;
                     document.getElementById("image").src = feed.image;
                     if (user.subscribed.find(a => a.url == link) != null) {
-                        user.subscribed[user.subscribed.findIndex(a => a.url == link)].image = document.getElementById("image").src;    
+                        user.subscribed[user.subscribed.findIndex(a => a.url == link)].image = document.getElementById("image").src;
                         console.log("updating image")
                         user.subscribed[user.subscribed.findIndex(a => a.url == link)].desc = feed.description;
                         savecookies();
@@ -191,9 +196,6 @@
                     if (String(document.getElementById("description").innerHTML).length < castdesk.length) {
                         document.getElementById("description").innerHTML += "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
                     }
-                    setTimeout(() => {
-                        adjustheight();
-                    }, 200)
                     window.onresize = adjustheight;
                     var episodehtml;
                     for (var i = 0; i < 10 && i < feed.items.length; i++) {
