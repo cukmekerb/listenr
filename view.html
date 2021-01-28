@@ -126,11 +126,11 @@
                 };
                 Cookies.set("user", JSON.stringify(user), exp);
             }
-            if ("serviceWorker" in navigator) {
+            /*if ("serviceWorker" in navigator) {
                 navigator.serviceWorker
                     .register("cache.js")
                     .then(function () { console.log("service worker registered"); });
-            }
+            }*/
             var feedurl = String(window.location).split("?AetBh69feedbH=")[1];
             if (String(window.location).includes("?AetBh69feedbH=") && feedurl.length != 0 && feedurl != null && validurl(window.atob(feedurl))) {
                 feedurl = window.atob(feedurl);
@@ -432,12 +432,9 @@
 
         function checksearch(data) {
             if (data.keyCode == 13) {
-                if (document.getElementById("mobilenav").display == "none") {
-                    window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH").value;
-                }
-                else {
-                    window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bHm").value;
-                }
+                console.log("aaa")
+                window.location = "search.html?AetBh69SERCH99bH=" + (document.getElementById("AetBh69SERCH99bHm").value || document.getElementById("AetBh69SERCH99bH").value);
+
             }
         }
 

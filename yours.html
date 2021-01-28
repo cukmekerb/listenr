@@ -82,12 +82,8 @@
         }
         function csearch(data) {
             if (data.keyCode == 13) {
-                if (document.getElementById("mobilenav").display == "none") {
-                    window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH").value;
-                }
-                else {
-                    window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bHm").value;
-                }
+                console.log("aaa")
+                window.location = "search.html?AetBh69SERCH99bH=" + (document.getElementById("AetBh69SERCH99bHm").value || document.getElementById("AetBh69SERCH99bH").value);
             }
         }
         function csearch2(data) {
