@@ -54,7 +54,7 @@
                 if (user.subscribed.length > 0) {
                     var ephtml;
                     for (var i = 0; i < user.subscribed.length; i++) {
-                        if(typeof user.subscribed[i].desc != "string"){
+                        if (typeof user.subscribed[i].desc != "string") {
                             user.subscribed[i].desc = user.subscribed[i].desc[0]
                         }
                         ephtml = document.getElementById("show-$$i%%").outerHTML;
@@ -83,7 +83,10 @@
             else {
                 document.getElementById("op").innerHTML = "<p class='centererror'>Your're not subscribed to any shows. You can add one by searching</p>";
             }
-            document.getElementById("op").classList.remove("hidden");
+            setTimeout(() =>{
+                document.getElementById("op").classList.remove("hidden"); 
+
+            }, 100)
         }
         function csearch(data) {
             if (data.keyCode == 13) {
@@ -221,7 +224,8 @@
         </div>
     </div>
     <div id="texttester" style="display: none; visibility: hidden;"></div>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"></script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"
+        defer></script>
 </body>
 
 </html>

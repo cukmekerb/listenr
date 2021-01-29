@@ -159,6 +159,13 @@ input:focus {
 #output {
     font-family: sans-serif;
 }
+#loading.hidden{
+    margin-top: -30px;
+}
+
+.show.hidden{
+    margin-top: 80px;
+}
 
 @media (min-width: 950px) {
     #loadmore {

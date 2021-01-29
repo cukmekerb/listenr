@@ -103,10 +103,10 @@
                             document.getElementById("op").innerHTML = `<p class='centererror'>no shows found :( Try <input placeholder="Addding by RSS..."
                 onkeypress="checkrss2(event)" autocomplete="off" type="url" id="rssurl2" style='margin-left: 10px'></p>`;
                         }
-                        document.getElementById("op").classList.remove("hidden");
-                        document.getElementById("loading").classList.add("hidden");
-                        document.getElementById("loading").style.display = "none";
-
+                        setTimeout(() => {
+                            document.getElementById("op").classList.remove("hidden");
+                            document.getElementById("loading").classList.add("hidden");
+                        }, 150);
                     });
             }
         }
@@ -114,14 +114,14 @@
         function csearch(data) {
             if (data.keyCode == 13) {
                 console.log("aaa")
-                window.location = "search.html?AetBh69SERCH99bH=" +  document.getElementById("AetBh69SERCH99bH").value;
+                window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH").value;
 
             }
         }
-        function csearchm(data){
+        function csearchm(data) {
             if (data.keyCode == 13) {
                 console.log("aaa")
-                window.location = "search.html?AetBh69SERCH99bH=" +  document.getElementById("AetBh69SERCH99bHm").value;
+                window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bHm").value;
             }
         }
 
@@ -192,7 +192,8 @@
     </div>
 
     <div id="texttester" style="display: none; visibility: hidden;"></div>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"></script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"
+        defer></script>
 </body>
 
 </html>
