@@ -58,9 +58,11 @@ td {
     text-decoration: underline;
     cursor: pointer;
 }
-.episode > div{
+
+.episode>div {
     padding-bottom: 10px;
 }
+
 .bigtd {
     width: calc(98% - 600px);
 }
@@ -108,7 +110,6 @@ input:focus {
 
 .scrollable {
     overflow-y: scroll !important;
-    transition: 0.35s;
 }
 
 .episode {
@@ -130,7 +131,7 @@ input:focus {
     cursor: pointer;
     display: inline;
     font-size: 29px;
-    transition: 0.2s;
+    transition: 0.2s !important;
     color: rgb(212, 211, 211);
 }
 
@@ -148,10 +149,13 @@ input:focus {
 
 .hidden {
     opacity: 0;
-    transition: 0.4s;
     pointer-events: none;
+    transition: 0.5s;
 }
-
+*:not(.hidden){
+    opacity: 1;
+    transition: 0.5s;
+}
 #output {
     font-family: sans-serif;
 }
@@ -203,7 +207,9 @@ input:focus {
         height: 100% !important;
     }
     #output {
-        height: var(--div-height) !important;
+        /*aaaaaaaaaaaaaaaaaaaaaaa*/
+        overflow-y: visible;
+        height: var(--div-height);
         transition: 0.4s;
     }
     #nowplayingcont {
@@ -269,7 +275,7 @@ input:focus {
 }
 
 @media (max-width: 949px) {
-    #loadmore{
+    #loadmore {
         width: 80%;
     }
     html {
@@ -336,7 +342,7 @@ input:focus {
     }
     #output {
         transition: 0.4s;
-        box-sizing:content-box;
+        box-sizing: content-box;
         height: var(--div-height) !important;
     }
     #maintable {

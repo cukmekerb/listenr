@@ -18,12 +18,9 @@ function is_image(url) {
 function cache_add_all(array) {
     caches.open("v1-cache").then(function (cache) {
         for (i in array) {
-            fetch(array[i]).then(function (response) {
-                if (!response.ok) {
-                    throw new TypeError('Bad response status');
-                }
+            caches.delete(array[i])
+            cache.add(array[i]).then(() => {
                 localforage.setItem(array[i], Date.now());
-                cache.put(array[i], response);
             });
         }
     });
@@ -33,21 +30,33 @@ self.addEventListener("fetch", function (e) {
         caches.match(e.request).then(function (response) {
             if (e.request.url.startsWith("https://rss-to-json-convert.herokuapp.com/") || (e.request.url.startsWith(new URL(self.location).origin) && !e.request.url.includes("AetBh69SERCH99bH")) || is_image(e.request.url) || e.request.url.endsWith(".js") || e.request.url.startsWith("https://script.google.com/macros/s/AKfycby45awRekYOvIpe6ZFN_C5llswyiDGMnCwEoD9Dje_hQ1AqTnQ/exec")) {
                 console.log(e.request.url + " - sending cache")
+                /* localforage.getItem(e.request.url).then(timestamp => {
+                     if (Date.now() - timestamp > 20 * 60 * 1000 || timestamp == undefined || timestamp == null) {
+                         console.log(e.request.url + " - updating cache; timestamp is " + timestamp)
+                         cache_add_all([e.request.url])
+                     }
+                     else {
+                         console.log(e.request.url + " - not updating cache; timestamp is " + timestamp)
+                     }
+                 }).catch(err => {
+                     console.log(err);
+                 }); */
                 try {
+                    console.log(response.clone());
                     return response || fetch(e.request)
+                }
+                catch(err){
+                    console.log(err)
+                    console.log("error getting "+e.request.url+" from cache. fetching")
+                    return fetch(e.request)
                 }
                 finally {
                     localforage.getItem(e.request.url).then(timestamp => {
-                        if (Date.now() - timestamp > 20 * 60 * 1000) {
-                            console.log(e.request.url + " - updating cache")
+                        if (Date.now() - timestamp > 10 * 60 * 1000 || timestamp == undefined || timestamp == null) {
+                            console.log(e.request.url + " - updating cache; timestamp is " + timestamp)
                             cache_add_all([e.request.url])
                         }
-                        else {
-                            console.log(e.request.url + " - not updating cache; timestamp is "+timestamp)
-                        }
-                    }).catch(err => {
-                        console.log(err);
-                    });
+                    })
                 }
             }
             console.log(e.request.url + " - not sending cache")
@@ -55,3 +64,17 @@ self.addEventListener("fetch", function (e) {
         })
     );
 });
+
+/*
+.respondWith(
+    caches.open('mysite-dynamic').then(function(cache) {
+      return cache.match(e.request).then(function (response) {
+        return response || fetch(e.request).then(function(response) {
+          cache.put(e.request, response.clone());
+          return response;
+        });
+      });
+    })
+  );
+});
+*/

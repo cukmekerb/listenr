@@ -227,6 +227,9 @@
                     }
                     document.getElementsByClassName("episode")[0].outerHTML = "";
                     document.getElementById("episodes").classList.remove("hidden");
+                    setTimeout(() => {
+                        document.getElementById("noscrolly").classList.remove("hidden");
+                    }, 100)
                     return feed;
                 })
                 .then(feed => {
@@ -282,7 +285,7 @@
             document.getElementById("description").innerHTML = castdesk + "<br><i onclick='shortpoddesk()' class='shortlong'>less</i>";
             setTimeout(() => {
                 adjustheight();
-            }, 200)
+            }, 150)
         }
 
         function shortpoddesk() {
@@ -506,7 +509,7 @@
     </div>
 
     <div id="nav-space"></div>
-    <div id="noscrolly">
+    <div id="noscrolly" class="hidden">
         <table id="maintable">
             <tr>
                 <td id="s600ptd">
