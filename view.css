@@ -520,12 +520,17 @@ input:focus {
     opacity: 1;
 }
 
+#timeleft,#minustime{
+    font-family: sans-serif;
+    font-weight: medium;
+}
+
 #nowplaying {
     opacity: 0.8;
     font-family: sans-serif;
     font-weight: bold;
     font-size: 14px;
-    animation: leftright 10s alternate infinite;
+    animation: leftright 10s alternate infinite ease-in-out;
     white-space: nowrap;
     width: auto;
 }

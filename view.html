@@ -29,7 +29,7 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
     <link rel="stylesheet" href="view.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/keymaster/1.6.1/keymaster.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/madrobby/ster@1.6.3/keymaster.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, height=device-height, target-densitydpi=device-dpi" />
@@ -120,7 +120,8 @@
         function init() {
             if (Cookies.get("user") != null) {
                 user = JSON.parse(Cookies.get("user"));
-            } else {
+            }
+            else {
                 user = {
                     subscribed: []
                 };
@@ -554,7 +555,8 @@
     </div>
     <div id="widthtester"></div>
     <div id="texttester" style="display: none; visibility: hidden;"></div>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d" defer></script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"
+        defer></script>
 </body>
 
 </html>
