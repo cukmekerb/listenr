@@ -112,7 +112,7 @@
         }
         function checkrss(data) {
             if (data.keyCode == 13) {
-                if (document.getElementById("mobilenav").display == "none") {
+                if (document.getElementById("mobileside").classList.contains("leftside")) {
                     window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl").value);
                 }
                 else {

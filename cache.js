@@ -1,5 +1,13 @@
+var islocal = false
 self.importScripts("https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js")
 self.addEventListener('install', function (e) {
+    fetch("islocal.txt").then(a => a.text()).then(a => {
+        if(a == "true"){
+            islocal = true;
+            console.log("is local.")
+        }
+        console.log(a)
+    })
     return cache_add_all([
         "index.html",
         "view.html",
@@ -28,7 +36,7 @@ function cache_add_all(array) {
 self.addEventListener("fetch", function (e) {
     e.respondWith(
         caches.match(e.request).then(function (response) {
-            if (e.request.url.startsWith("https://rss-to-json-convert.herokuapp.com/") || (e.request.url.startsWith(new URL(self.location).origin) && !e.request.url.includes("AetBh69SERCH99bH")) || is_image(e.request.url) || e.request.url.endsWith(".js") || e.request.url.startsWith("https://script.google.com/macros/s/AKfycby45awRekYOvIpe6ZFN_C5llswyiDGMnCwEoD9Dje_hQ1AqTnQ/exec")) {
+            if ((e.request.url.startsWith("https://rss-to-json-convert.herokuapp.com/") || (e.request.url.startsWith(new URL(self.location).origin) && !e.request.url.includes("AetBh69SERCH99bH")) || is_image(e.request.url) || e.request.url.endsWith(".js") || e.request.url.startsWith("https://script.google.com/macros/s/AKfycby45awRekYOvIpe6ZFN_C5llswyiDGMnCwEoD9Dje_hQ1AqTnQ/exec")) && !islocal) {
                 console.log(e.request.url + " - sending cache");
                 /*
                 
