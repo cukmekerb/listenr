@@ -31,6 +31,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:300&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/gh/cukmekerb/keymaster/keymaster.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js"></script>
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, height=device-height, target-densitydpi=device-dpi" />
     <script>
@@ -128,15 +129,24 @@
             }
             return deskslice;
         }
-        function init() {
-            if (Cookies.get("user") != null) {
+        async function init() {
+            if (Cookies.get("user") != null && Cookies.get("usingindexed") == null) {
                 user = JSON.parse(Cookies.get("user"));
+                Cookies.set("usingindexed", "true", exp)
+                localforage.setItem("user", JSON.stringify(user)).then(() => {
+                    console.log("put user into forage");
+                });
+            }
+            else if (Cookies.get("usingindexed") == "true") {
+                user = await localforage.getItem("user")
+                user = JSON.parse(user)
             }
             else {
                 user = {
                     subscribed: []
                 };
-                Cookies.set("user", JSON.stringify(user), exp);
+                Cookies.set("usingindexed", "true", exp)
+                localforage.setItem("user", JSON.stringify(user))
             }
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker
@@ -160,11 +170,12 @@
                 getfeed(feedurl);
                 document.getElementById("subbutton").setAttribute("onclick", "subscribe('" + feedurl + "')");
                 adjustheight();
-                if (user.subscribed.indexOf(user.subscribed.find(a => a.url == feedurl)) > -1) {
+                if (user.subscribed.indexOf(user.subscribed.find(a => safe_decode(a.url) == feedurl)) > -1) {
                     document.getElementById("subbutton").innerHTML = "Subscribed   <i class='fas fa-check'></i>";
                     document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"));
                     document.getElementById("subbutton").classList.replace("subscribe-u", "subscribe-s");
                 }
+                adjustheight();
             } else {
                 window.location = "yours.html";
             }
@@ -291,8 +302,10 @@
         }
 
         function savecookies() {
-            Cookies.set("user", JSON.stringify(user), exp);
-            console.log("saving cookies!")
+            Cookies.set("usingindexed", "true", exp)
+            localforage.setItem("user", JSON.stringify(user)).then(() => {
+                console.log("saved stuff");
+            });
         }
 
         function longpoddesk() {

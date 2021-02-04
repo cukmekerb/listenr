@@ -27,6 +27,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <!--no more metatags-->
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js"></script>
     <link rel="stylesheet" href="view.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
@@ -52,9 +53,24 @@
                 return decodeURIComponent(uri)
             }
         }
-        function init() {
-            if (Cookies.get("user") != null) {
+        async function init() {
+            if (Cookies.get("user") != null && Cookies.get("usingindexed") == null) {
                 user = JSON.parse(Cookies.get("user"));
+                Cookies.set("usingindexed", "true", exp)
+                localforage.setItem("user", JSON.stringify(user)).then(() => {
+                    console.log("put user into forage");
+                });
+            }
+            else if (Cookies.get("usingindexed") == "true") {
+                user = await localforage.getItem("user")
+                user = JSON.parse(user)
+            }
+            else {
+                user = {
+                    subscribed: []
+                };
+                Cookies.set("usingindexed", "true", exp)
+                localforage.setItem("user", JSON.stringify(user))
             }
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker
@@ -132,7 +148,10 @@
             }
         }
         function savecookies() {
-            Cookies.set("user", JSON.stringify(user), exp);
+            Cookies.set("usingindexed", "true", exp)
+            localforage.setItem("user", JSON.stringify(user)).then(() => {
+                console.log("saved stuff");
+            });
         }
         function dodropthing(a) {
             a.preventDefault();
