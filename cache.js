@@ -7,7 +7,7 @@ self.addEventListener('install', function (e) {
             console.log("is local.") // to disable caching on the service worker for development purposes, create a file called islocal.txt and make its content be true
         }
         console.log(a)
-    })
+    });
     return cache_add_all([
         "index.html",
         "view.html",

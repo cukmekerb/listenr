@@ -38,9 +38,10 @@ html {
         font-size: 60px;
         width: 100%;
         text-align: center;
-        padding-top: 20%;
+        padding-top: 10%;
         color: white;
         padding-bottom: 10%;
+        position: relative;
         animation: hover 1s alternate infinite ease-in-out, fadein 4s;
     }
     #ads {
@@ -63,9 +64,11 @@ html {
     cursor: pointer;
     transition: 0.6s;
 }
-.openbutton:hover{
+
+.openbutton:hover {
     box-shadow: rgb(15, 15, 15) 4px 8px 10px;
 }
+
 @media (max-width: 949px) {
     #signup {
         text-align: center;
@@ -97,7 +100,9 @@ html {
         text-align: center;
         padding-top: 20%;
         color: white;
-        padding-bottom: 50%;
+        padding-bottom: 20%;
+        bottom: 0;
+        position: relative;
         animation: hover 1s alternate infinite ease-in-out, fadein 4s;
     }
 }
@@ -135,6 +140,17 @@ h1 {
     cursor: pointer;
 }
 
+.why-explainer {
+    display: block;
+    padding-left: 20px;
+    position: relative;
+    background: #3e3e3e;
+    float: left;
+    padding-right: 20px;
+}
+.why-segment{
+    width: 100%;
+}
 .nonono {
     animation: nonono 0.35s ease-in-out;
 }
@@ -153,6 +169,11 @@ h1 {
     background-color: rgb(62, 62, 62);
     width: 100%;
     font-family: sans-serif;
+    float: left;
+    left: 0;
+    margin: 0;
+    padding:0;
+    position: absolute;
 }
 
 a {

@@ -43,6 +43,7 @@
                 Cookies.set("usingindexed", "true", exp)
                 localforage.setItem("user", JSON.stringify(user)).then(() => {
                     console.log("put user into forage");
+                    Cookies.remove("user");
                 });
             }
             else if (Cookies.get("usingindexed") == "true") {
@@ -85,7 +86,7 @@
 
         }
         document.addEventListener('aos:in:image-1', () => {
-            document.getElementById("ads").src = "ads.png";
+            document.getElementById("ads").src = "admover-anim.png";
             setTimeout(() => {
                 document.getElementById("ads").outerHTML = "<div id='ads'></div>";
             }, 5050);
@@ -117,8 +118,7 @@
     <section id="why">
         <!--explain why signing up is good. make sure they know this only gets rid of VISUAL ads.-->
         <div class="why-segment">
-            <div class="why-explainer" data-aos-id="image-1" data-aos="none"
-                style="overflow: auto; padding-right: 20px;">
+            <div class="why-explainer" data-aos-id="image-1" data-aos="none">
                 <img src="ads-still.png" id="ads">
                 <h1>Remove visual ads.</h1>
                 <p>Signing up for listenr premium will remove all visual advertisements, allowing for a more focused

@@ -135,6 +135,7 @@
                 Cookies.set("usingindexed", "true", exp)
                 localforage.setItem("user", JSON.stringify(user)).then(() => {
                     console.log("put user into forage");
+                    Cookies.remove("user");
                 });
             }
             else if (Cookies.get("usingindexed") == "true") {
