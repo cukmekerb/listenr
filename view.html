@@ -43,12 +43,23 @@
         var castdesk;
         var episodes = [];
         var whathasbeenloaded;
+        var feedurl;
         let root = document.documentElement;
         var defaultephtml;
         var playingep;
         var lasttime;
         var intervalaler = false;
-
+        function safe_decode(uri) {
+            if (!uri) {
+                return uri
+            }
+            try {
+                return decodeURIComponent(uri.replace(/%(?![0-9][0-9a-fA-F]+)/gi, '%25'))
+            }
+            catch {
+                return decodeURIComponent(uri)
+            }
+        }
         function generatead() {
             if (Math.floor((Math.random() * 10) + 1) >= 3) {
                 return `<div class="episode show"><iframe data-aa="1479777" src="//acceptable.a-ads.com/1479777?size=Adaptive&background_color=2c2c2c&text_color=b9b9b9&title_color=b9b9b9&link_color=b9b9b9" scrolling="no" style="border:0px; padding:0; width:100%; height:100px; overflow:hidden" allowtransparency="true"></iframe></div>`;
@@ -132,12 +143,12 @@
                     .register("cache.js")
                     .then(function () { console.log("service worker registered"); });
             }
-            var feedurl = String(window.location).split("?AetBh69feedbH=")[1];
+            feedurl = String(window.location).split("?AetBh69feedbH=")[1];
             if (String(window.location).includes("?AetBh69feedbH=") && feedurl.length != 0 && feedurl != null && validurl(window.atob(feedurl))) {
                 feedurl = window.atob(feedurl);
                 getfeed(feedurl);
-                document.getElementById("subbutton").setAttribute("onclick", "subscribe('" + feedurl + "')");
-                if (user.subscribed.indexOf(user.subscribed.find(a => a.url == feedurl)) > -1) {
+                document.getElementById("subbutton").setAttribute("onclick", "subscribe()");
+                if (user.subscribed.indexOf(user.subscribed.find(a => safe_decode(a.url) == feedurl)) > -1) {
                     document.getElementById("subbutton").innerHTML = "Subscribed   <i class='fas fa-check'></i>";
                     document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"));
                     document.getElementById("subbutton").classList.replace("subscribe-u", "subscribe-s");
@@ -184,9 +195,10 @@
                     defaultephtml = document.getElementsByClassName("episode")[0].outerHTML;
                     document.getElementById("image").src = feed.image;
                     if (user.subscribed.find(a => a.url == link) != null) {
-                        user.subscribed[user.subscribed.findIndex(a => a.url == link)].image = document.getElementById("image").src;
+                        user.subscribed[user.subscribed.findIndex(a => safe_decode(a.url) == link)].image = encodeURIComponent(document.getElementById("image").src);
                         console.log("updating image")
-                        user.subscribed[user.subscribed.findIndex(a => a.url == link)].desc = feed.description;
+                        user.subscribed[user.subscribed.findIndex(a => safe_decode(a.url) == link)].desc = encodeURIComponent(feed.description);
+                        user.subscribed[user.subscribed.findIndex(a => safe_decode(a.url) == link)].title = encodeURIComponent(feed.title);
                         savecookies();
                     }
                     if (feed.items[0].itunes_author != null) {
@@ -280,6 +292,7 @@
 
         function savecookies() {
             Cookies.set("user", JSON.stringify(user), exp);
+            console.log("saving cookies!")
         }
 
         function longpoddesk() {
@@ -366,24 +379,26 @@
             }
         }
 
-        function subscribe(url) {
+        function subscribe() {
+            var url = feedurl;
             user.subscribed.splice(0, 0, {
-                url: url,
-                desc: castdesk,
-                title: String(document.title).replace("- listenr", ""),
-                img: document.getElementById("image").src
+                url: encodeURIComponent(url),
+                desc: encodeURIComponent(castdesk),
+                title: encodeURIComponent(String(document.title).replace("- listenr", "")),
+                img: encodeURIComponent(document.getElementById("image").src)
             });
             setTimeout(function () {
                 document.getElementById("subbutton").classList.replace("subscribe-u", "subscribe-s");
-            }, 20)
+            }, 20);
             document.getElementById("subbutton").innerHTML = "Subscribed   <i class='fas fa-check'></i>";
             savecookies();
             document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"))
         }
 
-        function unsubscribe(url) {
-            if (user.subscribed.find(a => a.url == url) != null) {
-                user.subscribed.splice(user.subscribed.indexOf(user.subscribed.find(a => a.url == url)), 1);
+        function unsubscribe() {
+            var url = feedurl;
+            if (user.subscribed.find(a => safe_decode(a.url) == url) != null) {
+                user.subscribed.splice(user.subscribed.indexOf(user.subscribed.find(a => safe_decode(a.url) == url)), 1);
             }
             setTimeout(function () {
                 document.getElementById("subbutton").innerHTML = "Subscribe";

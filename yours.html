@@ -41,6 +41,17 @@
             var b = document.getElementById("texttester").innerText || document.getElementById("texttester").textContent;
             return b;
         }
+        function safe_decode(uri) {
+            if (!uri) {
+                return uri
+            }
+            try {
+                return decodeURIComponent(uri.replace(/%(?![0-9][0-9a-fA-F]+)/gi, '%25'))
+            }
+            catch {
+                return decodeURIComponent(uri)
+            }
+        }
         function init() {
             if (Cookies.get("user") != null) {
                 user = JSON.parse(Cookies.get("user"));
@@ -59,19 +70,19 @@
                         }
                         ephtml = document.getElementById("show-$$i%%").outerHTML;
                         ephtml = ephtml.replace(/\$\$i\%\%/gi, i);
-                        ephtml = ephtml.replace(/\$\$\%\%TOTITLE\%\%/gi, user.subscribed[i].title);
-                        if (user.subscribed[i].desc.length > 250) {
-                            ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(String(user.subscribed[i].desc).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
+                        ephtml = ephtml.replace(/\$\$\%\%TOTITLE\%\%/gi, safe_decode(user.subscribed[i].title));
+                        if (safe_decode(user.subscribed[i].desc).length > 250) {
+                            ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(safe_decode(String(user.subscribed[i].desc).slice(0, 250))) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
                         }
                         else {
-                            ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(user.subscribed[i].desc));
+                            ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(safe_decode(user.subscribed[i].desc)));
                         }
-                        ephtml = ephtml.replace(/\$\$PDI\%\%/gi, user.subscribed[i].img);
-                        ephtml = ephtml.replace(/\$\$showurl\%\%/gi, "view.html?AetBh69feedbH=" + window.btoa(user.subscribed[i].url));
+                        ephtml = ephtml.replace(/\$\$PDI\%\%/gi, safe_decode(user.subscribed[i].img));
+                        ephtml = ephtml.replace(/\$\$showurl\%\%/gi, "view.html?AetBh69feedbH=" + window.btoa(safe_decode(user.subscribed[i].url)));
                         document.getElementById("op").innerHTML += ephtml;
                         shows.push({
-                            title: user.subscribed[i].title,
-                            desc: user.subscribed[i].desc
+                            title: safe_decode(user.subscribed[i].title),
+                            desc: safe_decode(user.subscribed[i].desc)
                         });
                     }
                     document.getElementById("show-$$i%%").style.display = "none";
@@ -83,8 +94,8 @@
             else {
                 document.getElementById("op").innerHTML = "<p class='centererror'>Your're not subscribed to any shows. You can add one by searching</p>";
             }
-            setTimeout(() =>{
-                document.getElementById("op").classList.remove("hidden"); 
+            setTimeout(() => {
+                document.getElementById("op").classList.remove("hidden");
 
             }, 100)
         }
@@ -107,7 +118,7 @@
         }
         function showless(i) {
             showingthing = true;
-            document.getElementById("desc_" + i).innerHTML = htmltotext(shows[i].desc[0].replace(/<br>/gi, "\n").slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>";
+            document.getElementById("desc_" + i).innerHTML = htmltotext(shows[i].desc.replace(/<br>/gi, "\n").slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>";
             setTimeout(() => { showingthing = false }, 10);
         }
         function checkrss(data) {

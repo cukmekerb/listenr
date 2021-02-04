@@ -4,7 +4,7 @@ self.addEventListener('install', function (e) {
     fetch("islocal.txt").then(a => a.text()).then(a => {
         if(a == "true"){
             islocal = true;
-            console.log("is local.")
+            console.log("is local.") // to disable caching on the service worker for development purposes, create a file called islocal.txt and make its content be true
         }
         console.log(a)
     })
