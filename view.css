@@ -8,7 +8,7 @@ html {
     scroll-behavior: smooth;
     background-color: rgb(44, 44, 44);
     color: white;
-    font-family: sans-serif;
+    font-family: 'DejaVu Sans', sans-serif;
     height: 100%;
 }
 
@@ -31,7 +31,7 @@ html {
     padding-top: 2px;
     margin-top: 20px;
     overflow: auto;
-    font-family: sans-serif;
+    font-family: 'DejaVu Sans', sans-serif;
     cursor: pointer;
 }
 
@@ -83,6 +83,7 @@ td {
 #logopan {
     font-weight: bold;
     font-size: 30px !important;
+    font-family: sans-serif;
     top: 5px;
     cursor: pointer;
 }
@@ -125,6 +126,7 @@ input:focus {
 .episode_title {
     margin-top: 5px;
     font-size: 30px;
+    font-family: sans-serif;
 }
 
 .smallplaybutton {
@@ -152,18 +154,21 @@ input:focus {
     pointer-events: none;
     transition: 0.5s;
 }
-*:not(.hidden){
+
+*:not(.hidden) {
     opacity: 1;
     transition: 0.5s;
 }
+
 #output {
-    font-family: sans-serif;
+    font-family: 'DejaVu Sans', sans-serif;
 }
-#loading.hidden{
+
+#loading.hidden {
     margin-top: -30px;
 }
 
-.show.hidden{
+.show.hidden {
     margin-top: 80px;
 }
 
@@ -183,7 +188,7 @@ input:focus {
         z-index: 3000;
         border-bottom: 2px solid white;
         background-color: rgb(31, 30, 30);
-        font-family: sans-serif;
+        font-family: 'DejaVu Sans', sans-serif;
         white-space: nowrap;
     }
     #navbar>input {
@@ -235,7 +240,7 @@ input:focus {
     }
     #episodes {
         margin-left: 30px;
-        font-family: sans-serif;
+        font-family: 'DejaVu Sans', sans-serif;
     }
     .smallplaybutton {
         opacity: 0;
@@ -258,7 +263,7 @@ input:focus {
     width: 100%;
     text-align: center;
     vertical-align: middle;
-    font-family: sans-serif;
+    font-family: 'DejaVu Sans', sans-serif;
 }
 
 .burger {
@@ -279,6 +284,10 @@ input:focus {
     cursor: pointer;
     font-size: 42px;
     margin-left: 10px;
+}
+
+.navigation {
+    font-family: sans-serif;
 }
 
 @media (max-width: 949px) {
@@ -338,7 +347,7 @@ input:focus {
         z-index: 3000;
         border-bottom: 2px solid white;
         background-color: rgb(31, 30, 30);
-        font-family: sans-serif;
+        font-family: 'DejaVu Sans', sans-serif;
         white-space: nowrap;
     }
     #episode_td {
@@ -408,7 +417,7 @@ input:focus {
     #episodes {
         margin-left: auto;
         margin-right: auto;
-        font-family: sans-serif;
+        font-family: 'DejaVu Sans', sans-serif;
         width: 100%;
     }
     td {
@@ -433,7 +442,7 @@ input:focus {
     border-style: solid;
     border-width: 3px;
     border-radius: 50px;
-    font-family: sans-serif;
+    font-family: 'DejaVu Sans', sans-serif;
     font-size: 50px;
     transition: 0.1s;
     user-select: none;
@@ -520,8 +529,8 @@ input:focus {
     opacity: 1;
 }
 
-#timeleft,#minustime{
-    font-family: sans-serif;
+#timeleft, #minustime {
+    font-family: 'DejaVu Sans', sans-serif;
     font-weight: medium;
 }
 
@@ -590,6 +599,7 @@ input:focus {
 #author_name {
     opacity: 0.8;
     font-weight: bold;
+    font-family: sans-serif;
     font-size: 14px;
 }
 
@@ -615,7 +625,7 @@ input:focus {
     height: auto;
     width: auto;
     white-space: nowrap;
-    font-family: sans-serif;
+    font-family: 'DejaVu Sans', sans-serif;
 }
 
 #patreon-bar {
@@ -627,6 +637,10 @@ input:focus {
     left: 0;
     z-index: 100000;
     transition: 0.4s;
+    font-family: 'DejaVu Sans', sans-serif;
+}
+
+h1 {
     font-family: sans-serif;
 }
 

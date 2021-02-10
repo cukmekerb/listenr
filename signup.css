@@ -29,7 +29,7 @@ html {
         border-radius: 10px;
         color: black;
         background: white;
-        font-family: sans-serif;
+        font-family: 'DejaVu Sans', sans-serif;
     }
     #signup>img {
         height: 150px;
@@ -58,7 +58,7 @@ html {
     margin-left: auto;
     margin-right: auto;
     border-radius: 4px;
-    font-family: sans-serif;
+    font-family: 'DejaVu Sans', sans-serif;
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
@@ -84,7 +84,7 @@ html {
         border-radius: 10px;
         color: black;
         background: white;
-        font-family: sans-serif;
+        font-family: 'DejaVu Sans', sans-serif;
     }
     #signup>img {
         height: 130px;
@@ -114,7 +114,7 @@ html {
 }
 
 h1 {
-    font-family: sans-serif;
+    font-family: sans-serif !important;
 }
 
 .explainer>p {
@@ -168,7 +168,7 @@ h1 {
 #why {
     background-color: rgb(62, 62, 62);
     width: 100%;
-    font-family: sans-serif;
+    font-family: 'DejaVu Sans', sans-serif;
     float: left;
     left: 0;
     margin: 0;
@@ -188,13 +188,13 @@ a {
     border-radius: 5px;
     border: 2px solid rgb(187, 183, 183);
     padding: 5px;
-    font-family: sans-serif;
+    font-family: 'DejaVu Sans', sans-serif;
     color: rgb(43, 43, 43);
 }
 
 #itseasy {
     text-align: center;
-    font-family: sans-serif;
+    font-family: 'DejaVu Sans', sans-serif;
     font-size: 40px;
     margin-top: 500px;
 }
