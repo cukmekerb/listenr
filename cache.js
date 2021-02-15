@@ -107,6 +107,9 @@ self.addEventListener("fetch", function (e) {
                     })
                 }
             }
+            else if(e.request.url == registration.scope+"$$PDI%%"){
+                return fetch("icon-512.png")
+            }
             console.log(e.request.url + " - not sending cache")
             return fetch(e.request).catch(err => {
                 console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa error");

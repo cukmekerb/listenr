@@ -57,7 +57,7 @@
             try {
                 return decodeURIComponent(uri.replace(/%(?![0-9][0-9a-fA-F]+)/gi, '%25'))
             }
-            catch {
+            catch (err){
                 return decodeURIComponent(uri)
             }
         }
@@ -139,8 +139,13 @@
                 });
             }
             else if (Cookies.get("usingindexed") == "true") {
+                var olduser = user;
+                console.log(olduser)
                 user = await localforage.getItem("user")
-                user = JSON.parse(user)
+                user = JSON.parse(user);
+                if(!user){
+                    user = olduser;
+                }
             }
             else {
                 user = {

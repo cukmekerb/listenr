@@ -1,0 +1,107 @@
+@media (max-width: 949px) {
+    #signup {
+        font-size: 40px;
+    }
+    #output {
+        width: 80%;
+    }
+}
+
+@media (min-width: 950px) {
+    #signup {
+        font-size: 40px;
+    }
+    #output {
+        width: 40%;
+    }
+}
+.input-wrap{
+
+    position: relative;
+}
+
+#shortlinkform {
+    padding-top: 80px;
+}
+.width-machine {
+    padding: 0;
+    opacity: 0;
+}
+
+#shortlinkinput {
+    position: absolute;
+    display: inline;
+    width: 100%;
+    margin: 0;
+    top:-10px;
+    left:0;
+    margin-left: 1px;
+}
+
+#sl_span{
+    font-size: 20px;
+}
+#rss_url{
+    margin-bottom: 14px;
+}
+.episode {
+    margin-bottom: 15px;
+}
+
+.subbed {
+    color: rgb(27, 245, 27);
+    text-align: center;
+}
+.subbed > *{
+    color: rgb(60, 231, 60);
+}
+.notsubbed {
+    color: rgb(250, 36, 36);
+    text-align: center;
+}
+
+#signup {
+    text-align: center;
+    margin-top: 10%;
+    width: 100%;
+    font-family: sans-serif;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.openbutton {
+    width: 200px;
+    height: 50px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-family: 'DejaVu Sans', sans-serif;
+    vertical-align: middle;
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.6s;
+}
+
+.blue {
+    background: rgb(10, 77, 153);
+}
+
+.grey {
+    background: rgb(88, 88, 88);
+}
+
+.openbutton:hover {
+    box-shadow: rgb(15, 15, 15) 4px 8px 10px;
+}
+
+#signup>img {
+    height: 80px;
+}
+
+h1 {
+    font-family: sans-serif !important;
+}

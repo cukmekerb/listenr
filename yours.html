@@ -28,12 +28,16 @@
     <!--no more metatags-->
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js"></script>
+    <!--polyfills-->
+    <!--well it looks like we can't polyfill??-->
     <link rel="stylesheet" href="view.css">
     <link href="http://fonts.cdnfonts.com/css/dejavu-sans" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height" />
     <script>
-        var user;
+        var user = {
+            subscribed: []
+        };
         var shows = [];
         var showingthing = false;
         var exp = { expires: 100000 };
@@ -49,7 +53,7 @@
             try {
                 return decodeURIComponent(uri.replace(/%(?![0-9][0-9a-fA-F]+)/gi, '%25'))
             }
-            catch {
+            catch (error){
                 return decodeURIComponent(uri)
             }
         }
@@ -63,8 +67,13 @@
                 });
             }
             else if (Cookies.get("usingindexed") == "true") {
+                var olduser = user;
+                console.log(olduser)
                 user = await localforage.getItem("user")
-                user = JSON.parse(user)
+                user = JSON.parse(user);
+                if(!user){
+                    user = olduser;
+                }
             }
             else {
                 user = {

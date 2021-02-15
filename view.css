@@ -37,7 +37,6 @@ html {
 
 * {
     scrollbar-width: none;
-    overflow: -moz-scrollbars-none !important;
 }
 
 #title {
@@ -121,6 +120,7 @@ input:focus {
     padding-left: 10px;
     padding-right: 20px;
     transition: 0.3s;
+    text-align: left;
 }
 
 .episode_title {
