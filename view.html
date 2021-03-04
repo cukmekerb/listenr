@@ -203,7 +203,7 @@
         }
 
         function getfeed(link) {
-            fetch("https://rss-to-json-convert.herokuapp.com/" + encodeURIComponent(link))
+            fetch("https://lstnr.gq/.netlify/functions/rss-to-json?url=" + encodeURIComponent(link))
                 .then(a => a.json())
                 .then(feed => {
                     whathasbeenloaded = feed;
@@ -514,7 +514,7 @@
                 id="patreonarrow"></i></span><i class="fas fa-times" id="patreonx" onclick="hidesubad()"></i></div>
     <div id="navbar">
         <span id="logopan" onclick="window.location='index.html'">
-            <img src="listenr-logo.png" height="70"
+            <img src="listenr-logo-scaled.png" height="70"
                 style="display: inline-block; vertical-align: middle; margin-top: -15px;">
         </span>
         <span class="navigation" onclick="window.location='yours.html'">Your Podcasts</span> <span class="navigation"

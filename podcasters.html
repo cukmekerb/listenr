@@ -75,7 +75,7 @@
                             setupshortlinkform(result.rows[0][0]);
                         }
                         else {
-                            fetch("https://rss-to-json-convert.herokuapp.com/" + encodeURIComponent(link))
+                            fetch("https://lstnr.gq/.netlify/functions/rss-to-json?url=" + encodeURIComponent(link))
                                 .then(a => a.json())
                                 .then(feed => {
                                     document.getElementById("working").classList.add("hidden")
@@ -172,7 +172,7 @@
 </head>
 
 <body onload="init()">
-    <h1 id="signup">Add your show to <img src="listenr-logo.png"
+    <h1 id="signup">Add your show to <img src="listenr-logo-scaled.png"
             style="display: inline-block; margin-top: -10px; vertical-align: middle; cursor: pointer;" alt="listenr"
             onclick="location='/'"></h1>
 
