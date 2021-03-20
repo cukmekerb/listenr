@@ -32,6 +32,7 @@
     <script src="https://cdn.jsdelivr.net/gh/cukmekerb/keymaster/keymaster.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/autolink-js/autolink-min.js"></script>
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, height=device-height, target-densitydpi=device-dpi" />
     <script>
@@ -41,6 +42,9 @@
         var exp = {
             expires: 100000
         };
+        var link_config = {
+            target: "_blank",
+        }
         var castdesk;
         var episodes = [];
         var whathasbeenloaded;
@@ -315,7 +319,7 @@
         }
 
         function longpoddesk() {
-            document.getElementById("description").innerHTML = castdesk + "<br><i onclick='shortpoddesk()' class='shortlong'>less</i>";
+            document.getElementById("description").innerHTML = castdesk.autoLink(link_config) + "<br><i onclick='shortpoddesk()' class='shortlong'>less</i>";
             setTimeout(() => {
                 adjustheight();
             }, 150)
@@ -383,7 +387,7 @@
         }
 
         function showmore(i) {
-            document.getElementById("desc_" + i).innerHTML = episodes[i].desc + "<br><br><i>Published " + episodes[i].pubdate + "</i><br><br><i class='shortlong' onclick='showless(" + i + ")'>less</i><br>";
+            document.getElementById("desc_" + i).innerHTML = episodes[i].desc.autoLink(link_config) + "<br><br><i>Published " + episodes[i].pubdate + "</i><br><br><i class='shortlong' onclick='showless(" + i + ")'>less</i><br>";
             document.getElementById("title_" + i).innerHTML = episodes[i].title;
         }
 

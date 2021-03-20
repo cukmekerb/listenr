@@ -28,6 +28,7 @@
     <!--no more metatags-->
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/autolink-js/autolink-min.js"></script>
     <!--polyfills-->
     <!--well it looks like we can't polyfill??-->
     <link rel="stylesheet" href="view.css">
@@ -37,6 +38,9 @@
     <script>
         var user = {
             subscribed: []
+        };
+        var link_config = {
+            target: "_blank",
         };
         var shows = [];
         var showingthing = false;
@@ -138,7 +142,7 @@
         }
         function showmore(i) {
             showingthing = true;
-            document.getElementById("desc_" + i).innerHTML = shows[i].desc + "<br><br><i class='shortlong' onclick='showless(" + i + ")'>less</i>";
+            document.getElementById("desc_" + i).innerHTML = shows[i].desc.autoLink(link_config) + "<br><br><i class='shortlong' onclick='showless(" + i + ")'>less</i>";
             document.getElementById("title_" + i).innerHTML = episodes[i].title;
             setTimeout(() => { showingthing = false }, 10);
         }

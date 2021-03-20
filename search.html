@@ -27,12 +27,16 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <!--no more metatags-->
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/autolink-js/autolink-min.js"></script>
     <link rel="stylesheet" href="view.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height" />
     <script>
+        var link_config = {
+            target: "_blank",
+        };
         var shows = [];
         var user = {};
         var adstring = `<div class="episode show"><iframe data-aa="1479777" src="//acceptable.a-ads.com/1479777?size=Adaptive&background_color=2c2c2c&text_color=b9b9b9&title_color=b9b9b9&link_color=b9b9b9" scrolling="no" style="border:0px; padding:0; width:100%; height:100%; overflow:hidden" allowtransparency="true"></iframe></div>`;
@@ -71,8 +75,8 @@
         }
         function showmore(i) {
             showingthing = true;
-            document.getElementById("desc_" + i).innerHTML = shows[i].desc + "<br><br><i class='shortlong' onclick='showless(" + i + ")'>less</i>";
-            document.getElementById("title_" + i).innerHTML = episodes[i].title;
+            document.getElementById("desc_" + i).innerHTML = shows[i].desc.autoLink(link_config) + "<br><br><i class='shortlong' onclick='showless(" + i + ")'>less</i>";
+            document.getElementById("title_" + i).innerHTML = shows[i].title;
             setTimeout(() => { showingthing = false }, 10);
         }
         function showless(i) {
