@@ -48,7 +48,9 @@
         }
         var castdesk;
         var episodes = [];
-        var whathasbeenloaded;
+        var whathasbeenloaded = {
+            items: []
+        };
         var feedurl;
         let root = document.documentElement;
         var defaultephtml;
@@ -62,7 +64,7 @@
             try {
                 return decodeURIComponent(uri.replace(/%(?![0-9][0-9a-fA-F]+)/gi, '%25'))
             }
-            catch (err){
+            catch (err) {
                 return decodeURIComponent(uri)
             }
         }
@@ -142,7 +144,7 @@
                 console.log(olduser)
                 user = await localforage.getItem("user")
                 user = JSON.parse(user);
-                if(!user){
+                if (!user) {
                     user = olduser;
                 }
             }
@@ -202,10 +204,9 @@
         }
 
         function getfeed(link) {
-            fetch("https://lstnr.gq/.netlify/functions/rss-to-json?url=" + encodeURIComponent(link))
+            fetch("https://lstnr.gq/.netlify/functions/rss-to-json?items=10&url=" + encodeURIComponent(link))
                 .then(a => a.json())
                 .then(feed => {
-                    whathasbeenloaded = feed;
                     document.getElementById("title").innerHTML = feed.title;
                     document.title = feed.title + " - listenr";
                     defaultephtml = document.getElementsByClassName("episode")[0].outerHTML;
@@ -226,39 +227,8 @@
                         document.getElementById("description").innerHTML += "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
                     }
                     window.onresize = adjustheight;
-                    var episodehtml;
-                    for (var i = 0; i < 10 && i < feed.items.length; i++) {
-                        episodehtml = String(document.getElementsByClassName("episode")[0].outerHTML).replace(/\$\$\i\%\%/gi, i);
-                        if (String(feed.items[i].title).length > 30) {
-                            episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.items[i].title).slice(0, 31) + "...");
-                        } else {
-                            episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.items[i].title));
-                        }
-                        episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.items[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
-                        episodehtml = episodehtml.replace(/<br>/gi, "\n");
-                        if ((i == 1 || i / 3 == Math.round(i / 3)) && !user.haspremium) {
-                            episodehtml += generatead();
-                        }
-                        document.getElementById("episodes").innerHTML += "<br>" + episodehtml;
-                        episodes.push({
-                            title: feed.items[i].title,
-                            desc: String(feed.items[i].description).replace(/\n/gi, "<br>"),
-                            url: feed.items[i].enclosures[0].url,
-                            pubdate: new Date(feed.items[i].published).toLocaleString()
-                        });
-                        if (i >= 9) {
-                            document.getElementById("episodes").innerHTML += "<div id='loadmore' onclick='loadmore()'>Load more</div>";
-
-                        }
-                        if (i >= feed.items.length - 1) {
-                            document.getElementById("episodes").innerHTML += "<br><i style='text-align:center; margin-left:auto; margin-right:auto;'>No more episodes to load.</i>";
-                        }
-                    }
-                    document.getElementsByClassName("episode")[0].outerHTML = "";
-                    document.getElementById("episodes").classList.remove("hidden");
-                    setTimeout(() => {
-                        document.getElementById("noscrolly").classList.remove("hidden");
-                    }, 100)
+                    filleps(feed)
+                    whathasbeenloaded = feed;
                     return feed;
                 })
                 .then(feed => {
@@ -271,12 +241,56 @@
                         });
                 });
         }
+        function filleps(feed) {
+            var episodehtml;
+            var iteml = whathasbeenloaded.items.length || 0;
+            console.log(iteml)
+            if (document.getElementById("loadmore")) {
+                document.getElementById("loadmore").outerHTML = "";
+            }
+            for (i in feed.items) {
+                ii = iteml + Number(i);
+                episodehtml = String(document.getElementsByClassName("episode")[0].outerHTML).replace(/\$\$\i\%\%/gi, ii);
+                episodehtml = episodehtml.replace("display:none", "");
+                if (String(feed.items[i].title).length > 30) {
+                    episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.items[i].title).slice(0, 31) + "...");
+                } else {
+                    episodehtml = episodehtml.replace("$$%%TOTITLE%%", String(feed.items[i].title));
+                }
+                episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.items[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + ii + ")'>more</i>");
+                episodehtml = episodehtml.replace(/<br>/gi, "\n");
+                if ((i == 1 || i / 3 == Math.round(i / 3)) && !user.haspremium) {
+                    episodehtml += generatead();
+                }
+                document.getElementById("episodes").innerHTML += "<br>" + episodehtml;
+                episodes.push({
+                    title: feed.items[i].title,
+                    desc: String(feed.items[i].description).replace(/\n/gi, "<br>"),
+                    url: feed.items[i].enclosures[0].url,
+                    pubdate: new Date(feed.items[i].published).toLocaleString()
+                });
 
+            }
+            document.getElementById("episodes").innerHTML += "<div id='loadmore' onclick='loadmore()'>Load more</div>";
+            document.getElementById("episodes").classList.remove("hidden");
+            setTimeout(() => {
+                document.getElementById("noscrolly").classList.remove("hidden");
+            }, 100)
+        }
         function loadmore() {
 
-            var feed = whathasbeenloaded;
-            var b = episodes.length;
-            document.getElementById("loadmore").outerHTML = "";
+            document.getElementById("loadmore").innerHTML = "<i style='text-align:center; margin-left:auto; margin-right:auto;'>Loading...</i>";
+            fetch("https://lstnr.gq/.netlify/functions/rss-to-json?items=10&startfrom=" + whathasbeenloaded.items.length + "&url=" + encodeURIComponent(feedurl))
+                .then(a => a.json())
+                .then(feed => {
+                    if (feed.items.length < 1) {
+                        document.getElementById("loadmore").outerHTML = "<br><i style='text-align:center; margin-left:auto; margin-right:auto;'>No more episodes to load.</i>";
+                        return
+                    }
+                    document.getElementById("loadmore").outerHTML="";
+                    filleps(feed);
+                })
+            /*
             for (var i = b; i < 10 + b && i < feed.items.length; i++) {
                 episodehtml = String(defaultephtml).replace(/\$\$\i\%\%/gi, i);
                 if (String(feed.items[i].title).length > 30) {
@@ -303,7 +317,7 @@
                     document.getElementById("episodes").innerHTML += "<br><i style='text-align:center; margin-left:auto; margin-right:auto;'>No more episodes to load.</i>";
                 }
             }
-
+            */
         }
 
 
@@ -478,8 +492,8 @@
         </span>
         <span class="navigation" onclick="window.location='yours.html'">Your Podcasts</span> <span class="navigation"
             style="font-weight: 700; font-size: 19px; color: white;">View Show</span> <input name="AetBh69SERCH99bH"
-            id="AetBh69SERCH99bH" placeholder="Search for a podcast..." onkeypress="csearch(event)"
-            autocomplete="off" type="text">
+            id="AetBh69SERCH99bH" placeholder="Search for a podcast..." onkeypress="csearch(event)" autocomplete="off"
+            type="text">
         <span id="hidinput"><i style="margin-right: 5px;">or</i> <input placeholder="Add by RSS..."
                 onkeypress="checkrss(event)" autocomplete="off" type="url" id="rssurl"></span>
     </div>
@@ -523,9 +537,9 @@
                 </td>
                 <td class="bigtd" id="episode_td">
                     <div id="episodes" class="scrollable hidden">
-                        <div class="episode">
+                        <div class="episode" style="display:none;">
                             <i class="fas fa-play-circle smallplaybutton" id="playbutton-$$i%%"
-                                onclick="playepisode('$$i%%')"></i>
+                                onclick="playepisode(Number('$$i%%'))"></i>
                             <h1 class="episode_title" style="display: inline;" id="title_$$i%%"> $$%%TOTITLE%%</h1>
                             <div id="desc_$$i%%">$$%%DESK%%</div>
                         </div>
