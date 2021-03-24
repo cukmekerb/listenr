@@ -32,6 +32,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js"></script>
+    <script src="common.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height" />
     <script>
         var link_config = {
@@ -131,36 +132,6 @@
                     });
             }
         }
-
-        function csearch(data) {
-            if (data.keyCode == 13) {
-                console.log("aaa")
-                window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH").value;
-
-            }
-        }
-        function csearchm(data) {
-            if (data.keyCode == 13) {
-                console.log("aaa")
-                window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bHm").value;
-            }
-        }
-
-        function checkrss(data) {
-            if (data.keyCode == 13) {
-                if (document.getElementById("mobileside").classList.contains("leftside")) {
-                    window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl").value);
-                }
-                else {
-                    window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurlm").value);
-                }
-            }
-        }
-        function checkrss2(data) {
-            if (data.keyCode == 13) {
-                window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl2").value);
-            }
-        }
         function hidemnav() {
             document.getElementById("mobileside").classList.add("leftside")
         }
@@ -197,7 +168,7 @@
         <span class="navigation" onclick="window.location='yours.html'">Your Podcasts</span>
         <span class="navigation" onclick="window.location='view.html'">View Show</span>
         <input name="AetBh69SERCH99bH" id="AetBh69SERCH99bHm" placeholder="Search for a podcast..."
-            onkeypress="csearchm(event)" autocomplete="off" type="text">
+            onkeypress="csearch(event)" autocomplete="off" type="text">
         <input placeholder="Add by RSS..." onkeypress="checkrss(event)" autocomplete="off" type="url" id="rssurlm">
     </div>
 

@@ -28,6 +28,7 @@
     <!--no more metatags-->
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js"></script>
+    <script src="common.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/autolink-js/autolink-min.js"></script>
     <!--polyfills-->
     <!--well it looks like we can't polyfill??-->
@@ -45,11 +46,7 @@
         var shows = [];
         var showingthing = false;
         var exp = { expires: 100000 };
-        function htmltotext(html) {
-            document.getElementById("texttester").innerHTML = html;
-            var b = document.getElementById("texttester").innerText || document.getElementById("texttester").textContent;
-            return b;
-        }
+        
         function safe_decode(uri) {
             if (!uri) {
                 return uri
@@ -102,7 +99,10 @@
                         ephtml = ephtml.replace(/\$\$i\%\%/gi, i);
                         ephtml = ephtml.replace(/\$\$\%\%TOTITLE\%\%/gi, safe_decode(user.subscribed[i].title));
                         if (safe_decode(user.subscribed[i].desc).length > 250) {
-                            ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(safe_decode(String(user.subscribed[i].desc).slice(0, 250))) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
+                            ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(
+                                safe_decode(
+                                    String(user.subscribed[i].desc))
+                                    .slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
                         }
                         else {
                             ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(safe_decode(user.subscribed[i].desc)));
@@ -129,12 +129,6 @@
 
             }, 100)
         }
-        function csearch(data) {
-            if (data.keyCode == 13) {
-                console.log("aaa")
-                window.location = "search.html?AetBh69SERCH99bH=" + (document.getElementById("AetBh69SERCH99bHm").value || document.getElementById("AetBh69SERCH99bH").value);
-            }
-        }
         function csearch2(data) {
             if (data.keyCode == 13) {
                 window.location = "search.html?AetBh69SERCH99bH=" + document.getElementById("AetBh69SERCH99bH2").value;
@@ -150,22 +144,6 @@
             showingthing = true;
             document.getElementById("desc_" + i).innerHTML = htmltotext(shows[i].desc.replace(/<br>/gi, "\n").slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>";
             setTimeout(() => { showingthing = false }, 10);
-        }
-        function checkrss(data) {
-            if (data.keyCode == 13) {
-                if (document.getElementById("mobileside").classList.contains("leftside")) {
-                    window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl").value);
-                }
-                else {
-                    window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurlm").value);
-                }
-            }
-        }
-        function savecookies() {
-            Cookies.set("usingindexed", "true", exp)
-            localforage.setItem("user", JSON.stringify(user)).then(() => {
-                console.log("saved stuff");
-            });
         }
         function dodropthing(a) {
             a.preventDefault();
@@ -216,12 +194,6 @@
         }
         function dodragthing(a) {
             a.dataTransfer.setData('text', a.target.id);
-        }
-        function hidemnav() {
-            document.getElementById("mobileside").classList.add("leftside")
-        }
-        function showmnav() {
-            document.getElementById("mobileside").classList.remove("leftside")
         }
     </script>
 </head>
