@@ -33,7 +33,8 @@ function csearch(data) {
     }
 }
 
-/** checks if a string is a valid URL
+/** checks if a string is a valid URL.
+ * I stole this from stackoverflow
  * @param {String} str - the url to check
  */
 function validurl(str) {
