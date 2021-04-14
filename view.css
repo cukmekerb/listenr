@@ -1,7 +1,6 @@
 :root {
     --slider-val: linear-gradient(90deg, rgb(84, 255, 78) 0%, rgb(185, 185, 185) 0%, rgb(182, 182, 182) 100%);
     --title-pos: 10%;
-    --div-height: 600px;
 }
 
 html {
@@ -44,12 +43,18 @@ html {
 }
 
 #titlespan {
+  /*
     top: 0;
     position: absolute;
+    */
 }
 
-td {
-    position: relative;
+
+.flex {
+    justify-content: left;
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: row wrap;
 }
 
 .shortlong, a {
@@ -61,11 +66,11 @@ td {
 .episode>div {
     padding-bottom: 10px;
 }
-
+/*
 .bigtd {
     width: calc(98% - 600px);
 }
-
+*/
 #hidinput {
     opacity: 0;
     transition: 0.5s !important;
@@ -161,7 +166,11 @@ input:focus {
 }
 
 #output {
+    padding-top: 10px;
     font-family: 'DejaVu Sans', sans-serif;
+    min-height: 100px;
+    flex-wrap: nowrap;
+    align-items: flex-start;
 }
 
 #loading.hidden {
@@ -217,22 +226,21 @@ input:focus {
     #noscrolly {
         overflow: hidden;
         height: 100% !important;
+        position: relative;
     }
     #output {
-        /*aaaaaaaaaaaaaaaaaaaaaaa*/
-        overflow-y: visible;
-        height: var(--div-height);
         transition: 0.4s;
+        margin-left: 30px;
     }
     #nowplayingcont {
         clip-path: inset(0 35% 0 35%);
         width: 100%;
     }
     #desc_scroll {
-        height: calc(var(--div-height) + 20px);
+        /*height: calc(var(--div-height) + 20px);*/
     }
     #episode_td {
-        position: absolute;
+       /* position: absolute; */
         overflow-y: scroll !important;
         overflow-x: visible;
         height: 98% !important;
@@ -248,13 +256,14 @@ input:focus {
     .episode:hover>.smallplaybutton {
         opacity: 1;
     }
+    /*
     #s600ptd {
         width: 600px;
     }
+    */
     #image {
         width: 300px;
         border-radius: 5px;
-        float: left;
         margin-right: 15px;
     }
 }
@@ -284,6 +293,10 @@ input:focus {
     cursor: pointer;
     font-size: 42px;
     margin-left: 10px;
+}
+
+#image {
+    flex: 1 auto;
 }
 
 .navigation {
@@ -358,8 +371,7 @@ input:focus {
     }
     #output {
         transition: 0.4s;
-        box-sizing: content-box;
-        height: var(--div-height) !important;
+       /* height: var(--div-height) !important; */
     }
     #maintable {
         margin-left: auto;
@@ -404,9 +416,11 @@ input:focus {
         #episodes, .episode {
             width: 87.4%;
         }
+        /*
         #output, #s600ptd {
             width: 90%;
         }
+        */
         #episode_td {
             width: 100%;
             margin-left: auto;

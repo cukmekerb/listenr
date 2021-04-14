@@ -161,13 +161,13 @@
                 feedurl = user.lastvisited;
                 getfeed(feedurl);
                 document.getElementById("subbutton").setAttribute("onclick", "subscribe('" + feedurl + "')");
-                adjustheight();
+                
                 if (user.subscribed.indexOf(user.subscribed.find(a => safe_decode(a.url) == feedurl)) > -1) {
                     document.getElementById("subbutton").innerHTML = "Subscribed   <i class='fas fa-check'></i>";
                     document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"));
                     document.getElementById("subbutton").classList.replace("subscribe-u", "subscribe-s");
                 }
-                adjustheight();
+                
             } else {
                 window.location = "yours.html";
             }
@@ -196,7 +196,6 @@
                     if (String(document.getElementById("description").innerHTML).length < castdesk.length) {
                         document.getElementById("description").innerHTML += "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
                     }
-                    window.onresize = adjustheight;
                     filleps(feed)
                     whathasbeenloaded = feed;
                     return feed;
@@ -288,7 +287,7 @@
         function longpoddesk() {
             document.getElementById("description").innerHTML = castdesk.autoLink(link_config) + "<br><i onclick='shortpoddesk()' class='shortlong'>less</i>";
             setTimeout(() => {
-                adjustheight();
+                
             }, 150)
         }
 
@@ -296,7 +295,7 @@
             document.getElementById("description").innerHTML = htmltotext(castdesk.slice(0, makedescsize())) + "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
             scrollelement("desc_scroll", 0, 0.5, 60);
             setTimeout(() => {
-                adjustheight();
+                
             }, 200)
         }
 
@@ -430,10 +429,6 @@
             document.getElementById("widthtester").style.fontWeight = weight;
             return document.getElementById("widthtester").clientWidth;
         }
-        
-        function adjustheight() {
-            root.style.setProperty("--div-height", (document.getElementById("titlespan").clientHeight + 10) + "px")
-        }
     </script>
 </head>
 
@@ -470,14 +465,13 @@
     </div>
 
     <div id="nav-space"></div>
-    <div id="noscrolly" class="hidden">
-        <table id="maintable">
-            <tr>
-                <td id="s600ptd">
-                    <div id="output">
+    <div id="noscrolly" class="hidden flex">
+                <div id="s600ptd" class="">
+                    <div id="output" class="flex">
 
-                        <img id="image" onload="adjustheight();"><span id="titlespan">
-                            <div class="scrollable" id="desc_scroll">
+                        <img id="image">
+                        <span id="titlespan">
+                            <div  id="desc_scroll">
                                 <h1 id="title"></h1>
                                 <span id="author_name"></span>
                                 <p id="description"></p>
@@ -487,8 +481,8 @@
                         <br style="clear: both;" />
                     </div>
 
-                </td>
-                <td class="bigtd" id="episode_td">
+                </div>
+                <div class="bigtd" id="episode_td">
                     <div id="episodes" class="scrollable hidden">
                         <div class="episode" style="display:none;">
                             <i class="fas fa-play-circle smallplaybutton" id="playbutton-$$i%%"
@@ -497,9 +491,7 @@
                             <div id="desc_$$i%%">$$%%DESK%%</div>
                         </div>
                     </div>
-                </td>
-            </tr>
-        </table>
+                </div>
     </div>
     <div id="player" class="hidingplayer">
         <div id="progress_container"><span id="timeleft">00:00</span><input type="range" min="0" max="100" value="0"
