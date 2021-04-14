@@ -1,0 +1,15 @@
+{
+  "announcements": [
+    [
+      "Listenr is now ad-free!",
+      "listenr is now ad free because the ads were not making any money, and because nobody signed up for premium",
+      "I have also modernized the website, making it much more responsive, especially on mobile",
+      "The page load speed has been greatly improved, especially on the view page",
+      "I added this announcement thingy",
+      "Listenr's frontend is now going to be FOSS",
+      "If I can figure out how to connect Google Apps Script to GitHub, I'll make the backend FOSS too",
+      "If you spot a bug, please report it here: https://github.com/cukmekerb/listenr/issues/new",
+      "If you know how to connect Google Apps Script to Git, <a href=\"https://cukmekerb.github.io/#contact\" target=\"_blank\">contact me</a>"
+    ]
+  ]
+}
