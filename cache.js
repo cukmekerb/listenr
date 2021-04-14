@@ -37,7 +37,9 @@ self.addEventListener("fetch", function (e) {
     e.respondWith(
         caches.match(e.request).then(function (response) {
             if ((e.request.url.startsWith("https://rss-to-json-convert.herokuapp.com/") || (e.request.url.startsWith(new URL(self.location).origin) && !e.request.url.includes("AetBh69SERCH99bH")) || is_image(e.request.url) || e.request.url.endsWith(".js") || e.request.url.startsWith("https://script.google.com/macros/s/AKfycby45awRekYOvIpe6ZFN_C5llswyiDGMnCwEoD9Dje_hQ1AqTnQ/exec")) && !islocal) {
-                console.log(e.request.url + " - sending cache");
+                if (islocal) {
+                  console.log(e.request.url + " - sending cache");
+                }
                 /*
                 
                 Let me tell you the story
@@ -84,12 +86,16 @@ self.addEventListener("fetch", function (e) {
 
                 */
                 try {
-                    console.log(response.clone());
+                    if (islocal) {
+                      console.log(response.clone());
+                    }
                     return response || fetch(e.request)
                 }
                 catch (err) {
-                    console.log(err)
-                    console.log("error getting " + e.request.url + " from cache. fetching")
+                    if (islocal) {
+                      console.log(err)
+                      console.log("error getting " + e.request.url + " from cache. fetching")
+                    }
                     return fetch(e.request)
                 }
                 finally {
@@ -112,9 +118,10 @@ self.addEventListener("fetch", function (e) {
             }
             console.log(e.request.url + " - not sending cache")
             return fetch(e.request).catch(err => {
-                console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa error");
-                console.error(err);
-
+                if (islocal) {
+                  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa error");
+                  console.error(err);
+                }
                 /* I TOLD YOU NOT TO CRITICIZE */
             })
         })

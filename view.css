@@ -33,13 +33,16 @@ html {
     font-family: 'DejaVu Sans', sans-serif;
     cursor: pointer;
 }
-
+#s600ptd {
+  transition: 0.3s;
+}
 * {
     scrollbar-width: none;
 }
 
 #title {
     font-size: 30px;
+    font-size: max(min(30px, 4vw), 15px);
 }
 
 #titlespan {
@@ -66,11 +69,12 @@ html {
 .episode>div {
     padding-bottom: 10px;
 }
-/*
-.bigtd {
-    width: calc(98% - 600px);
+
+#episode_td {     
+        width: calc(98% - 600px);
+        transition: 0.35s;
 }
-*/
+
 #hidinput {
     opacity: 0;
     transition: 0.5s !important;
@@ -183,7 +187,7 @@ input:focus {
 
 @media (min-width: 950px) {
     #loadmore {
-        width: 350px;
+        width: 90%;
     }
     #mobilenav, #mobileside {
         display: none;
@@ -225,7 +229,8 @@ input:focus {
     }
     #noscrolly {
         overflow: hidden;
-        height: 100% !important;
+        height: 100%;
+        align-items: flex-start;
         position: relative;
     }
     #output {
@@ -236,14 +241,10 @@ input:focus {
         clip-path: inset(0 35% 0 35%);
         width: 100%;
     }
-    #desc_scroll {
-        /*height: calc(var(--div-height) + 20px);*/
-    }
     #episode_td {
-       /* position: absolute; */
-        overflow-y: scroll !important;
+        overflow-y: scroll;
         overflow-x: visible;
-        height: 98% !important;
+        height: calc(100vh - 80px)  !important;
         padding-right: 10px;
     }
     #episodes {
@@ -256,11 +257,11 @@ input:focus {
     .episode:hover>.smallplaybutton {
         opacity: 1;
     }
-    /*
+    
     #s600ptd {
         width: 600px;
     }
-    */
+    
     #image {
         width: 300px;
         border-radius: 5px;
@@ -363,9 +364,6 @@ input:focus {
         font-family: 'DejaVu Sans', sans-serif;
         white-space: nowrap;
     }
-    #episode_td {
-        margin-top: var(--mabile-desc-height);
-    }
     #navbar {
         display: none;
     }
@@ -416,11 +414,6 @@ input:focus {
         #episodes, .episode {
             width: 87.4%;
         }
-        /*
-        #output, #s600ptd {
-            width: 90%;
-        }
-        */
         #episode_td {
             width: 100%;
             margin-left: auto;
@@ -451,13 +444,14 @@ input:focus {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    margin-bottom: 195px;
+    margin-bottom: 50px;
     margin-top: 20px;
     border-style: solid;
     border-width: 3px;
     border-radius: 50px;
     font-family: 'DejaVu Sans', sans-serif;
     font-size: 50px;
+    font-size: 3.5vw;
     transition: 0.1s;
     user-select: none;
 }
