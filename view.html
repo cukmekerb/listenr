@@ -68,21 +68,6 @@
                 return decodeURIComponent(uri)
             }
         }
-        function generatead() {
-            if (Math.floor((Math.random() * 10) + 1) >= 3) {
-                return `<div class="episode show"><iframe data-aa="1479777" src="//acceptable.a-ads.com/1479777?size=Adaptive&background_color=2c2c2c&text_color=b9b9b9&title_color=b9b9b9&link_color=b9b9b9" scrolling="no" style="border:0px; padding:0; width:100%; height:100px; overflow:hidden" allowtransparency="true"></iframe></div>`;
-            }
-            if (Date.now() - user.hasSeenBarSoon > 3 * 24 * 60 * 60 * 1000) {
-                showsubad();
-                user.hasSeenBarSoon = Date.now();
-                savecookies();
-            } else if (user.hasSeenBarSoon == null) {
-                showsubad();
-                user.hasSeenBarSoon = Date.now();
-                savecookies();
-            }
-            return `<div class="episode show" style="height:100px; text-align:center;" onclick="window.open('signup.html');"><br>Tired of these ads? Subscribe to listenr premium.</div>`;
-        }
         key("space", () => {
             toggleplaypause();
         });
@@ -186,21 +171,6 @@
             } else {
                 window.location = "yours.html";
             }
-            if (user.haspremium && user.premiumexpires <= Date.now()) {
-                setTimeout(() => {
-                    fetch("https://script.google.com/macros/s/AKfycbxRe9W-bu5i79Y4ZA9S3B2jLYhf-kx4spLw5Ep1wDmG5FeIraoO/exec?q=" + user.patreonun)
-                        .then(a => a.json())
-                        .then(result => {
-                            if (result.isSubbed) {
-                                user.premiumexpires = Date.now() + (24 * 60 * 60 * 1000);
-                                savecookies();
-                            } else {
-                                user.haspremium = false;
-                                savecookies();
-                            }
-                        });
-                }, 2000)
-            }
         }
 
         function getfeed(link) {
@@ -259,9 +229,6 @@
                 }
                 episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.items[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + ii + ")'>more</i>");
                 episodehtml = episodehtml.replace(/<br>/gi, "\n");
-                if ((i == 1 || i / 3 == Math.round(i / 3)) && !user.haspremium) {
-                    episodehtml += generatead();
-                }
                 document.getElementById("episodes").innerHTML += "<br>" + episodehtml;
                 episodes.push({
                     title: feed.items[i].title,
@@ -300,9 +267,6 @@
                 }
                 episodehtml = episodehtml.replace("$$%%DESK%%", htmltotext(String(feed.items[i].description).slice(0, 250)) + "... <i class='shortlong' onclick='showmore(" + i + ")'>more</i>");
                 episodehtml = episodehtml.replace(/<br>/gi, "\n");
-                if (i / 3 == Math.round(i / 3) && !user.haspremium) {
-                    episodehtml += generatead();
-                }
                 document.getElementById("episodes").innerHTML += "<br>" + episodehtml;
                 episodes.push({
                     title: feed.items[i].title,
@@ -466,15 +430,7 @@
             document.getElementById("widthtester").style.fontWeight = weight;
             return document.getElementById("widthtester").clientWidth;
         }
-
-        function showsubad() {
-            document.getElementById("patreon-bar").classList.remove("hidden");
-        }
-
-        function hidesubad() {
-            document.getElementById("patreon-bar").classList.add("hidden")
-        }
-
+        
         function adjustheight() {
             root.style.setProperty("--div-height", (document.getElementById("titlespan").clientHeight + 10) + "px")
         }
@@ -482,9 +438,6 @@
 </head>
 
 <body onload="init()">
-    <div id="patreon-bar" class="hidden"><span id="patreonh1">Tired of ads? </span><span id="patreonp"
-            onclick="window.location='signup.html'">Sign up for $1 per month <i class="fas fa-arrow-right"
-                id="patreonarrow"></i></span><i class="fas fa-times" id="patreonx" onclick="hidesubad()"></i></div>
     <div id="navbar">
         <span id="logopan" onclick="window.location='index.html'">
             <img src="listenr-logo-scaled.png" height="70"

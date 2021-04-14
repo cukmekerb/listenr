@@ -40,7 +40,6 @@
         };
         var shows = [];
         var user = {};
-        var adstring = `<div class="episode show"><iframe data-aa="1479777" src="//acceptable.a-ads.com/1479777?size=Adaptive&background_color=2c2c2c&text_color=b9b9b9&title_color=b9b9b9&link_color=b9b9b9" scrolling="no" style="border:0px; padding:0; width:100%; height:100%; overflow:hidden" allowtransparency="true"></iframe></div>`;
         var showingthing = false;
         function htmltotext(html) {
             document.getElementById("texttester").innerHTML = html;
@@ -109,9 +108,6 @@
                                     }
                                     ephtml = ephtml.replace(/\$\$PDI\%\%/gi, result.rows[i][2]);
                                     ephtml = ephtml.replace(/\$\$showurl\%\%/gi, "view.html?AetBh69feedbH=" + window.btoa(result.rows[i][3]));
-                                    if ((i == 1 || i / 3 == Math.round(i / 3)) && !user.haspremium) {
-                                        ephtml += adstring;
-                                    }
                                     document.getElementById("op").innerHTML += ephtml;
                                     shows.push({
                                         title: result.rows[i][0],
