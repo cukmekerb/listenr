@@ -200,45 +200,7 @@ a {
     color: rgb(43, 43, 43);
 }
 
-#itseasy {
-    text-align: center;
-    font-family: 'DejaVu Sans', sans-serif;
-    font-size: 40px;
-    margin-top: 500px;
-}
 
-.patreonp {
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.patreonp:hover>.patreonarrow {
-    opacity: 1;
-    animation: driftarrow 1s alternate infinite ease-in-out;
-}
-
-.patreonarrow {
-    opacity: 0;
-    transition: 0.3s;
-}
-
-@keyframes driftarrow {
-    0% {
-        transform: translateX(30%);
-    }
-    100% {
-        transform: translateX(100%);
-    }
-}
-
-@keyframes hover {
-    0% {
-        transform: translateY(-1%);
-    }
-    100% {
-        transform: translateY(1%);
-    }
-}
 
 @keyframes fadein {
     0% {
@@ -252,20 +214,3 @@ a {
     }
 }
 
-@keyframes nonono {
-    0% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(5px);
-    }
-    50% {
-        transform: translateX(-5px);
-    }
-    75% {
-        transform: translateX(5px);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}

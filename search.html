@@ -35,9 +35,6 @@
     <script src="common.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height" />
     <script>
-        var link_config = {
-            target: "_blank",
-        };
         var shows = [];
         var user = {};
         var showingthing = false;
@@ -124,6 +121,7 @@
                         setTimeout(() => {
                             document.getElementById("op").classList.remove("hidden");
                             document.getElementById("loading").classList.add("hidden");
+                            checkannouncements();
                         }, 150);
                     });
             }
@@ -178,7 +176,14 @@
             <div id="desc_$$i%%">$$%%DESK%%</div>
         </div>
     </div>
-
+    <div id="announcement" class="hidden">
+      <i class="fas fa-times" onclick="hideannouncement()"></i>
+      <h1 id="announcement_h1">
+        What's New
+      </h1>
+      <ul id="announcement_ul">
+      </ul>
+    </div>
     <div id="texttester" style="display: none; visibility: hidden;"></div>
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f0cba4ead99598d"
         defer></script>

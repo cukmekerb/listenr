@@ -1,3 +1,7 @@
+var link_config = {
+    target: "_blank",
+};
+
 /** converts html to plaintext. requires `div#texttester` 
  * @param {String} html - the html to convert */
 function htmltotext(html) {
@@ -54,4 +58,39 @@ function hidemnav() {
 /** shows mobile navigation */
 function showmnav() {
     document.getElementById("mobileside").classList.remove("leftside")
+}
+
+/** hides announcement popup */
+function hideannouncement() {
+  document.getElementById("announcement").classList.add("hidden")
+}
+
+/** checks for new changelogs */
+function checkannouncements() {
+  if (user.subscribed.length > 0){
+    fetch("announcements.json")
+    .then(a => a.json())
+    .then(result => {
+      if (user.last_announcement != null) {
+        if (user.last_announcement + 1 >= result.announcements.length) {
+          console.log("user has already seen lastest announcement.")
+          return; // return if user has already seen this announcement
+        }
+      }
+      var latestannouncement = result.announcements[result.announcements.length - 1];
+      document.getElementById("announcement_ul").innerHTML = "";
+      document.getElementById("announcement").classList.remove("hidden");
+      for (i in latestannouncement) {
+        if(i == 0) {
+          document.getElementById("announcement_h1").innerHTML = latestannouncement[i];
+          continue;
+        }
+        var bullet = document.createElement("li");
+        bullet.innerHTML = latestannouncement[i].autoLink(link_config);
+        document.getElementById("announcement_ul").appendChild(bullet);
+      }
+      user.last_announcement = result.announcements.length - 1;
+      savecookies();
+    })
+  }
 }
