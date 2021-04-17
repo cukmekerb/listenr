@@ -2,6 +2,7 @@ var link_config = {
     target: "_blank",
 };
 
+
 /** converts html to plaintext. requires `div#texttester` 
  * @param {String} html - the html to convert */
 function htmltotext(html) {
@@ -12,7 +13,7 @@ function htmltotext(html) {
 
 /** Saves the current `user` variable to localForage */
 function savecookies() {
-    Cookies.set("usingindexed", "true", exp)
+    Cookies.set("usingindexed", "true", exp);
     localforage.setItem("user", JSON.stringify(user)).then(() => {
         console.log("saved stuff");
     });
@@ -32,7 +33,7 @@ function checkrss(data) {
 /** runs on keypress on the `AetBh69SERCH99bHm` and `AetBh69SERCH99bH` inputs. redirects to search page */
 function csearch(data) {
     if (data.keyCode == 13) {
-        console.log("aaa")
+        console.log("aaa");
         window.location = "search.html?AetBh69SERCH99bH=" + (document.getElementById("AetBh69SERCH99bHm").value || document.getElementById("AetBh69SERCH99bH").value);
     }
 }
@@ -53,16 +54,16 @@ function validurl(str) {
 
 /** hides mobile navigation */
 function hidemnav() {
-    document.getElementById("mobileside").classList.add("leftside")
+    document.getElementById("mobileside").classList.add("leftside");
 }
 /** shows mobile navigation */
 function showmnav() {
-    document.getElementById("mobileside").classList.remove("leftside")
+    document.getElementById("mobileside").classList.remove("leftside");
 }
 
 /** hides announcement popup */
 function hideannouncement() {
-  document.getElementById("announcement").classList.add("hidden")
+  document.getElementById("announcement").classList.add("hidden");
 }
 
 /** checks for new changelogs */
@@ -73,14 +74,14 @@ function checkannouncements() {
     .then(result => {
       if (user.last_announcement != null) {
         if (user.last_announcement + 1 >= result.announcements.length) {
-          console.log("user has already seen lastest announcement.")
+          console.log("user has already seen lastest announcement.");
           return; // return if user has already seen this announcement
         }
       }
       var latestannouncement = result.announcements[result.announcements.length - 1];
       document.getElementById("announcement_ul").innerHTML = "";
       document.getElementById("announcement").classList.remove("hidden");
-      for (i in latestannouncement) {
+      for (var i in latestannouncement) {
         if(i == 0) {
           document.getElementById("announcement_h1").innerHTML = latestannouncement[i];
           continue;
@@ -91,6 +92,6 @@ function checkannouncements() {
       }
       user.last_announcement = result.announcements.length - 1;
       savecookies();
-    })
+    });
   }
 }
