@@ -35,7 +35,8 @@ function csearch(data) {
 /** returns user data as object */
 async function getuser() {
       var nuser = {
-            subscribed: []
+            subscribed: [],
+            joindate: String(new Date())
         };
       if (Cookies.get("user") != null && Cookies.get("usingindexed") == null) {
         nuser = JSON.parse(Cookies.get("user"));
@@ -47,22 +48,23 @@ async function getuser() {
     }
     else if (Cookies.get("usingindexed") == "true") {
         var olduser = nuser;
-        console.log(olduser);
         nuser = await localforage.getItem("user");
         nuser = JSON.parse(nuser);
         if (!nuser) {
             nuser = olduser;
         }
+        if (!nuser.joindate) {
+          nuser.joindate = String(new Date());
+          localforage.setItem("user", JSON.stringify(nuser))
+        }
     }
     else {
-        nuser = {
-            subscribed: []
-        };
         Cookies.set("usingindexed", "true", exp);
         localforage.setItem("user", JSON.stringify(nuser));
     }
     return nuser;
 }
+
 /** checks if a string is a valid URL.
  * I stole this from stackoverflow
  * @param {String} str - the url to check
@@ -93,7 +95,7 @@ function hideannouncement() {
 
 /** checks for new changelogs */
 function checkannouncements() {
-  if (user.subscribed.length > 0){
+  if (user.subscribed.length > 0 && Date.now() - Date.parse(user.joindate) >= 10 * 60 * 1000) {
     fetch("announcements.json")
     .then(a => a.json())
     .then(result => {
@@ -104,15 +106,19 @@ function checkannouncements() {
         }
       }
       var latestannouncement = result.announcements[result.announcements.length - 1];
+      if (Date.parse(latestannouncement.date) <= Date.parse(user.joindate)) {
+        console.log("latest announcement is older than user");
+        return; // return if user is too young for old news
+      }
       document.getElementById("announcement_ul").innerHTML = "";
       document.getElementById("announcement").classList.remove("hidden");
-      for (var i in latestannouncement) {
-        if(i == 0) {
-          document.getElementById("announcement_h1").innerHTML = latestannouncement[i];
+      for (var i in latestannouncement.text) {
+        if (i == 0) {
+          document.getElementById("announcement_h1").innerHTML = latestannouncement.text[i];
           continue;
         }
         var bullet = document.createElement("li");
-        bullet.innerHTML = latestannouncement[i].autoLink(link_config);
+        bullet.innerHTML = latestannouncement.text[i].autoLink(link_config);
         document.getElementById("announcement_ul").appendChild(bullet);
       }
       user.last_announcement = result.announcements.length - 1;
