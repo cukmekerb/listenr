@@ -1,12 +1,12 @@
-var islocal = false
-self.importScripts("https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js")
+var islocal = false;
+self.importScripts("https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js");
 self.addEventListener('install', function (e) {
     fetch("islocal.txt").then(a => a.text()).then(a => {
         if(a == "true"){
             islocal = true;
-            console.log("is local.") // to disable caching on the service worker for development purposes, create a file called islocal.txt and make its content be true
+            console.log("is local."); // to disable caching on the service worker for development purposes, create a file called islocal.txt and make its content be true
         }
-        console.log(a)
+        console.log(a);
     });
     return cache_add_all([
         "index.html",
@@ -25,8 +25,8 @@ function is_image(url) {
 
 function cache_add_all(array) {
     caches.open("v1-cache").then(function (cache) {
-        for (i in array) {
-            caches.delete(array[i])
+        for (var i in array) {
+            caches.delete(array[i]);
             cache.add(array[i]).then(() => {
                 localforage.setItem(array[i], Date.now());
             });
@@ -89,20 +89,20 @@ self.addEventListener("fetch", function (e) {
                     if (islocal) {
                       console.log(response.clone());
                     }
-                    return response || fetch(e.request)
+                    return response || fetch(e.request);
                 }
                 catch (err) {
                     if (islocal) {
-                      console.log(err)
-                      console.log("error getting " + e.request.url + " from cache. fetching")
+                      console.log(err);
+                      console.log("error getting " + e.request.url + " from cache. fetching");
                     }
-                    return fetch(e.request)
+                    return fetch(e.request);
                 }
                 finally {
                     localforage.getItem(e.request.url).then(timestamp => {
                         if (Date.now() - timestamp > 10 * 60 * 1000 || timestamp == undefined || timestamp == null) {
-                            console.log(e.request.url + " - updating cache; timestamp is " + timestamp)
-                            cache_add_all([e.request.url])
+                            console.log(e.request.url + " - updating cache; timestamp is " + timestamp);
+                            cache_add_all([e.request.url]);
                         }
 
                         /*
@@ -110,20 +110,20 @@ self.addEventListener("fetch", function (e) {
                         IT WORKS OKAY?
                         
                         */
-                    })
+                    });
                 }
             }
             else if(e.request.url == registration.scope+"$$PDI%%"){
-                return fetch("icon-512.png")
+                return fetch("icon-512.png");
             }
-            console.log(e.request.url + " - not sending cache")
+            console.log(e.request.url + " - not sending cache");
             return fetch(e.request).catch(err => {
                 if (islocal) {
                   console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa error");
                   console.error(err);
                 }
                 /* I TOLD YOU NOT TO CRITICIZE */
-            })
+            });
         })
     ); /* I KNOW IT ISN'T IDEAL */
 });

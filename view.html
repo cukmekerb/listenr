@@ -99,30 +99,7 @@
             return deskslice;
         }
         async function init() {
-            if (Cookies.get("user") != null && Cookies.get("usingindexed") == null) {
-                user = JSON.parse(Cookies.get("user"));
-                Cookies.set("usingindexed", "true", exp)
-                localforage.setItem("user", JSON.stringify(user)).then(() => {
-                    console.log("put user into forage");
-                    Cookies.remove("user");
-                });
-            }
-            else if (Cookies.get("usingindexed") == "true") {
-                var olduser = user;
-                console.log(olduser)
-                user = await localforage.getItem("user")
-                user = JSON.parse(user);
-                if (!user) {
-                    user = olduser;
-                }
-            }
-            else {
-                user = {
-                    subscribed: []
-                };
-                Cookies.set("usingindexed", "true", exp)
-                localforage.setItem("user", JSON.stringify(user))
-            }
+            user = await getuser();
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker
                     .register("cache.js")
@@ -188,7 +165,7 @@
                         .then(a => a.json())
                         .then(result => {
                             if (result.rows[0] == null) {
-                                fetch("https://script.google.com/macros/s/AKfycbyT6aaorLO5aBeRl1YQH44kAlmtfTGvrQqrYcZXrQigbbosJalz/exec?name=" + encodeURIComponent(feed.title) + "&description=" + encodeURIComponent(feed.description) + "&image=" + encodeURIComponent(document.getElementById("image").src) + "&url=" + encodeURIComponent(link))
+                                fetch("https://script.google.com/macros/s/AKfycbyT6aaorLO5aBeRl1YQH44kAlmtfTGvrQqrYcZXrQigbbosJalz/exec?url=" + encodeURIComponent(link))
                             }
                         });
                 });

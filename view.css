@@ -39,6 +39,7 @@ html {
 
 * {
     scrollbar-width: none;
+    color: white;
 }
 
 #title {
@@ -161,6 +162,7 @@ input:focus {
     border-width: 2px;
     border-style: solid;
     padding-left: 10px;
+    background: rgb(44, 44, 44);
     padding-right: 20px;
     transition: 0.3s;
     text-align: left;
@@ -337,7 +339,7 @@ input:focus {
 }
 
 #image {
-    flex: 1 auto;
+    flex: 0 auto;
 }
 
 .navigation {
@@ -545,6 +547,10 @@ input:focus {
     width: 150px;
 }
 
+.subscribe-s > * {
+  color: rgb(84, 255, 78);
+}
+
 .slider {
     -webkit-appearance: none;
     height: 4px;
@@ -681,6 +687,19 @@ input:focus {
     margin-left: 10px;
     margin-right: 10px;
 }
+
+/* dragula stuff */
+.gu-transit {
+  opacity: 0.3;
+}
+
+.gu-mirror {
+  background: rgb(44, 44, 44);
+  opacity: 0.98;
+  cursor: grab;
+  filter: drop-shadow(-10px 10px 10px #1c1c1c);
+}
+
 
 #widthtester {
     position: absolute;

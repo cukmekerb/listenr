@@ -22,22 +22,47 @@ function savecookies() {
 /** runs on keypress on the `rssurl` and `rssurlm` inputs. reditects to view page */
 function checkrss(data) {
     if (data.keyCode == 13) {
-        if (document.getElementById("mobileside").classList.contains("leftside")) {
-            window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurl").value);
-        }
-        else {
-            window.location = "view.html?AetBh69feedbH=" + window.btoa(document.getElementById("rssurlm").value);
-        }
+        window.location = "view.html?AetBh69feedbH=" + data.target.value;
     }
 }
 /** runs on keypress on the `AetBh69SERCH99bHm` and `AetBh69SERCH99bH` inputs. redirects to search page */
 function csearch(data) {
     if (data.keyCode == 13) {
-        console.log("aaa");
-        window.location = "search.html?AetBh69SERCH99bH=" + (document.getElementById("AetBh69SERCH99bHm").value || document.getElementById("AetBh69SERCH99bH").value);
+        window.location = "search.html?AetBh69SERCH99bH=" + data.target.value;
     }
 }
 
+/** returns user data as object */
+async function getuser() {
+      var nuser = {
+            subscribed: []
+        };
+      if (Cookies.get("user") != null && Cookies.get("usingindexed") == null) {
+        nuser = JSON.parse(Cookies.get("user"));
+        Cookies.set("usingindexed", "true", exp);
+        localforage.setItem("user", JSON.stringify(nuser)).then(() => {
+            console.log("put user into forage");
+            Cookies.remove("user");
+        });
+    }
+    else if (Cookies.get("usingindexed") == "true") {
+        var olduser = nuser;
+        console.log(olduser);
+        nuser = await localforage.getItem("user");
+        nuser = JSON.parse(nuser);
+        if (!nuser) {
+            nuser = olduser;
+        }
+    }
+    else {
+        nuser = {
+            subscribed: []
+        };
+        Cookies.set("usingindexed", "true", exp);
+        localforage.setItem("user", JSON.stringify(nuser));
+    }
+    return nuser;
+}
 /** checks if a string is a valid URL.
  * I stole this from stackoverflow
  * @param {String} str - the url to check

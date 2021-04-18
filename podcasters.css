@@ -2,7 +2,7 @@
     #signup {
         font-size: 40px;
     }
-    #output {
+    #show_output {
         width: 80%;
     }
 }
@@ -11,7 +11,7 @@
     #signup {
         font-size: 40px;
     }
-    #output {
+    #show_output {
         width: 40%;
     }
 }
@@ -97,7 +97,10 @@
 .openbutton:hover {
     box-shadow: rgb(15, 15, 15) 4px 8px 10px;
 }
-
+#show_output {
+  padding-top: 20px;
+  padding-left: 20px;
+}
 #signup>img {
     height: 80px;
 }

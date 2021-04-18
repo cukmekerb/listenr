@@ -53,7 +53,7 @@
         function check_show_db() {
             var link = document.getElementById("rss_url").value;
             feedurl = link;
-            document.getElementById("output").classList.add("hidden")
+            document.getElementById("show_output").classList.add("hidden")
             var goodhtml = `<i class="far fa-check-circle"></i> your show is in the database`;
             if (validurl(link)) {
                 document.getElementById("error").classList.add("hidden");
@@ -65,7 +65,7 @@
                     .then(result => {
                         if (result.rows[0] != null) {
                             document.getElementById("working").classList.add("hidden")
-                            document.getElementById("output").classList.remove("hidden");
+                            document.getElementById("show_output").classList.remove("hidden");
                             var ephtml = oldephtml;
                             ephtml = ephtml.replace(/\$\$\%\%TOTITLE\%\%/gi, result.rows[0][0]);
                             ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(result.rows[0][1]).slice(0, 100) + "...");
@@ -75,7 +75,7 @@
                             setupshortlinkform(result.rows[0][0]);
                         }
                         else {
-                            fetch("https://lstnr.gq/.netlify/functions/rss-to-json?url=" + encodeURIComponent(link))
+                            fetch("https://lstnr.gq/.netlify/functions/get_show_info?showid=" + btoa(link))
                                 .then(a => a.json())
                                 .then(feed => {
                                     document.getElementById("working").classList.add("hidden")
@@ -84,9 +84,9 @@
                                     ephtml = ephtml.replace(/\$\$\%\%DESK\%\%/gi, htmltotext(feed.description).slice(0, 100) + "...");
                                     ephtml = ephtml.replace(/\$\$PDI\%\%/gi, feed.image)
                                     document.getElementById("show").innerHTML = ephtml;
-                                    document.getElementById("output").classList.remove("hidden");
+                                    document.getElementById("show_output").classList.remove("hidden");
                                     document.getElementById("is_in_db").innerHTML = "Adding your show to the database...";
-                                    fetch("https://script.google.com/macros/s/AKfycbyT6aaorLO5aBeRl1YQH44kAlmtfTGvrQqrYcZXrQigbbosJalz/exec?name=" + encodeURIComponent(feed.title) + "&description=" + encodeURIComponent(feed.description) + "&image=" + encodeURIComponent(feed.image) + "&url=" + encodeURIComponent(link))
+                                    fetch("https://script.google.com/macros/s/AKfycbyT6aaorLO5aBeRl1YQH44kAlmtfTGvrQqrYcZXrQigbbosJalz/exec?url=" + encodeURIComponent(link))
                                         .then(() => {
                                             document.getElementById("is_in_db").innerHTML = goodhtml;
                                             setupshortlinkform(feed.title);
@@ -188,7 +188,7 @@
         <span class="center subbed hidden" id="working">Working (this may take a while)...</span>
         <br>
         <span class="center notsubbed hidden" id="error"></span>
-        <div id="output" class="center hidden">
+        <div id="show_output" class="center hidden">
             <div id="show" class="episode show">
                 <img src="$$PDI%%" class="showim" draggable="false">
 
