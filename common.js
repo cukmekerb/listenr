@@ -2,6 +2,19 @@ var link_config = {
     target: "_blank",
 };
 
+/** decodes uri without throwing errors */
+function safe_decode(uri) {
+    if (!uri) {
+        return uri;
+    }
+    try {
+        return decodeURIComponent(uri.replace(/%(?![0-9][0-9a-fA-F]+)/gi, '%25'));
+    }
+    catch (err) {
+        return decodeURIComponent(uri);
+    }
+}
+
 
 /** converts html to plaintext. requires `div#texttester` 
  * @param {String} html - the html to convert */
@@ -22,7 +35,7 @@ function savecookies() {
 /** runs on keypress on the `rssurl` and `rssurlm` inputs. reditects to view page */
 function checkrss(data) {
     if (data.keyCode == 13) {
-        window.location = "view.html?AetBh69feedbH=" + data.target.value;
+        window.location = "view.html?AetBh69feedbH=" + window.btoa(data.target.value);
     }
 }
 /** runs on keypress on the `AetBh69SERCH99bHm` and `AetBh69SERCH99bH` inputs. redirects to search page */

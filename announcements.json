@@ -19,12 +19,14 @@
         "New server go vrooom!",
         "listenr has just switched to a new hosting provider, meaning that the page will load faster than ever",
         "Previews of the podcast now show up when you share on social media",
+        "Added explicit indicator to explicit shows and episodes on the view page",
         "improved seo",
         "the 'yours' page now has better drag and drop support",
         "fixed bug where search bar sometimes doesn't work",
-        "fixed bug where new users get outdated update popups"
+        "fixed bug where new users get outdated update popups",
+        "If you see any bugs, let me know here: https://github.com/cukmekerb/listenr/issues/new"
       ],
-      "date": "Sat Apr 17 2021 18:39:39 GMT-0700 (Pacific Daylight Time)"
+      "date": "Mon Apr 19 2021 10:39:39 GMT-0700 (Pacific Daylight Time)"
     }
   ]
 }

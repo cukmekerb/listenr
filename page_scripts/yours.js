@@ -5,18 +5,6 @@ var shows = [];
 var showingthing = false;
 var exp = { expires: 100000 };
 
-function safe_decode(uri) {
-    if (!uri) {
-        return uri;
-    }
-    try {
-        return decodeURIComponent(uri.replace(/%(?![0-9][0-9a-fA-F]+)/gi, '%25'));
-    }
-    catch (error) {
-        return decodeURIComponent(uri);
-    }
-}
-
 function is_on_mobile() {
   return document.body.clientWidth < 950;
 }
