@@ -191,9 +191,8 @@ function filleps(feed) {
 }
 
 function loadmore() {
-
     document.getElementById("loadmore").innerHTML = "<i style='text-align:center; margin-left:auto; margin-right:auto;'>Loading...</i>";
-    fetch("https://lstnr.gq/.netlify/functions/rss-to-json?items=10&startfrom=" + whathasbeenloaded.items.length + "&url=" + encodeURIComponent(feedurl))
+    fetch("https://lstnr.gq/.netlify/functions/rss-to-json?items=10&startfrom=" + episodes.length + "&url=" + encodeURIComponent(feedurl))
         .then(a => a.json())
         .then(feed => {
             if (feed.items.length < 1) {
