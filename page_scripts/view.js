@@ -24,14 +24,14 @@ key("right", () => {
 key("left", () => {
     playingep.currentTime -= 15;
 });
-String.prototype.toHHMMSS = () => {
-    var sec_num = parseInt(this, 10);
+function toHHMMSS(string) {
+    var sec_num = Math.floor(Number(string));
+    if (String(sec_num) == "NaN") {
+      return "00:00";
+    }
     var hours = Math.floor(sec_num / 3600);
     var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-    if (hours < 10) {
-        hours = "0" + hours;
-    }
+    var seconds = sec_num - (hours * 3600) - (minutes * 60); 
     if (minutes < 10) {
         minutes = "0" + minutes;
     }
@@ -42,7 +42,7 @@ String.prototype.toHHMMSS = () => {
         return minutes + ':' + seconds;
     }
     return hours + ':' + minutes + ':' + seconds;
-};
+}
 
 function scrollelement(id, target, seconds, rate) {
     if (document.getElementById(id).scrollTop - target > 1) {
@@ -267,8 +267,8 @@ function updateplayer() {
                 }
             }
             lasttime = playingep.currentTime;
-            document.getElementById("timeleft").innerHTML = String(playingep.currentTime).toHHMMSS();
-            document.getElementById("minustime").innerHTML = "-" + String(playingep.duration - playingep.currentTime).toHHMMSS();
+            document.getElementById("timeleft").innerHTML = toHHMMSS(playingep.currentTime);
+            document.getElementById("minustime").innerHTML = "-" + toHHMMSS(playingep.duration - playingep.currentTime);
         }, 100);
     }
 }
