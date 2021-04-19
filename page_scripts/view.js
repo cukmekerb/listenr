@@ -248,7 +248,6 @@ function playepisode(i) {
 
 function updateplayer() {
     if (!intervalaler) {
-
         lasttime = playingep.currentTime;
         var endedtime = 0;
         setInterval(() => {
