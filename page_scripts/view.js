@@ -9,13 +9,18 @@ var episodes = [];
 var whathasbeenloaded = {
     items: []
 };
+var sanitize_options = {
+  ALLOWED_TAGS: ["a"], 
+  ALLOWED_ATTR: ["href"]
+};
 var feedurl;
 let root = document.documentElement;
 var defaultephtml;
 var playingep;
 var lasttime;
 var intervalaler = false;
-key("space", () => {
+key("space", (event) => {
+    event.preventDefault();
     toggleplaypause();
 });
 key("right", () => {
@@ -100,10 +105,10 @@ function getfeed(link) {
     fetch("https://lstnr.gq/.netlify/functions/rss-to-json?items=10&url=" + encodeURIComponent(link))
         .then(a => a.json())
         .then(feed => {
-            document.getElementById("title").innerHTML = feed.title;
-            document.title = feed.title + " - listenr";
+            document.getElementById("title").innerHTML = DOMPurify.sanitize(feed.title, sanitize_options);
+            document.title = DOMPurify.sanitize(feed.title, sanitize_options) + " - listenr";
             defaultephtml = document.getElementsByClassName("episode")[0].outerHTML;
-            document.getElementById("image").src = feed.image;
+            document.getElementById("image").src = DOMPurify.sanitize(feed.image, sanitize_options);
             if (user.subscribed.find(a => a.url == link) != null) {
                 user.subscribed[user.subscribed.findIndex(a => safe_decode(a.url) == link)].image = encodeURIComponent(document.getElementById("image").src);
                 console.log("updating image");
@@ -112,10 +117,10 @@ function getfeed(link) {
                 savecookies();
             }
             if (feed.items[0].itunes_author != null) {
-                document.getElementById("author_name").innerHTML = feed.items[0].itunes_author;
+                document.getElementById("author_name").innerHTML = DOMPurify.sanitize(feed.items[0].itunes_author, sanitize_options);
             }
             document.getElementById("description").innerHTML = htmltotext(String(feed.description).slice(0, makedescsize()));
-            castdesk = feed.description;
+            castdesk = DOMPurify.sanitize(feed.description, sanitize_options);
             if (String(document.getElementById("description").innerHTML).length < castdesk.length) {
                 document.getElementById("description").innerHTML += "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
             }
@@ -129,6 +134,13 @@ function getfeed(link) {
             
             if (expliciteps.length != 0) {
               document.getElementById("explicit").classList.remove("displaynone");
+            }
+            for (var i in feed.items) {
+              for (var ii in feed.items[i]) {
+                if (typeof feed.items[i][ii] == "string") {
+                  feed.items[i][ii] = DOMPurify.sanitize(feed.items[i][ii], sanitize_options);
+                }
+              }
             }
             filleps(feed);
             whathasbeenloaded = feed;
@@ -200,18 +212,12 @@ function loadmore() {
 }
 
 function longpoddesk() {
-    document.getElementById("description").innerHTML = castdesk.autoLink(link_config) + "<br><i onclick='shortpoddesk()' class='shortlong'>less</i>";
-    setTimeout(() => {
-
-    }, 150);
+    document.getElementById("description").innerHTML = DOMPurify.sanitize(castdesk, sanitize_options).autoLink(link_config) + "<br><i onclick='shortpoddesk()' class='shortlong'>less</i>";
 }
 
 function shortpoddesk() {
     document.getElementById("description").innerHTML = htmltotext(castdesk.slice(0, makedescsize())) + "... <i onclick='longpoddesk()' class='shortlong'>more</i>";
     scrollelement("desc_scroll", 0, 0.5, 60);
-    setTimeout(() => {
-
-    }, 200);
 }
 
 function showplay(i) {
