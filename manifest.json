@@ -18,11 +18,5 @@
     "orientation": "portrait",
     "display": "standalone",
     "scope": "/",
-    "theme_color": "#b9b9b9",
-    "serviceworker": {
-        "src": "cache.js",
-        "scope": "/",
-        "type": "",
-        "update_via_cache": "none"
-      }
+    "theme_color": "#b9b9b9"
 }

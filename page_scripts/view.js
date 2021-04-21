@@ -66,11 +66,6 @@ function makedescsize() {
 }
 async function init() {
     user = await getuser();
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker
-            .register("cache.js")
-            .then(function () { console.log("service worker registered"); });
-    }
     var pageurl = new URL(String(window.location));
     feedurl = pageurl.searchParams.get("AetBh69feedbH");
     feedurl = String(feedurl);
@@ -140,11 +135,11 @@ function getfeed(link) {
             return feed;
         })
         .then(feed => {
-            fetch("https://script.google.com/macros/s/AKfycby45awRekYOvIpe6ZFN_C5llswyiDGMnCwEoD9Dje_hQ1AqTnQ/exec?url=" + encodeURIComponent(link))
+            fetch("https://lstnr.gq/.netlify/functions/search?url=" + encodeURIComponent(link))
                 .then(a => a.json())
                 .then(result => {
                     if (result.rows[0] == null) {
-                        fetch("https://script.google.com/macros/s/AKfycbyT6aaorLO5aBeRl1YQH44kAlmtfTGvrQqrYcZXrQigbbosJalz/exec?url=" + encodeURIComponent(link));
+                        fetch("https://lstnr.gq/.netlify/functions/adder?url=" + encodeURIComponent(link));
                     }
                 });
         });

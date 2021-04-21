@@ -44,11 +44,6 @@ function fill_shows() {
 
 async function init() {
     user = await getuser();
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker
-            .register("cache.js")
-            .then(function () { console.log("service worker registered"); });
-    }
     if (user != null && user != {}) {
         if (user.subscribed.length > 0) {
             fill_shows();
@@ -132,9 +127,10 @@ function handledrake(drake) {
     savecookies();
   });
   
-  drake.on("drag", () => {
+  drake.on("drag", (el, source) => {
     if (is_on_mobile()) {
       drake.cancel();
+      return;
     }
   });
 }
