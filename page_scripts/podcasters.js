@@ -131,5 +131,6 @@ function makeshortlink() {
 function init() {
     oldephtml = document.getElementById("show").innerHTML;
     adjustwidth();
+    handle_service_workers();
     window.scrollTo(0, 0);
 }

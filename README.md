@@ -15,6 +15,4 @@ if you add a new library, link it through jsDelivr.
 
 NO JQUERY!!!!!
 
-make sure to create a file called `islocal.txt` and have its only contents be `true`. this is used by the service worker to prevent caching. If caching still happens, go into the console for the service worker, and manually set `islocal` to `true`.
-
-for detailed instructions on how to do this, see [this guide](https://developer.mozilla.org/en-US/docs/Tools/about:debugging) for firefox, and [this guide](https://developer.chrome.com/docs/devtools/progressive-web-apps/#service-workers) for chrome.
+open the console and enter `make_local()` from any page other than  `view.html` or `404.html`. this will disable all service worker caching. If you want to enable it again, enter  `localforage.setItem("islocal", false)` into the console on any of the aformentioned pages.

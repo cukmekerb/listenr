@@ -2,6 +2,57 @@ var link_config = {
     target: "_blank",
 };
 
+/** handles service workers */
+async function handle_service_workers() {
+  var islocal = await localforage.getItem("islocal"); // check if local
+  if (!islocal) {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.getRegistrations()
+      .then(registrations => {
+        for(var i in registrations) {
+          if (registrations[i].active.scriptURL.endsWith("cache.js")) {
+            registrations[i].unregister() 
+            .catch(err => {
+              console.log("unregistering failed " + err);
+            });
+          }
+        }
+      });
+      localforage.keys()
+      .then(keys => {
+        for (var i in keys) {
+          if (keys[i] != "user" && keys[i] != "islocal") {
+            localforage.removeItem(keys[i])
+            .then(() => {
+              console.debug("key " + keys[i] + " is gone!");
+            });
+          }
+        }
+      });
+    }
+    navigator.serviceWorker.register("sw.js");
+  }
+  else {
+    console.log("you're local!");
+    console.debug("checking for service workers");
+    navigator.serviceWorker.getRegistrations()
+      .then(registrations => {
+        for(var i in registrations) {
+          registrations[i].unregister();
+        }
+      });
+  }
+}
+
+/** prevents service workers */
+function make_local() {
+  localforage.setItem("islocal", true)
+  .then(() => {
+    console.log("is local!");
+    handle_service_workers();
+  });
+}
+
 /** decodes uri without throwing errors */
 function safe_decode(uri) {
     if (!uri) {
@@ -27,7 +78,7 @@ function htmltotext(html) {
 /** Saves the current `user` variable to localForage */
 function savecookies() {
     Cookies.set("usingindexed", "true", exp);
-    localforage.setItem("user", JSON.stringify(user)).then(() => {
+    localforage.setItem("user", user).then(() => {
         console.log("saved stuff");
     });
 }
@@ -54,7 +105,7 @@ async function getuser() {
       if (Cookies.get("user") != null && Cookies.get("usingindexed") == null) {
         nuser = JSON.parse(Cookies.get("user"));
         Cookies.set("usingindexed", "true", exp);
-        localforage.setItem("user", JSON.stringify(nuser)).then(() => {
+        localforage.setItem("user", nuser).then(() => {
             console.log("put user into forage");
             Cookies.remove("user");
         });
@@ -62,18 +113,21 @@ async function getuser() {
     else if (Cookies.get("usingindexed") == "true") {
         var olduser = nuser;
         nuser = await localforage.getItem("user");
-        nuser = JSON.parse(nuser);
+        if (typeof nuser == "string") {
+          nuser = JSON.parse(nuser);
+          console.log("user is string");
+        }
         if (!nuser) {
             nuser = olduser;
         }
         if (!nuser.joindate) {
           nuser.joindate = String(new Date());
-          localforage.setItem("user", JSON.stringify(nuser))
+          localforage.setItem("user", nuser);
         }
     }
     else {
         Cookies.set("usingindexed", "true", exp);
-        localforage.setItem("user", JSON.stringify(nuser));
+        localforage.setItem("user", nuser);
     }
     return nuser;
 }

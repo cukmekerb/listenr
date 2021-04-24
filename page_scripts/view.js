@@ -71,6 +71,7 @@ function makedescsize() {
 }
 async function init() {
     user = await getuser();
+    handle_service_workers();
     var pageurl = new URL(String(window.location));
     feedurl = pageurl.searchParams.get("AetBh69feedbH");
     feedurl = String(feedurl);

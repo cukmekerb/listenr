@@ -44,6 +44,7 @@ function fill_shows() {
 
 async function init() {
     user = await getuser();
+    handle_service_workers();
     if (user != null && user != {}) {
         if (user.subscribed.length > 0) {
             fill_shows();

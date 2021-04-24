@@ -7,6 +7,7 @@ var sanitize_options = {
 };
 async function init() {
     user = await getuser();
+    handle_service_workers();
     checksearch();
 }
 function showmore(i) {
