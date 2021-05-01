@@ -1,216 +1,231 @@
 html {
-    scroll-behavior: smooth;
-    background-color: rgb(44, 44, 44);
-    color: white;
-    height: 100%;
+	scroll-behavior: smooth;
+	background-color: rgb(44, 44, 44);
+	color: white;
+	height: 100%;
 }
 
 *::-webkit-scrollbar {
-    display: none;
+	display: none;
 }
 
 * {
-    scrollbar-width: none;
+	scrollbar-width: none;
 }
 
 @media (min-width: 950px) {
-    #signup {
-        text-align: center;
-        margin-top: 10%;
-        width: 100%;
-        font-family: sans-serif;
-        font-size: 80px;
-    }
-    .explainer {
-        margin-left: auto;
-        margin-right: auto;
-        width: 40%;
-        border-radius: 10px;
-        color: black;
-        background: white;
-        font-family: 'DejaVu Sans', sans-serif;
-    }
-    #signup>img {
-        height: 150px;
-    }
-    #down-signup {
-        font-size: 60px;
-        width: 100%;
-        text-align: center;
-        padding-top: 10%;
-        color: white;
-        padding-bottom: 10%;
-        position: relative;
-        animation: hover 1s alternate infinite ease-in-out, fadein 4s;
-    }
-    #ads {
-        width: 800px;
-        height: 365.333px;
-        float: left;
-    }
+	#signup {
+		text-align: center;
+		margin-top: 10%;
+		width: 100%;
+		font-family: sans-serif;
+		font-size: 80px;
+	}
+
+	.explainer {
+		margin-left: auto;
+		margin-right: auto;
+		width: 40%;
+		border-radius: 10px;
+		color: black;
+		background: white;
+		font-family: 'DejaVu Sans', sans-serif;
+	}
+
+	#signup>img {
+		height: 150px;
+	}
+
+	#down-signup {
+		font-size: 60px;
+		width: 100%;
+		text-align: center;
+		padding-top: 10%;
+		color: white;
+		padding-bottom: 10%;
+		position: relative;
+		animation: hover 1s alternate infinite ease-in-out, fadein 4s;
+	}
+
+	#ads {
+		width: 800px;
+		height: 365.333px;
+		float: left;
+	}
 }
 
 .openbutton {
-    width: 200px;
-    height: 50px;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    font-family: 'DejaVu Sans', sans-serif;
-    vertical-align: middle;
-    display: inline-block;
-    cursor: pointer;
-    transition: 0.6s;
+	width: 200px;
+	height: 50px;
+	border-radius: 4px;
+	margin-bottom: 10px;
+	font-family: 'DejaVu Sans', sans-serif;
+	vertical-align: middle;
+	display: inline-block;
+	cursor: pointer;
+	transition: 0.6s;
 }
+
 .blue {
-    background: rgb(10, 77, 153);
+	background: rgb(10, 77, 153);
 }
+
 .grey {
-    
-    background: rgb(88, 88, 88);
+
+	background: rgb(88, 88, 88);
 }
 
 .openbutton:hover {
-    box-shadow: rgb(15, 15, 15) 4px 8px 10px;
+	box-shadow: rgb(15, 15, 15) 4px 8px 10px;
 }
+
 .center {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 }
+
 @media (max-width: 949px) {
-    #signup {
-        text-align: center;
-        margin-top: 10%;
-        width: 100%;
-        font-family: sans-serif;
-        font-size: 60px;
-    }
-    .explainer {
-        margin-left: auto;
-        margin-right: auto;
-        width: 80%;
-        border-radius: 10px;
-        color: black;
-        background: white;
-        font-family: 'DejaVu Sans', sans-serif;
-    }
-    #signup>img {
-        height: 130px;
-    }
-    #ads {
-        width: 400px;
-        height: 182px;
-        float: left;
-    }
-    #down-signup {
-        font-size: 60px;
-        width: 100%;
-        text-align: center;
-        padding-top: 20%;
-        color: white;
-        padding-bottom: 20%;
-        bottom: 0;
-        position: relative;
-        animation: hover 1s alternate infinite ease-in-out, fadein 4s;
-    }
+	#signup {
+		text-align: center;
+		margin-top: 10%;
+		width: 100%;
+		font-family: sans-serif;
+		font-size: 60px;
+	}
+
+	.explainer {
+		margin-left: auto;
+		margin-right: auto;
+		width: 80%;
+		border-radius: 10px;
+		color: black;
+		background: white;
+		font-family: 'DejaVu Sans', sans-serif;
+	}
+
+	#signup>img {
+		height: 130px;
+	}
+
+	#ads {
+		width: 400px;
+		height: 182px;
+		float: left;
+	}
+
+	#down-signup {
+		font-size: 60px;
+		width: 100%;
+		text-align: center;
+		padding-top: 20%;
+		color: white;
+		padding-bottom: 20%;
+		bottom: 0;
+		position: relative;
+		animation: hover 1s alternate infinite ease-in-out, fadein 4s;
+	}
 }
 
 .explainer>h1 {
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 h1 {
-    font-family: sans-serif !important;
+	font-family: sans-serif !important;
 }
 
 .explainer>p {
-    text-align: center;
-    padding-left: 15px;
-    padding-right: 15px;
+	text-align: center;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 .become-patron {
-    background: #e85b46;
-    color: white;
-    text-decoration: none;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 15px;
-    padding-right: 15px;
-    border-radius: 20px;
-    font-size: 14px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 70%;
-    text-align: center;
-    cursor: pointer;
+	background: #e85b46;
+	color: white;
+	text-decoration: none;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
+	border-radius: 20px;
+	font-size: 14px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+	text-align: center;
+	cursor: pointer;
 }
 
 .why-explainer {
-    display: block;
-    padding-left: 20px;
-    position: relative;
-    background: #3e3e3e;
-    float: left;
-    padding-right: 20px;
+	display: block;
+	padding-left: 20px;
+	position: relative;
+	background: #3e3e3e;
+	float: left;
+	padding-right: 20px;
 }
-.why-segment{
-    width: 100%;
+
+.why-segment {
+	width: 100%;
 }
+
 .nonono {
-    animation: nonono 0.35s ease-in-out;
+	animation: nonono 0.35s ease-in-out;
 }
 
 #subbed {
-    color: rgb(0, 165, 0);
-    text-align: center;
+	color: rgb(0, 165, 0);
+	text-align: center;
 }
 
 #notsubbed {
-    color: rgb(255, 0, 0);
-    text-align: center;
+	color: rgb(255, 0, 0);
+	text-align: center;
 }
 
 #why {
-    background-color: rgb(62, 62, 62);
-    width: 100%;
-    font-family: 'DejaVu Sans', sans-serif;
-    float: left;
-    left: 0;
-    margin: 0;
-    padding:0;
-    position: absolute;
+	background-color: rgb(62, 62, 62);
+	width: 100%;
+	font-family: 'DejaVu Sans', sans-serif;
+	float: left;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	position: absolute;
 }
 
 a {
-    color: white;
-    text-decoration: none;
+	color: white;
+	text-decoration: none;
 }
 
 #patron-name {
-    width: 70%;
-    display: block;
-    margin: 0 auto;
-    border-radius: 5px;
-    border: 2px solid rgb(187, 183, 183);
-    padding: 5px;
-    font-family: 'DejaVu Sans', sans-serif;
-    color: rgb(43, 43, 43);
+	width: 70%;
+	display: block;
+	margin: 0 auto;
+	border-radius: 5px;
+	border: 2px solid rgb(187, 183, 183);
+	padding: 5px;
+	font-family: 'DejaVu Sans', sans-serif;
+	color: rgb(43, 43, 43);
 }
 
 
 
 @keyframes fadein {
-    0% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
+	0% {
+		opacity: 0;
+	}
 
+	50% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
