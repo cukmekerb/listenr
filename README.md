@@ -1,7 +1,7 @@
 # listenr - a lightweight browser podcatcher
 [![Netlify Status](https://api.netlify.com/api/v1/badges/875cdf74-2199-43f4-9807-261832d3f57e/deploy-status)](https://app.netlify.com/sites/listenr/deploys)
 
-[listenr](https://listenr.gq/) is a lightweight podcatcher written in vanilla JS.
+[listenr](https://listenrapp.me/) is a lightweight podcatcher written in vanilla JS.
 
 ## why?
 because.
