@@ -27,6 +27,22 @@
         "If you see any bugs, let me know here: https://github.com/cukmekerb/listenr/issues/new"
       ],
       "date": "Mon Apr 19 2021 10:39:39 GMT-0700 (Pacific Daylight Time)"
+    },
+    {
+			"text": [
+				"listenr.gq is now listenrapp.me!",
+				"unfortunately, we lost access to the webdomain listenr.gq (long story)",
+				"but we have a new one now! listenrapp.me!",
+				"this also improves page load speed, and allows us to make the following changes:",
+				"removed old fallback code",
+				"re-verify domain on Google",
+				"improve these announcements",
+				"100% desktop score on PageSpeed (for landing page)",
+				"thanks to Netlify and Cloudflare for making this migration super easy",
+				"and thanks to you for using listenr!",
+        "if you see any bugs, let me know here: https://github.com/cukmekerb/listenr/issues/new"
+			],
+			"date": "Thu Jul 22 2021 12:06:26 GMT-0700 (Pacific Daylight Time)"
     }
   ]
 }

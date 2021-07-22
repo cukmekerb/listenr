@@ -77,7 +77,6 @@ function htmltotext(html) {
 
 /** Saves the current `user` variable to localForage */
 function savecookies() {
-	Cookies.set("usingindexed", "true", exp);
 	localforage.setItem("user", user).then(() => {
 		console.log("saved stuff");
 	});
@@ -102,35 +101,14 @@ async function getuser() {
 		subscribed: [],
 		joindate: String(new Date())
 	};
-	if (Cookies.get("user") != null && Cookies.get("usingindexed") == null) {
-		nuser = JSON.parse(Cookies.get("user"));
-		Cookies.set("usingindexed", "true", exp);
-		localforage.setItem("user", nuser).then(() => {
-			console.log("put user into forage");
-			Cookies.remove("user");
-		});
-	}
-	else if (Cookies.get("usingindexed") == "true") {
-		var olduser = nuser;
-		nuser = await localforage.getItem("user");
-		if (typeof nuser == "string") {
-			nuser = JSON.parse(nuser);
-			console.log("user is string");
-		}
-		if (!nuser) {
-			nuser = olduser;
-		}
-		if (!nuser.joindate) {
-			nuser.joindate = String(new Date());
-			localforage.setItem("user", nuser);
-		}
-	}
-	else {
-		Cookies.set("usingindexed", "true", exp);
-		localforage.setItem("user", nuser);
+	var olduser = nuser;
+	nuser = await localforage.getItem("user");
+	if (!nuser) {
+		nuser = olduser;
 	}
 	return nuser;
 }
+
 
 /** checks if a string is a valid URL.
  * I stole this from stackoverflow
@@ -173,7 +151,7 @@ function checkannouncements() {
 					}
 				}
 				var latestannouncement = result.announcements[result.announcements.length - 1];
-				if (Date.parse(latestannouncement.date) <= Date.parse(user.joindate)) {
+				if (Date.parse(latestannouncement.date) < Date.parse(user.joindate)) {
 					console.log("latest announcement is older than user");
 					return; // return if user is too young for old news
 				}
