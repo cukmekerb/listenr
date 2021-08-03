@@ -202,6 +202,10 @@ input:focus {
 	overflow-y: scroll !important;
 }
 
+#episodes {
+	padding-bottom: 100px;
+}
+
 .episode {
 	border-radius: 5px;
 	border-color: rgb(97, 97, 97);
