@@ -15,6 +15,10 @@ html {
 	display: none;
 }
 
+.material-icons:not(.mediabutton), .material-icons-outlined:not(.mediabutton), .material-icons-filled:not(.mediabutton) {
+	vertical-align: top !important;
+}
+
 .showim {
 	width: 150px;
 	border-radius: 5px;
@@ -86,22 +90,21 @@ a {
 	user-select: none;
 	margin-bottom: 12px;
 	margin-top: 12px;
+	font-family: sans-serif;
 }
 
 .explicit_ep {
-	background: #ce4242;
-	padding: 3px;
-	border-radius: 3px;
+	color: #ce4242;
+	padding: 0;
 	display: inline-block;
 	pointer-events: none;
 	user-select: none;
 	font-weight: bold;
 	font-size: 12px;
-	width: 12px;
-	height: 13px;
+	margin: 5px !important;
 	text-align: center;
 	float: right;
-	margin: 10px !important;
+	background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 53%, rgba(255,255,255,0) 56%);
 }
 
 .displaynone {
@@ -142,6 +145,8 @@ a {
 }
 
 #announcement_h1 {
+	vertical-align: bottom;
+	display: inline;
 	margin-top: 12px;
 	clear: both;
 }
@@ -219,9 +224,10 @@ input:focus {
 }
 
 .smallplaybutton {
+	margin-right: 10px;
 	cursor: pointer;
 	display: inline;
-	font-size: 29px;
+	font-size: 35px !important;
 	transition: 0.2s !important;
 	color: rgb(212, 211, 211);
 }
@@ -279,7 +285,7 @@ input:focus {
 	}
 
 	#loadmore {
-		width: 90%;
+		width: 30%;
 	}
 
 	#mobilenav,
@@ -384,13 +390,9 @@ input:focus {
 }
 
 .burger {
-	width: 42px;
-	height: 42px;
-	background: url(burger.png);
-	background-size: 33px, 150% 150%;
-	display: inline-block;
-	background-position: center, center;
-	background-repeat: no-repeat, no-repeat;
+	vertical-align: bottom !important;
+	display: inline-block !important;
+	font-size: 46px !important;
 	cursor: pointer;
 }
 
@@ -413,12 +415,9 @@ input:focus {
 
 @media (max-width: 949px) {
 	#loadmore {
-		width: 80%;
+		width: 40%;
 	}
 
-	#announcement {
-		height: 95%;
-	}
 
 	html {
 		/* STUPID HACK ALERT */
@@ -595,8 +594,8 @@ input:focus {
 	border-width: 3px;
 	border-radius: 50px;
 	font-family: 'DejaVu Sans', sans-serif;
-	font-size: 50px;
-	font-size: max(3.5vw, 25px);
+	font-size: 30px;
+	font-size: max(2.5vw, 25px);
 	transition: 0.1s;
 	user-select: none;
 }
@@ -749,7 +748,7 @@ input:focus {
 }
 
 #play_pause {
-	font-size: 50px;
+	font-size: 55px;
 }
 
 #player_controls {
@@ -776,9 +775,9 @@ input:focus {
 
 #back15,
 #for15 {
-	font-size: 30px;
-	margin-left: 10px;
-	margin-right: 10px;
+	font-size: 40px;
+	margin-left: 5px;
+	margin-right: 5px;
 }
 
 /* dragula stuff */

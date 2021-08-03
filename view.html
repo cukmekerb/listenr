@@ -15,7 +15,8 @@
 		<link rel="stylesheet" href="view.css">
 		<link href="http://fonts.cdnfonts.com/css/dejavu-sans" rel="stylesheet">
 		<script src="https://cdn.jsdelivr.net/gh/cukmekerb/keymaster/keymaster.min.js"></script>
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<script src="https://cdn.jsdelivr.net/gh/mozilla/localForage@master/dist/localforage.js"></script>
 		<script src="common.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/autolink-js/autolink-min.js"></script>
@@ -33,13 +34,13 @@
 			<span id="hidinput"><i style="margin-right: 5px;">or</i> <input placeholder="Add by RSS..." onkeypress="checkrss(event)" autocomplete="off" type="url" id="rssurl"></span>
 		</div>
 		<div id="mobilenav">
-			<div class="burger" onclick="showmnav()"></div>
+			<div class="material-icons-outlined burger" onclick="showmnav()">menu</div>
 
 			<span id="logopan" onclick="window.location='index.html'">
-				<img src="listenr-logo-scaled.png" height="60" style="display: inline-block; vertical-align: middle; margin-top: -20px;">
+				<img src="listenr-logo-scaled.png" height="60" style="display: inline-block; vertical-align: bottom; margin-top: -5px;">
 		</div>
 		<div id="mobileside" class="leftside">
-			<div class="burgerx" onclick="hidemnav()"><i class="fas fa-times"></i></div>
+			<div class="burgerx" onclick="hidemnav()"><span class="material-icons-outlined burger">close</span></div>
 			<img src="listenr-logo-scaled.png" height="60" style="display: inline-block; vertical-align: middle; margin-top: -20px;">
 			<br><br>
 			<span class="navigation" onclick="window.location='yours.html'">Your Podcasts</span>
@@ -73,9 +74,9 @@
 			<div id="episode_td">
 				<div id="episodes" class="scrollable hidden">
 					<div class="episode" style="display:none;">
-						<i class="fas fa-play-circle smallplaybutton" id="playbutton-$$i%%" onclick="playepisode(Number('$$i%%'))"></i>
-						<span class="explicit_ep displaynone" id="explicit-$$i%%">
-							E
+						<span class="material-icons-outlined smallplaybutton" id="playbutton-$$i%%" onclick="playepisode(Number('$$i%%'))">play_circle_filled</span>
+						<span class="material-icons explicit_ep displaynone" id="explicit-$$i%%">
+							explicit
 						</span>
 						<h1 class="episode_title" style="display: inline;" id="title_$$i%%"> $$%%TOTITLE%%</h1>
 						<div id="desc_$$i%%">$$%%DESK%%</div>
@@ -86,14 +87,14 @@
 		<div id="player" class="hidingplayer">
 			<div id="progress_container"><span id="timeleft">00:00</span><input type="range" min="0" max="100" value="0" class="slider" id="player_move" oninput="playermove()"><span id="minustime">-00:00</span></div>
 			<div id="player_controls">
-				<i class="fas fa-undo mediabutton" id="back15" onclick="playingep.currentTime-=15"></i> <i class="fas fa-play-circle mediabutton" id="play_pause" onclick="toggleplaypause()"></i> <i class="fas fa-redo mediabutton" id="for15" onclick="playingep.currentTime+=15"></i>
+				<span class="material-icons-outlined mediabutton" id="back15" onclick="playingep.currentTime-=15">undo</span> <span class="material-icons-outlined mediabutton" id="play_pause" onclick="toggleplaypause()">pause_circle_filled</span> <span class="material-icons-outlined mediabutton" id="for15" onclick="playingep.currentTime+=15">redo</span>
 			</div>
 			<div id="nowplayingcont">
 				<p id="nowplaying">A show</p>
 			</div>
 		</div>
 		<div id="announcement" class="hidden">
-			<i class="fas fa-times" onclick="hideannouncement()"></i>
+			<span class="material-icons-outlined burger" onclick="hideannouncement()">close</spa
 			<h1 id="announcement_h1">
 				What's New
 			</h1>

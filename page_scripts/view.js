@@ -80,7 +80,7 @@ async function init() {
         getfeed(feedurl);
         document.getElementById("subbutton").setAttribute("onclick", "subscribe()");
         if (user.subscribed.indexOf(user.subscribed.find(a => safe_decode(a.url) == feedurl)) > -1) {
-            document.getElementById("subbutton").innerHTML = "Subscribed   <i class='fas fa-check'></i>";
+            document.getElementById("subbutton").innerHTML = `Subscribed   <span class="material-icons-outlined">done</span>`;
             document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"));
             document.getElementById("subbutton").classList.replace("subscribe-u", "subscribe-s");
         }
@@ -92,7 +92,7 @@ async function init() {
         document.getElementById("subbutton").setAttribute("onclick", "subscribe('" + feedurl + "')");
 
         if (user.subscribed.indexOf(user.subscribed.find(a => safe_decode(a.url) == feedurl)) > -1) {
-            document.getElementById("subbutton").innerHTML = "Subscribed   <i class='fas fa-check'></i>";
+            document.getElementById("subbutton").innerHTML = `Subscribed   <span class="material-icons-outlined">done</span>`;
             document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"));
             document.getElementById("subbutton").classList.replace("subscribe-u", "subscribe-s");
         }
@@ -251,7 +251,11 @@ function updateplayer() {
     if (!intervalaler) {
         lasttime = playingep.currentTime;
         var endedtime = 0;
-        setInterval(() => {
+        var epinterval = setInterval(() => {
+						if (!playingep) {
+							clearInterval(epinterval);
+							return;
+						}
             if (playingep.currentTime - lasttime < 0.15) {
                 document.getElementById("player_move").value = (playingep.currentTime / playingep.duration) * 100;
                 var d = "linear-gradient(90deg, rgb(84, 255, 78) " + document.getElementById("player_move").value + "%, rgba(182,182,182,1) " + document.getElementById("player_move").value + "%, rgba(182,182,182,1) 100%)";
@@ -300,7 +304,7 @@ function subscribe() {
     setTimeout(function () {
         document.getElementById("subbutton").classList.replace("subscribe-u", "subscribe-s");
     }, 20);
-    document.getElementById("subbutton").innerHTML = "Subscribed   <i class='fas fa-check'></i>";
+    document.getElementById("subbutton").innerHTML = `Subscribed   <span class="material-icons-outlined">done</span>`;
     savecookies();
     document.getElementById("subbutton").setAttribute("onclick", "un" + document.getElementById("subbutton").getAttribute("onclick"));
 }
@@ -339,11 +343,11 @@ function toggleplaypause() {
 }
 
 function eppaused() {
-    document.getElementById("play_pause").classList.replace("fa-pause-circle", "fa-play-circle");
+    document.querySelector("#play_pause").innerHTML = document.querySelector("#play_pause").innerHTML.replace("pause_circle", "play_circle");
 }
 
 function epplayed() {
-    document.getElementById("play_pause").classList.replace("fa-play-circle", "fa-pause-circle");
+    document.querySelector("#play_pause").innerHTML = document.querySelector("#play_pause").innerHTML.replace("play_circle", "pause_circle");
 }
 
 function testwidth(text, size, weight) {

@@ -5,7 +5,7 @@ function check_show_db() {
 	var link = document.getElementById("rss_url").value;
 	feedurl = link;
 	document.getElementById("show_output").classList.add("hidden");
-	var goodhtml = `<i class="far fa-check-circle"></i> your show is in the database`;
+	var goodhtml = `<span class="material-icons-outlined">check_circle_outline</span> your show is in the database`;
 	if (validurl(link)) {
 		document.getElementById("error").classList.add("hidden");
 		document.getElementById("shortlinkform").classList.add("hidden");
