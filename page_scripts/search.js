@@ -40,6 +40,7 @@ function checksearch() {
 			.then(result => {
 				var ephtml;
 				if (result.rows.length > 0) {
+					document.getElementById("show-$$i%%").classList.remove("displaynone")
 					for (var i in result.rows) {
 						if (result.rows[i].name != null && result.rows[i].name != "") {
 							ephtml = document.getElementById("show-$$i%%").outerHTML;
@@ -60,7 +61,7 @@ function checksearch() {
 							});
 						}
 					}
-					document.getElementById("show-$$i%%").outerHTML = "";
+					document.getElementById("show-$$i%%").classList.add("displaynone");
 				}
 				else {
 					document.getElementById("op").innerHTML = `<p class='centererror'>no shows found :( Try <input placeholder="Addding by RSS..."
@@ -81,4 +82,12 @@ function hidemnav() {
 
 function showmnav() {
 	document.getElementById("mobileside").classList.remove("leftside");
+}
+
+function search_csearch(data) {
+	if (data.keyCode == 13) {
+		window.history.pushState({}, "", "?AetBh69SERCH99bH=" + data.target.value);
+		checksearch();
+		hidemnav();
+	}
 }
