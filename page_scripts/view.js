@@ -103,7 +103,7 @@ async function init() {
 }
 
 function getfeed(link) {
-    fetch("https://lstnr.gq/.netlify/functions/rss-to-json?items=10&url=" + encodeURIComponent(link))
+    fetch("https://listenr2.netlify.app/api/rss?url=" + encodeURIComponent(link))
         .then(a => a.json())
         .then(feed => {
             document.getElementById("title").innerHTML = DOMPurify.sanitize(feed.title, sanitize_options);
@@ -200,7 +200,7 @@ function filleps(feed) {
 
 function loadmore() {
     document.getElementById("loadmore").innerHTML = "<i style='text-align:center; margin-left:auto; margin-right:auto;'>Loading...</i>";
-    fetch("https://lstnr.gq/.netlify/functions/rss-to-json?items=10&startfrom=" + episodes.length + "&url=" + encodeURIComponent(feedurl))
+    fetch("https://listenr2.netlify.app/api/rss?startfrom=" + episodes.length + "&url=" + encodeURIComponent(feedurl))
         .then(a => a.json())
         .then(feed => {
             if (feed.items.length < 1) {
